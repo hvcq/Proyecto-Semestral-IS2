@@ -1,6 +1,12 @@
 {% extends "base_template.html" %}
 
 {% block content %}
-    <h1>Crear encuesta</h1>
+<h1>Crear encuesta</h1>
 {% endblock content %}
 
+{% block jsFiles %}
+<script>
+  const navOptions = {{ navOptions | tojson }}
+</script>
+<script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
+{% endblock jsFiles %}

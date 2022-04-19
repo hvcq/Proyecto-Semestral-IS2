@@ -7,10 +7,63 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
-* {
-  padding: 0px;
-  margin: 0px;
+
+/*CODIGO--------------------------------*/
+
+body{
+  background-color: var(--color-body);
 }
+
+.nav-link{
+  text-decoration: none !important;
+  color: black;
+}
+
+.nav-item{
+  display: inline;
+}
+
+.dot{
+  margin-top: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--color-unselected);
+  opacity: 1;
+  font-weight: 100;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav__element a:hover,a:focus, a:active{
+  color: var(--color-text-selected) !important;
+  text-shadow:
+    -.3px -.3px 0 var(--color-selected),
+    .3px -.3px 0 var(--color-selected),
+    -.3px .3px 0 var(--color-selected),
+    .3px .3px 0 var(--color-selected);
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+
+.nav__element a{
+  color: var(--color-unselected);
+}
+
+a:hover + .dot{
+  background: var(--color-dot);
+  border-color: var(--color-selected);
+}
+
+a:focus + .dot{
+  background: var(--color-dot);
+  border-color: var(--color-selected);
+}
+
+
+/*CODIGO--------------------------------*/
 
 html {
   line-height: 1.15; /* 1 */

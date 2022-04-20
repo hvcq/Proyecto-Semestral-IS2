@@ -62,6 +62,12 @@ a:focus + .dot{
   border-color: var(--color-selected);
 }
 
+.enable{
+  color: var(--color-selected);
+  background: var(--color-dot);
+  border-color: var(--color-selected);
+}
+
 
 /*CODIGO--------------------------------*/
 

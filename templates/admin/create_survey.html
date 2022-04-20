@@ -1,8 +1,39 @@
 {% extends "base_template.html" %}
 
+{% block title %}Crear encuesta{% endblock title %}
+
+{% block cssFiles %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/create_survey.css" ) }}">
+{% endblock cssFiles %}
+
 {% block content %}
-<h1>Crear encuesta</h1>
+{% if navOptions.selected == 'preguntas' %}
+<section class="survey container d-flex flex-column">
+  <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
+    <textarea name="title" class="form-control shadow-none survey__elementTitle mb-2" rows="1"
+      placeholder="Inserte Título"></textarea>
+    <textarea name="title" class="form-control shadow-none survey__elementDesc" rows="1"
+      placeholder="Description de la encuesta"></textarea>
+  </div>
+  <div class="surveyQuestions">
+    <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
+
+    </div>
+
+  </div>
+  <div>
+    <a href="#"><i class="fa fa-arrows" aria-hidden="true"></i></a>
+  </div>
+</section>
+
+{% elif navOptions.selected == "respuestas" %}
+<p>Respuestas</p>
+{% else %}
+<p>Configuracion</p>
+{% endif %}
 {% endblock content %}
+
+
 
 {% block jsFiles %}
 <script>
@@ -10,3 +41,8 @@
 </script>
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 {% endblock jsFiles %}
+
+
+**DECIR SOLUCION
+**PREGUNTAR POR TRANSBANK
+**CATALOGO

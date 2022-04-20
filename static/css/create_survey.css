@@ -1,0 +1,31 @@
+.survey__card{
+    background-color: #fff;
+    border-radius: 10px 10px 10px 10px;
+    width: 65% !important;
+}
+
+.survey__elementTitle{
+    font-size: 2em !important;
+    height: 10px !important;
+    color: var(--color-text) !important;
+    font-weight: 600;
+}
+
+textarea {
+  
+    border: 0 !important;
+    border-bottom: 0.5px solid #fff !important;
+    border-radius: 0 !important;
+    transition: border-bottom 0.4s ease-in !important;
+    width: 94% !important;
+    margin-left: 20px !important;
+  }
+
+textarea:focus {
+    border-bottom: 2px solid var(--color-dot) !important;
+}
+
+
+.textareaDisabled{
+    resize: none;
+}

@@ -17,5 +17,7 @@ def create_app():
 
     with app.app_context():
         from . import routes  # Import routes
+        db.session.commit()   
+        db.drop_all()
         db.create_all()
         return app

@@ -1,5 +1,7 @@
 # Para operar la base de datos de forma manual
 
+*Añadir dependencias descargadas aca pls. 
+
 * Borrar base de datos manualmente
 $python
 >>> from wsgi import create_app

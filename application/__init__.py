@@ -17,5 +17,5 @@ def create_app():
 
     with app.app_context():
         from . import routes  # Import routes
-        db.create_all()
+        # db.create_all() Comentado por problemas. (SOLUCIONAR)
         return app

@@ -5,6 +5,7 @@ Sistema de encuestas desarrollado en Flask.
 ## Instalación
 
 Usa el administrador de paquetes [pip](https://pip.pypa.io/en/stable/) para instalar virtualenv usando privilegios de administrador (Suponiendo que ya tienes instalado python)
+>>> db.create_all(app=create_app())
 
 ```bash
 pip install virtualenv

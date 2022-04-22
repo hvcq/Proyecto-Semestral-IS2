@@ -12,14 +12,20 @@
 }
 
 textarea {
-  
+    padding: 3px !important;
     border: 0 !important;
     border-bottom: 0.5px solid #fff !important;
     border-radius: 0 !important;
     transition: border-bottom 0.4s ease-in !important;
     width: 94% !important;
-    margin-left: 20px !important;
-  }
+    margin-left: 2% !important;
+}
+
+.border__dotted{
+    border: var(--color-unselected) 4px dashed !important;
+    border-radius: 20px !important;
+    background-color: #fff !important;
+}
 
 textarea:focus {
     border-bottom: 2px solid var(--color-dot) !important;
@@ -28,4 +34,36 @@ textarea:focus {
 
 .textareaDisabled{
     resize: none;
+}
+
+.survey__image{
+    width: 100% !important;
+    padding: 20%;
+}
+
+.suveryQuestions__button{
+    border: 0;
+    border-radius: 20%;
+    background-color: transparent;
+    width: 7%;
+    transition: all .2s ease-in-out;
+}
+
+.suveryQuestions__button:hover{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.survey_alternative{
+    border-radius: 50% !important;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.survey__inputAlt{
+    border: 0px 0px 3px 0px solid var(--color-dot) !important;
+    width: 90%;
+}
+
+.survey__inputAlt:hover{
+    border: 0 !important;
 }

@@ -1,0 +1,49 @@
+{% extends "base_template.html" %}
+
+<!--TAREA: Hacer que el text area de los enunciados sea autoajustable : https://stephanwagner.me/auto-resizing-textarea-with-vanilla-javascript -->
+
+{% block title %}Crear encuesta{% endblock title %}
+
+{% block cssFiles %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/create_survey.css" ) }}">
+{% endblock cssFiles %}
+
+{% block content %}
+{% if data.selected == 'preguntas' %}
+<section class="survey container d-flex flex-column">
+  <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
+    <textarea id="title" onchange="handleInputs(event)" class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1"
+      placeholder="Inserte Título" autofocus></textarea>
+    <textarea id="description" class="form-control shadow-none survey__elementDesc" rows="1"
+      placeholder="Description de la encuesta"></textarea>
+  </div>
+  <div class="surveyQuestions">
+  </div>
+  <div class="survey__addButton text-center">
+    <button type="button" class="suveryQuestions__button"><img src="{{ url_for("static",
+      filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image" onclick="#"></button>
+  </div>
+</section>
+
+{% elif data.selected == "respuestas" %}
+<p>Respuestas</p>
+{% else %}
+<p>Configuracion</p>
+{% endif %}
+{% endblock content %}
+
+
+
+{% block jsFiles %}
+<script>
+  const data = {{ data | tojson }}
+</script>
+
+<script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
+<script src="{{ url_for("static", filename="js/survey.js" ) }}"></script>
+{% endblock jsFiles %}
+
+
+**DECIR SOLUCION
+**PREGUNTAR POR TRANSBANK
+**CATALOGO

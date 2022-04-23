@@ -15,9 +15,9 @@
   <nav class="container-fluid p-0 d-flex justify-content-between bg-white p-3 shadow-sm">
     <div class="invisible">#Espacio inutilizado#</div>
     <div class="nav__list d-flex">
-      {% for name in navOptions.options %}
+      {% for name in data.options %}
       <div class="nav__element d-flex align-items-center gap-1" disable="true">
-        <a name={{name.lower()}} class="nav-link order-2 " href="/createSurvey/{{name.lower()}}">{{name}}</a>
+        <a name={{name.lower()}} class="nav-link order-2 " href="/survey/{{data.id}}/{{name.lower()}}">{{name}}</a>
         <div name={{name.lower()}} class="dot order-1"></div>
       </div>
       {% endfor %}

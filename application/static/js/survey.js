@@ -1,18 +1,20 @@
-'use strict'
+"use strict";
 
-let title = document.querySelector("#title")
-let description = document.querySelector("#description")
-let questionContainer = document.querySelector(".surveyQuestions")
+console.log(data.selected.toLowerCase());
 
-title.textContent = data.dataSurvey.title
-description.textContent = data.dataSurvey.description
+if (data.selected.toLowerCase() === "preguntas") {
+  let title = document.querySelector("#title");
+  let description = document.querySelector("#description");
+  let questionContainer = document.querySelector(".surveyQuestions");
 
+  title.textContent = data.dataSurvey.title;
+  description.textContent = data.dataSurvey.description;
 
-const insertQuestion = function (statement, alternatives, type) {
-
-  if (type === "alternativa") {
-    questionContainer.insertAdjacentHTML('beforeend',
-      `
+  const insertQuestion = function (statement, alternatives, type) {
+    if (type === "alternativa") {
+      questionContainer.insertAdjacentHTML(
+        "beforeend",
+        `
       <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
         <textarea name="title" class="form-control shadow-none survey__elementTitle mb-3 textareaDisabled" rows="1"
           placeholder="Inserte enunciado">${statement}</textarea>
@@ -32,11 +34,11 @@ const insertQuestion = function (statement, alternatives, type) {
         </div>
       </div>
       `
-    );
-
-  } else if (type === "desarrollo") {
-    questionContainer.insertAdjacentHTML('beforeend',
-      `
+      );
+    } else if (type === "desarrollo") {
+      questionContainer.insertAdjacentHTML(
+        "beforeend",
+        `
       <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
         <textarea name="title" class="form-control shadow-none survey__elementTitle mb-3 textareaDisabled" rows="1"
           placeholder="Inserte enunciado">${statement}</textarea>
@@ -48,43 +50,34 @@ const insertQuestion = function (statement, alternatives, type) {
         <button type="button" class="suveryQuestions__button"><img src="/static/resources/radio.png" class="img-fluid survey__image" onclick="#"></button>
         <button type="button" class="suveryQuestions__button"><img src="/static/resources/trash.png" class="img-fluid survey__image" onclick="#"></button>
       </div>
-      `)
+      `
+      );
     }
-}
+  };
 
-for (const element of data.dataSurvey.questions) {
-
-  let alternativesSpread = ""
-  for (const textAlternative of element.alternatives){
-    alternativesSpread += `
+  if (Object.keys(data.dataSurvey).length !== 0) {
+    for (const element of data.dataSurvey.questions) {
+      let alternativesSpread = "";
+      for (const textAlternative of element.alternatives) {
+        alternativesSpread += `
     <div class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
       <input class="survey__inputAlt" value=${textAlternative}>
       <button type="button" class="suveryQuestions__button"><img src="/static/resources/remove.png" class="img-fluid survey__image" onclick="#"></button>
     </div>
-  `
-  }
-  insertQuestion(element.statement ,alternativesSpread, element.type)
-}
-
-
-const dataSurvey = {
-  id: undefined,
-  title: "",
-  description: "",
-  questions: [
-    {
-      statement: "",
-      type: "",
-      alternatives: []
+  `;
+      }
+      insertQuestion(element.statement, alternativesSpread, element.type);
     }
-  ]
+  }
 }
+
+const addQuestion = function (event) {
+  console.log(event);
+};
 
 const handleInputs = function (event) {
-  console.log(event)
-  const target = event.target
-  console.log(target.value)
-}
-
-
+  // console.log(event);
+  const target = event.target;
+  // console.log(target.value);
+};

@@ -24,7 +24,8 @@ Por defecto al ejecutar la aplicacion se borraran los datos de la base de datos 
 
 Para hacer la eliminacion y creacion de la base de datos de forma manual se deben seguir los respectivos procedimientos señalados a continuacion:
 ## Eliminar datos de la base de datos de forma manual
-### Primero ingresar a la terminal de **python**, luego ingresar:
+
+Primero ingresar a la terminal de **python**, luego ingresar:
 ```bash
 from wsgi import create_app
 ```
@@ -36,7 +37,7 @@ db.drop_all(app=create_app())
 ```
 ## Crear base de datos manualmente
 
-### Primero ingresar a la terminal de **python**, luego ingresar:
+Primero ingresar a la terminal de **python**, luego ingresar:
 ```bash
 from wsgi import create_app
 ```

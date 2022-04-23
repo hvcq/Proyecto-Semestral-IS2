@@ -1,11 +1,11 @@
-"""Initialize Flask app."""
+"""Aqui se da inicio a la aplicacion"""
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from ddtrace import patch_all
+# from ddtrace import patch_all  <-- ddtrace no lo usaremos por ahora
 
 
 db = SQLAlchemy()
-patch_all()
+# patch_all() <-- esto da bug
 
 
 def create_app():
@@ -17,5 +17,7 @@ def create_app():
 
     with app.app_context():
         from . import routes  # Import routes
-        # db.create_all() Comentado por problemas. (SOLUCIONAR)
+        # Reinicia las tabla cada vez que se inicia ejecuta
+        db.drop_all()
+        db.create_all()
         return app

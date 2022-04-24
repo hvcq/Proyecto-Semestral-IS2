@@ -5,7 +5,9 @@ Antes de correr la aplicacion es necesario instalar algunas dependecias, estas d
 
 * Flask
 * Flask-SQLAlchemy
+* Flask-Flash
 * SQLAlchemy
+* psycopg2 (permite el uso de Postresql con SQLAlchemy)
 * ddtrace (Permite rastrear solicitudes al servidor)
 * python-dotenv (Permite entregar la configuración del servidor a traves de un archivo)
 

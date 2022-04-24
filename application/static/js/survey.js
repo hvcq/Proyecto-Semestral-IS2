@@ -179,9 +179,8 @@ const setToParagraph = function (event) {
 
 const deleteAlternative = function (event) {
   let element = event.target.parentNode.parentNode;
-  console.log(event.target.parentNode);
-  // console.log(element);
-  element.remove();
+  let parent = event.target.parentNode.parentNode.parentNode;
+  if (parent.childElementCount > 1) element.remove();
 };
 
 const addAlternative = function (event) {

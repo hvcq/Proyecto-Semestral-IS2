@@ -41,11 +41,13 @@ def Survey(id=0, section="preguntas"):
         # "description": "Esta es mi primera encuesta ola",
         # "questions": [
         #     {
+        #         "id": "1",
         #         "statement": "holaloquito",
         #         "type": "alternativa",
         #         "alternatives": ["Opcion1", "Opcion2", "Opcion3", "Opcion4"]
         #     },
         #     {
+        #         "id": "2",
         #         "statement": "¿Cuantos años tienes?",
         #         "type": "desarrollo",
         #         "alternatives": []

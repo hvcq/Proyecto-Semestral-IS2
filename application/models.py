@@ -84,16 +84,18 @@ class Encuestado(db.Model):
     id_encuestado = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(100))
     email = Column(String(50), nullable=False)
-<<<<<<< HEAD
 
-Respuesta_Desarrollo = Table('respuesta_desarrollo',db.Model.metadata,
-    Column('id_pregunta_desarrollo',ForeignKey('pregunta_desarrollo.id_pregunta_desarrollo'), primary_key=True),
-    Column('id_encuestado',ForeignKey('encuestado.id_encuestado'), primary_key=True)
-)
 
-Respuesta_Alternativa = Table('respuesta_alternativa',db.Model.metadata,
-    Column('id_opcion',ForeignKey('opcion.id_opcion'), primary_key=True),
-    Column('id_encuestado',ForeignKey('encuestado.id_encuestado'), primary_key=True)
-)
-=======
->>>>>>> 963597f (fixing .gitignore)
+Respuesta_Desarrollo = Table('respuesta_desarrollo', db.Model.metadata,
+                             Column('id_pregunta_desarrollo', ForeignKey(
+                                 'pregunta_desarrollo.id_pregunta_desarrollo'), primary_key=True),
+                             Column('id_encuestado', ForeignKey(
+                                 'encuestado.id_encuestado'), primary_key=True)
+                             )
+
+Respuesta_Alternativa = Table('respuesta_alternativa', db.Model.metadata,
+                              Column('id_opcion', ForeignKey(
+                                  'opcion.id_opcion'), primary_key=True),
+                              Column('id_encuestado', ForeignKey(
+                                  'encuestado.id_encuestado'), primary_key=True)
+                              )

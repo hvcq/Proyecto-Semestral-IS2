@@ -6,7 +6,7 @@
 
 .survey__elementTitle{
     font-size: 2em !important;
-    height: 10px !important;
+    /* height: 10px !important; */
     color: var(--color-text) !important;
     font-weight: 600;
 }

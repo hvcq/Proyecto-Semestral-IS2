@@ -6,7 +6,7 @@
 
 .survey__elementTitle{
     font-size: 2em !important;
-    height: 10px !important;
+    /* height: 10px !important; */
     color: var(--color-text) !important;
     font-weight: 600;
 }
@@ -16,7 +16,7 @@ textarea {
     border: 0 !important;
     border-bottom: 0.5px solid #fff !important;
     border-radius: 0 !important;
-    transition: border-bottom 0.4s ease-in !important;
+    transition: border-bottom 0.15s ease-in !important;
     width: 94% !important;
     margin-left: 2% !important;
 }
@@ -38,32 +38,38 @@ textarea:focus {
 
 .survey__image{
     width: 100% !important;
-    padding: 20%;
+    padding: 15%;
 }
 
 .suveryQuestions__button{
     border: 0;
-    border-radius: 20%;
+    border-radius: 50%;
     background-color: transparent;
+    padding: 1%;
     width: 7%;
     transition: all .2s ease-in-out;
 }
 
 .suveryQuestions__button:hover{
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    padding: 0;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
 }
 
 .survey_alternative{
     border-radius: 50% !important;
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.8em;
+    height: 1.8em;
 }
 
 .survey__inputAlt{
-    border: 0px 0px 3px 0px solid var(--color-dot) !important;
-    width: 90%;
+    width: 88%;
+    border: 0;
+    border-bottom: 0.5px solid #fff !important;
+    transition: all 0.15s ease-in !important;
 }
 
-.survey__inputAlt:hover{
-    border: 0 !important;
+.survey__inputAlt:focus{
+    outline: none;
+    box-shadow: none;
+    border-bottom: 2px solid black !important;
 }

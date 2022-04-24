@@ -11,18 +11,21 @@
 {% block content %}
 {% if data.selected == 'preguntas' %}
 <section class="survey container d-flex flex-column">
-  <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
-    <textarea id="title" onchange="handleInputs(event)" class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1"
-      placeholder="Inserte Título" autofocus style="height: 10px"></textarea>
-    <textarea id="description" class="form-control shadow-none survey__elementDesc" rows="1"
-      placeholder="Description de la encuesta"></textarea>
-  </div>
-  <div class="surveyQuestions">
-  </div>
-  <div class="survey__addButton text-center">
-    <button type="button" class="suveryQuestions__button" onclick="addQuestion(event)"><img src="{{ url_for("static",
-      filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image"></button>
-  </div>
+  <form action="/crear_encuesta" method="POST">
+    <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
+      <textarea name="title-form" id="title" onchange="handleInputs(event)" class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1"
+        placeholder="Inserte Título" autofocus style="height: 10px"></textarea>
+      <textarea name="description-form" id="description" class="form-control shadow-none survey__elementDesc" rows="1"
+        placeholder="Description de la encuesta"></textarea>
+    </div>
+    <div class="surveyQuestions">
+    </div>
+    <div class="survey__addButton text-center">
+      <button type="button" class="suveryQuestions__button" onclick="addQuestion(event)"><img src="{{ url_for("static",
+        filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image"></button>
+    </div>
+    <button type="submit">Crear Encuesta</button>
+  </form>
 </section>
 
 {% elif data.selected == "respuestas" %}

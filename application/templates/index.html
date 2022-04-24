@@ -2,11 +2,16 @@
 
 {% block body %}
 
-    <h1>ENCUESTA MAGICA</h1>
-    <button type="button" class="btn btn-primary">Primary</button>
-    <a href="http://127.0.0.1:3000" class = "estilo_boton_1">Home</a>
-    <a href="http://127.0.0.1:3000/otros/" class = "estilo_boton_1">Otros</a>
-    <h2>Introducir en la base de datos</h2>
+    <h1>Inicio Encuestas</h1>
+    <form action="/crear_nueva_encuesta" method="GET">
+        <a href="http://127.0.0.1:3000" class = "estilo_boton_1">Home</a>
+        <button type="submit">Crear nueva encuesta</button>
+    </form>
+    <form action="/ir_a_ultima_encuesta" method="GET">
+        <button type="submit">Ir a ultima encuesta</button>
+    </form>
+
+    <h3>Introducir en la base de datos</h3>
     <form action="/guardar_admin" method="POST">
         <input type="text" name="nombre" placeholder="Nombre">
         <input type="text" name="email" placeholder="Email">

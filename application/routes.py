@@ -67,6 +67,7 @@ def Survey(id,section="preguntas"):
             }
         )
     else:
+        """Consulta para obtener datos de preguntas de desarrollo"""
         ids_preguntas_desarrollo = []
         numeros_preguntas_desarrollo = []
         enunciado_preguntas_desarrollo = []
@@ -80,18 +81,20 @@ def Survey(id,section="preguntas"):
                 numeros_preguntas_desarrollo.append(tupla_pregunta_desarrollo.numero)
                 enunciado_preguntas_desarrollo.append(tupla_pregunta_desarrollo.enunciado)
                 comentario_preguntas_desarrollo.append(tupla_pregunta_desarrollo.comentario)
-            print("numeros_pd")
+            print("numeros_pd") #pd -> pregunta desarrollo
             print(numeros_preguntas_desarrollo)
             print("enunciados_pd")
             print(enunciado_preguntas_desarrollo)
             print("comentarios_pd")
             print(comentario_preguntas_desarrollo)
         
+        """Consulta para obtener datos de preguntas de alternativas"""
         ids_preguntas_alternativas = []
         numeros_preguntas_alternativas = []
         enunciado_preguntas_alternativas = []
         comentario_preguntas_alternativas = []
         ids_opciones = []
+        string_opciones = []
         if db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id).first() != None:
             tuplas_alternativa_encuesta = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id).all()
             for tupla_alternativa_encuesta in tuplas_alternativa_encuesta:
@@ -101,16 +104,24 @@ def Survey(id,section="preguntas"):
                 numeros_preguntas_alternativas.append(tupla_pregunta_alternativa.numero)
                 enunciado_preguntas_alternativas.append(tupla_pregunta_alternativa.enunciado)
                 comentario_preguntas_alternativas.append(tupla_pregunta_alternativa.comentario)
-            print("numeros_pa")
+            print("numeros_pa") # pa -> pregunta alternativa
             print(numeros_preguntas_alternativas)
             print("enunciados_pa")
             print(enunciado_preguntas_alternativas)
             print("comentarios_pa")
             print(comentario_preguntas_alternativas)
-            # tuplas_alternativas = db.session.query(Alternativas).filter(Alternativas.id_pregunta_alternativa.in_(ids_preguntas_alternativas)).all()
-            # for tupla_alternativas in tuplas_alternativas:
-            #     ids_opciones.append(tupla_alternativas.id_opcion)
-            # print(ids_opciones)
+            for id_pregunta_alternativa in ids_preguntas_alternativas:
+                if db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).first() != None:
+                    tuplas_alternativas_aux = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).all()
+                    for tupla_alternativa in tuplas_alternativas_aux:
+                        ids_opciones.append(tupla_alternativa.id_opcion)
+            print("ids opciones")
+            print(ids_opciones)
+            tuplas_opcion = db.session.query(Opcion).filter(Opcion.id_opcion.in_(ids_opciones)).all()
+            for tupla_opcion in tuplas_opcion:
+                string_opciones.append(tupla_opcion.opcion)
+            print("string opciones")
+            print(string_opciones)
         dataSurvey = {
             "id": id,
             "title": db.session.query(Encuesta).filter_by(id_encuesta = id).first().titulo,

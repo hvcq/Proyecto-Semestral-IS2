@@ -28,31 +28,43 @@ def otros():
     return "<h1> otros </h1>"
 
 
-@app.route("/survey/")
-@app.route("/survey/<int:id>/")
-@app.route("/survey/<int:id>/<string:section>")
+@app.route("/crear_nueva_encuesta", methods=['POST'])
+def crea_nueva_encuesta():
+    if request.method == "POST":
+        # output = request.get_json()
+        # print(output)
+        num = request.form.get("ola")
+        print(num)
+        return "value recieved"
+    return render_template("admin/survey.html")
+
+    # if db.session.query(Encuesta).order_by(Encuesta.id_encuesta.desc()).first() == None:
+    #     return redirect("/survey/1/preguntas")
+    # else:
+    #     id_ultima_encuesta = db.session.query(Encuesta).order_by(
+    #         Encuesta.id_encuesta.desc()).first().id_encuesta
+    #     id_nueva = id_ultima_encuesta + 1
+    #     return redirect("/survey/"+str(id_nueva)+"/preguntas")
+
+
+@ app.route("/survey/, methods=['POST']")
+@ app.route("/survey/<int:id>/")
+@ app.route("/survey/<int:id>/<string:section>")
 def Survey(id=0, section="preguntas"):
     # Tarea 1: Si se ingresa con la ruta /survey/ lo que hay que hacer es consultar el ultimo id creado de encuesta (Traerlo y almacenarlo en una var).
     # Tarea 2: Si se ingresa con la ruta /survey/id se debe preguntar a la base de datos si el id existe. Si existe se trae la info de la encuesta.
-
     dataSurvey = {
-        # "id": "",
-        # "title": "Mi primera encuesta",
-        # "description": "Esta es mi primera encuesta ola",
-        # "questions": [
-        #     {
-        #         "id": "1",
-        #         "statement": "holaloquito",
-        #         "type": "alternativa",
-        #         "alternatives": ["Opcion1", "Opcion2", "Opcion3", "Opcion4"]
-        #     },
-        #     {
-        #         "id": "2",
-        #         "statement": "¿Cuantos años tienes?",
-        #         "type": "desarrollo",
-        #         "alternatives": []
-        #     }
-        # ]
+        "id": "",
+        "title": "",
+        "description": "",
+        "questions": [
+            {
+                "id": "1",
+                "statement": "holaloquito",
+                "type": "desarrollo",
+                "alternatives": []
+            }
+        ]
     }
     return render_template("admin/survey.html", data={
         "options": ["Preguntas", "Respuestas", "Configuración"],

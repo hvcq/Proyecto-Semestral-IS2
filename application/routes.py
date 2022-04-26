@@ -1,6 +1,8 @@
 """Rutas de la aplicacion"""
 from datetime import datetime,date
 from operator import length_hint
+from re import I
+import numpy
 
 from flask import current_app as app
 from flask import make_response, redirect, render_template, request, url_for
@@ -50,19 +52,18 @@ def crear_encuesta():
         return redirect("/")
 
 @app.route("/survey/")
-@app.route("/survey/<int:id>/")
-@app.route("/survey/<int:id>/<string:section>")
-def Survey(id,section="preguntas"):
-    # Tarea 1: Si se ingresa con la ruta /survey/ lo que hay que hacer es consultar el ultimo id creado de encuesta (Traerlo y almacenarlo en una var).
-    # Tarea 2: Si se ingresa con la ruta /survey/id se debe preguntar a la base de datos si el id existe. Si existe se trae la info de la encuesta.
-    if db.session.query(Encuesta).filter_by(id_encuesta = id).first() == None:
+@app.route("/survey/<int:id_encuesta>/")
+@app.route("/survey/<int:id_encuesta>/preguntas")
+def Survey(id_encuesta):
+    section="preguntas"
+    if db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first() == None:
         #if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
         #    return redirect("/")
         dataSurvey = {}
         return render_template("admin/survey.html", data={
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
-            "id": id,
+            "id": id_encuesta,
             "dataSurvey": dataSurvey
             }
         )
@@ -72,8 +73,8 @@ def Survey(id,section="preguntas"):
         numeros_preguntas_desarrollo = []
         enunciado_preguntas_desarrollo = []
         comentario_preguntas_desarrollo = []
-        if db.session.query(Desarrollo_Encuesta).filter_by(id_encuesta = id).first() != None:
-            tuplas_desarrollo_encuesta = db.session.query(Desarrollo_Encuesta).filter_by(id_encuesta = id).all()
+        if db.session.query(Desarrollo_Encuesta).filter_by(id_encuesta = id_encuesta).first() != None:
+            tuplas_desarrollo_encuesta = db.session.query(Desarrollo_Encuesta).filter_by(id_encuesta = id_encuesta).all()
             for tupla_desarrollo_encuesta in tuplas_desarrollo_encuesta:
                 ids_preguntas_desarrollo.append(tupla_desarrollo_encuesta.id_pregunta_desarrollo)
             tuplas_pregunta_desarrollo = db.session.query(Pregunta_Desarrollo).filter(Pregunta_Desarrollo.id_pregunta_desarrollo.in_(ids_preguntas_desarrollo)).all()
@@ -95,8 +96,8 @@ def Survey(id,section="preguntas"):
         comentario_preguntas_alternativas = []
         ids_opciones = []
         string_opciones = []
-        if db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id).first() != None:
-            tuplas_alternativa_encuesta = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id).all()
+        if db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).first() != None:
+            tuplas_alternativa_encuesta = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).all()
             for tupla_alternativa_encuesta in tuplas_alternativa_encuesta:
                 ids_preguntas_alternativas.append(tupla_alternativa_encuesta.id_pregunta_alternativa)
             tuplas_pregunta_alternativa = db.session.query(Pregunta_Alternativa).filter(Pregunta_Alternativa.id_pregunta_alternativa.in_(ids_preguntas_alternativas)).all()
@@ -110,6 +111,28 @@ def Survey(id,section="preguntas"):
             print(enunciado_preguntas_alternativas)
             print("comentarios_pa")
             print(comentario_preguntas_alternativas)
+            cantidad_opciones = 0
+            for id_pregunta_alternativa in ids_preguntas_alternativas:
+                if db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).first() != None:
+                    cantidad_aux = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).count()
+                    if cantidad_aux > cantidad_opciones:
+                        cantidad_opciones = cantidad_aux
+            # Cada fila de la matriz corresponde a un id_pregunta_alternativa
+            # Cada elemento en la fila corresponde al id_opcion de las opciones de la pregunta
+            # Si casilla esta en 0 es porque no existe esa opcion
+            matriz_id_opciones = numpy.zeros((len(ids_preguntas_alternativas),cantidad_opciones),int)
+            i = 0
+            j = 0
+            for id_pregunta_alternativa in ids_preguntas_alternativas:
+                if db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).first() != None:
+                    tuplas_alternativas_aux = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).all()
+                    for tupla_alternativa in tuplas_alternativas_aux:
+                        matriz_id_opciones[i,j]=tupla_alternativa.id_opcion
+                        j = j + 1
+                    i = i + 1
+                    j = 0
+            print("matriz ids opciones")
+            print(matriz_id_opciones)
             for id_pregunta_alternativa in ids_preguntas_alternativas:
                 if db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).first() != None:
                     tuplas_alternativas_aux = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = id_pregunta_alternativa).all()
@@ -122,10 +145,11 @@ def Survey(id,section="preguntas"):
                 string_opciones.append(tupla_opcion.opcion)
             print("string opciones")
             print(string_opciones)
+            # id_opciones[i] y string_opciones[i] es una i-esima opcion
         dataSurvey = {
-            "id": id,
-            "title": db.session.query(Encuesta).filter_by(id_encuesta = id).first().titulo,
-            "description": db.session.query(Encuesta).filter_by(id_encuesta = id).first().descripcion,
+            "id": id_encuesta,
+            "title": db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first().titulo,
+            "description": db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first().descripcion,
             # "questions": [
             #     {
             #         "id": "1",
@@ -144,7 +168,11 @@ def Survey(id,section="preguntas"):
         return render_template("admin/survey.html", data={
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
-            "id": id,
+            "id": id_encuesta,
             "dataSurvey": dataSurvey
             }
         )
+
+@app.route("/survey/<int:id_encuesta>/preguntas/<int:id_encuestado>")
+def SurveyAns(id_encuesta,id_encuestado):
+    print()

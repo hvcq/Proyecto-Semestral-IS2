@@ -2,6 +2,7 @@
 from datetime import datetime, date
 from operator import length_hint
 from re import I
+import json
 import numpy
 
 from flask import current_app as app
@@ -50,8 +51,8 @@ def ir_a_ultima_encuesta():
 @app.route("/crear_encuesta", methods=['POST'])
 def crear_encuesta():
     if request.method == 'POST':
-        surveyData = request.form.get("surveyData")
-        print(surveyData)
+        surveyData = json.loads(request.form.get("surveyData"))
+        print(surveyData["questions"][0])
         # consulta que es para crear.
         return "INFORMACION RECIBIDA"
     return redirect("/")

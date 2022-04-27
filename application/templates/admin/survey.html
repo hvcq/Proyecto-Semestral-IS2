@@ -20,10 +20,31 @@
   <div class="surveyQuestions">
   </div>
   <div class="survey__addButton text-center">
-    <button type="button" class="suveryQuestions__button" onclick="addQuestion(event)"><img src="{{ url_for("static",
-      filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image"></button>
+    <button type="button" class="suveryQuestions__button"><img src="{{ url_for("static",
+      filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image" onclick="addQuestion()"></button>
   </div>
 </section>
+<div class="w-100 d-flex justify-align-end">
+  <button type="button" class="btn-flotante" onclick="sendData(event)">{{data.textButton}}</button>
+</div>
+<div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> 
+  <div class="modal-dialog modal-dialog-centered myModal">
+  
+    <!-- Modal content-->
+    <div class="modal-content d-flex flex-column justify-content-center align-items-center p-5 gap-2 myModal shadow">
+      <img src="{{ url_for("static",
+      filename="resources/success.png" ) }}">
+      <h1>¡Encuesta guardada!</h1>
+      <h5>Te redireccionaremos a la pagina principal</h5>
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
 
 {% elif data.selected == "respuestas" %}
 <p>Respuestas</p>
@@ -40,5 +61,5 @@
 </script>
 
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
-<script src="{{ url_for("static", filename="js/survey.js" ) }}"></script>
+<script src="{{ url_for("static", filename="js/survey_preguntas.js" ) }}"></script>
 {% endblock jsFiles %}

@@ -64,7 +64,12 @@ def Survey(id_encuesta, section="preguntas"):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
         # if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
         #    return redirect("/")
-        dataSurvey = {}
+        dataSurvey = {
+            "id": id_encuesta,
+            "title": "",
+            "description": "",
+            "questions": []
+        }
         return render_template("admin/survey.html", data={
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
@@ -281,6 +286,6 @@ def Survey(id_encuesta, section="preguntas"):
     )
 
 
-@app.route("/survey/<int:id_encuesta>/preguntas/<int:id_encuestado>")
+@ app.route("/survey/<int:id_encuesta>/preguntas/<int:id_encuestado>")
 def SurveyAns(id_encuesta, id_encuestado):
     print()

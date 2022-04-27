@@ -18,8 +18,8 @@
 console.log(data.dataSurvey.questions);
 
 let poolId = {
-  alternativa: [],
-  desarrollo: [],
+  alternativa: [0],
+  desarrollo: [0],
 };
 
 data.dataSurvey.questions?.map((element) => {

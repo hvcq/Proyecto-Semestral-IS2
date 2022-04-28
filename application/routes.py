@@ -314,3 +314,64 @@ def Survey(id_encuesta, section="preguntas"):
 @ app.route("/survey/<int:id_encuesta>/preguntas/<int:id_encuestado>")
 def SurveyAns(id_encuesta, id_encuestado):
     print()
+
+
+@ app.route("/answer_survey/<int:id_encuesta>")
+def answer_survey(id_encuesta):
+    dataSurvey = {
+        "id": 1,
+        "title": "Encuesta de la Universidad",
+        "description": "Lorem ipsum dolor sit amet consectetur adipiscing elit, duis et arcu ante aliquam suscipit, integer pulvinar fames accumsan semper aenean. Nibh cursus ullamcorper auctor egestas integer aliquam taciti malesuada faucibus congue risus, duis lacinia lobortis ornare sagittis lectus interdum est semper dapibus venenatis elementum, laoreet facilisis libero tristique class euismod dictumst dignissim rhoncus molestie. Gravida fermentum ad nullam iaculis curae rutrum convallis consequat aptent, vitae risus massa tellus mi sociosqu class senectus vehicula mauris, pellentesque pulvinar nisl at nostra hac inceptos et.",
+        "questions": [
+            {
+                "id": 1,
+                "statement": "¿Cual es tu nombre?",
+                "type": "desarrollo",
+                "alternatives": []
+            },
+            {
+                "id": 2,
+                "statement": "Indica tu correo electronico",
+                "type": "desarrollo",
+                "alternatives": []
+
+            },
+            {
+                "id": 1,
+                "statement": "Te gustan los gatos",
+                "type": "alternativa",
+                "alternatives": [
+                    {
+                        "id": 1,
+                        "textAlt": "Si obvio!"
+                    },
+                    {
+                        "id": 2,
+                        "textAlt": "No"
+                    }
+                ]
+
+            },
+            {
+                "id": 2,
+                "statement": "Cual de estos colores te gustan mas",
+                "type": "alternativa",
+                "alternatives": [
+                    {
+                        "id": 3,
+                        "textAlt": "Azul"
+                    },
+                    {
+                        "id": 4,
+                        "textAlt": "Rojo"
+                    },
+                    {
+                        "id": 5,
+                        "textAlt": "Morado"
+                    }
+                ]
+
+            }
+        ]
+    }
+    return render_template("user/answer_survey.html", data=dataSurvey)

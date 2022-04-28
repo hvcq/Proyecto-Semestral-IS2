@@ -14,8 +14,8 @@
 <body class="vh-100 vw-100 p-0 m-0">
 
   <nav class="container-fluid p-0 d-flex justify-content-between bg-white p-3 shadow-sm">
-    <div class="invisible">#Espacio inutilizado#</div>
-    <div class="nav__list d-flex">
+    <div class=" d-flex align-items-center titleSurvey invisible fs-3 ms-3">{{data.title}}</div>
+    <div class="nav__list d-flex justify-content-center align-items-center" style="margin-left:9rem">
       {% for name in data.options %}
       <div class="nav__element d-flex align-items-center gap-1" disable="true">
         <a name={{name.lower()}} class="nav-link order-2 " href="/survey/{{data.id}}/{{name.lower()}}">{{name}}</a>
@@ -25,8 +25,7 @@
     </div>
     
 
-    <div class="d-flex align-items-center gap-3 me-">
-      <!-- <span>Nombre Usuario</span> -->
+    <div class="d-flex justify-content-center">
       <img src="{{ url_for("static", filename="resources/man.png" ) }}" class="img-fluid imgUser" alt="Foto de perfil">
     </div>
 

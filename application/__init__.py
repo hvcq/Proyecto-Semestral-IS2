@@ -18,6 +18,6 @@ def create_app():
     with app.app_context():
         from . import routes  # Import routes
         # Reinicia las tabla cada vez que se inicia ejecuta
-        # db.drop_all()
-        # db.create_all()
+        #db.drop_all()
+        #db.create_all()
         return app

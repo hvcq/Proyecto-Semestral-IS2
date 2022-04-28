@@ -1,5 +1,6 @@
 """Rutas de la aplicacion"""
 from datetime import datetime, date
+from lib2to3.pgen2.token import OP
 from operator import length_hint
 from re import I
 import json
@@ -27,7 +28,7 @@ def guardar_admin():
         return 'received'
 
 
-@app.route("/crear_nueva_encuesta", methods=['GET'])
+@app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
 def crea_nueva_encuesta():
     if db.session.query(Encuesta).order_by(Encuesta.id_encuesta.desc()).first() == None:
         return redirect("/survey/1/preguntas")
@@ -52,9 +53,32 @@ def ir_a_ultima_encuesta():
 def crear_encuesta():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
-        print(surveyData["questions"][0])
-        # consulta que es para crear.
-        return "INFORMACION RECIBIDA"
+        encuesta_aux = Encuesta(titulo=surveyData["title"],descripcion=surveyData["description"],fecha_inicio=date.today(),activa=True)
+        db.session.add(encuesta_aux)
+        db.session.commit()
+        for i in range(0,len(surveyData["questions"])):
+            if surveyData["questions"][i]["type"] == "desarrollo":
+                pregunta_desarrollo_aux = Pregunta_Desarrollo(enunciado=surveyData["questions"][i]["statement"])
+                db.session.add(pregunta_desarrollo_aux)
+                db.session.commit()
+                desarrollo_encuesta_aux = Desarrollo_Encuesta.insert().values(id_encuesta=encuesta_aux.id_encuesta,id_pregunta_desarrollo=pregunta_desarrollo_aux.id_pregunta_desarrollo)
+                db.engine.execute(desarrollo_encuesta_aux)
+                db.session.commit()
+            else:
+                pregunta_alternativa_aux = Pregunta_Alternativa(enunciado=surveyData["questions"][i]["statement"])
+                db.session.add(pregunta_alternativa_aux)
+                db.session.commit()
+                alternativa_encuesta_aux = Alternativa_Encuesta.insert().values(id_encuesta=surveyData["id"],id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa)
+                db.engine.execute(alternativa_encuesta_aux)
+                db.session.commit()
+                for j in range(0,len(surveyData["questions"][i]["alternatives"])):
+                    opcion_aux = Opcion(opcion=surveyData["questions"][i]["alternatives"][j]["textAlt"])
+                    db.session.add(opcion_aux)
+                    db.session.commit()
+                    alternativas_aux = Alternativas.insert().values(id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa,id_opcion=opcion_aux.id_opcion)
+                    db.engine.execute(alternativas_aux)
+                    db.session.commit()
+        return "INFORMACION RECIBIDA" #Si llega aquí es porque no hubo problema
     return redirect("/")
 
 
@@ -277,13 +301,13 @@ def Survey(id_encuesta, section="preguntas"):
     #         }
     #     ]
     # }
-    return render_template("admin/survey.html", data={
-        "options": ["Preguntas", "Respuestas", "Configuración"],
-        "selected": section,
-        "id": id_encuesta,
-        "dataSurvey": dataSurvey,
-        "textButton": "Modificar"
-    }
+        return render_template("admin/survey.html", data={
+            "options": ["Preguntas", "Respuestas", "Configuración"],
+            "selected": section,
+            "id": id_encuesta,
+            "dataSurvey": dataSurvey,
+            "textButton": "Modificar"
+        }
     )
 
 

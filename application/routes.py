@@ -53,6 +53,7 @@ def crear_encuesta():
         return guardar_encuesta(surveyData)
     return redirect("/")
 
+
 @app.route("/responder_encuesta", methods=['POST'])
 def responder_encuesta():
     if request.method == 'POST':
@@ -60,6 +61,7 @@ def responder_encuesta():
         guardar_respuesta(responses)
         return print()
     return redirect("/")
+
 
 @app.route("/survey/")
 @app.route("/survey/<int:id_encuesta>/")
@@ -91,13 +93,15 @@ def Survey(id_encuesta, section="preguntas"):
             "dataSurvey": dataSurvey,
             "textButton": "Modificar"
         }
-    )
+        )
+
 
 @ app.route("/answer_survey/<int:id_encuesta>")
 def answer_survey(id_encuesta):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         dataSurvey = crear_dataSurvey(id_encuesta)
-    #dataSurvey = {
+        print(dataSurvey)
+    # dataSurvey = {
     #    "id": 1,
     #    "title": "Encuesta de la Universidad",
     #    "description": "Lorem ipsum dolor sit amet consectetur adipiscing elit, duis et arcu ante aliquam suscipit, integer pulvinar fames accumsan semper aenean. Nibh cursus ullamcorper auctor egestas integer aliquam taciti malesuada faucibus congue risus, duis lacinia lobortis ornare sagittis lectus interdum est semper dapibus venenatis elementum, laoreet facilisis libero tristique class euismod dictumst dignissim rhoncus molestie. Gravida fermentum ad nullam iaculis curae rutrum convallis consequat aptent, vitae risus massa tellus mi sociosqu class senectus vehicula mauris, pellentesque pulvinar nisl at nostra hac inceptos et.",
@@ -152,7 +156,7 @@ def answer_survey(id_encuesta):
     #
     #        }
     #    ]
-    #}
+    # }
         return render_template("user/answer_survey.html", data=dataSurvey)
     else:
         print("Error: Encuesta no existente")

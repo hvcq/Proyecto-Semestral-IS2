@@ -115,7 +115,7 @@ def guardar_respuesta(responses):
             db.engine.execute(respuesta_desarrollo_aux)
             db.session.commit()
         else:
-            respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(id_opcion=responses["respuestas"][i]["idOpcion"],id_encuestado=encuestado_aux)
+            respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(id_opcion=responses["respuestas"][i]["response"]["idOpcion"],id_encuestado=encuestado_aux)
             db.engine.execute(respuesta_alternativa_aux)
             db.session.commit()
     return "guardado"

@@ -180,7 +180,7 @@ const sendData = function (event) {
     if (element.type === "alternativa") {
       if (element.response.idOpcion === "") return element;
     } else if (element.type === "desarrollo") {
-      if ((element.response = "")) return element;
+      if (element.response === "") return element;
     }
   });
 

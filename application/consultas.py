@@ -1,4 +1,5 @@
 from .models import *
+from datetime import datetime, date
 
 def obtener_encuesta_creada(id_encuesta):        
     """Consulta para obtener datos de preguntas de desarrollo"""
@@ -75,3 +76,46 @@ def obtener_encuesta_creada(id_encuesta):
         "strings_opciones" : strings_opciones
     }
     return datos_encuesta_creada
+
+def guardar_encuesta(surveyData):
+    encuesta_aux = Encuesta(titulo=surveyData["title"],descripcion=surveyData["description"],fecha_inicio=date.today(),activa=True)
+    db.session.add(encuesta_aux)
+    db.session.commit()
+    for i in range(0,len(surveyData["questions"])):
+        if surveyData["questions"][i]["type"] == "desarrollo":
+            pregunta_desarrollo_aux = Pregunta_Desarrollo(enunciado=surveyData["questions"][i]["statement"])
+            db.session.add(pregunta_desarrollo_aux)
+            db.session.commit()
+            desarrollo_encuesta_aux = Desarrollo_Encuesta.insert().values(id_encuesta=encuesta_aux.id_encuesta,id_pregunta_desarrollo=pregunta_desarrollo_aux.id_pregunta_desarrollo)
+            db.engine.execute(desarrollo_encuesta_aux)
+            db.session.commit()
+        else:
+            pregunta_alternativa_aux = Pregunta_Alternativa(enunciado=surveyData["questions"][i]["statement"])
+            db.session.add(pregunta_alternativa_aux)
+            db.session.commit()
+            alternativa_encuesta_aux = Alternativa_Encuesta.insert().values(id_encuesta=surveyData["id"],id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa)
+            db.engine.execute(alternativa_encuesta_aux)
+            db.session.commit()
+            for j in range(0,len(surveyData["questions"][i]["alternatives"])):
+                opcion_aux = Opcion(opcion=surveyData["questions"][i]["alternatives"][j]["textAlt"])
+                db.session.add(opcion_aux)
+                db.session.commit()
+                alternativas_aux = Alternativas.insert().values(id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa,id_opcion=opcion_aux.id_opcion)
+                db.engine.execute(alternativas_aux)
+                db.session.commit()
+    return "guardado"
+
+def guardar_respuesta(responses):
+    encuestado_aux = Encuestado(nombre=responses["usuario"]["name"],email=responses["usuario"]["correo"])
+    db.session.add(encuestado_aux)
+    db.session.commit()
+    for i in range(0,len(responses["respuestas"])):
+        if responses["respuestas"][i]["type"] == "desarrollo":
+            respuesta_desarrollo_aux = Respuesta_Desarrollo.insert().values(id_pregunta_desarrollo=responses["respuestas"][i]["idPregunta"],id_encuestado=encuestado_aux.id_encuestado,respuesta_encuestado=responses["respuestas"][i]["response"])
+            db.engine.execute(respuesta_desarrollo_aux)
+            db.session.commit()
+        else:
+            respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(id_opcion=responses["respuestas"][i]["idOpcion"],id_encuestado=encuestado_aux)
+            db.engine.execute(respuesta_alternativa_aux)
+            db.session.commit()
+    return "guardado"

@@ -32,6 +32,8 @@ title.classList.remove("invisible");
 //Primera iteración
 
 const init = function () {
+  if (totalQuestions === 1)
+    document.querySelector(".sendResponse").classList.remove("invisible");
   rightRow.classList.remove("invisible");
   responses.respuestas = dataSurvey.questions.map((element) => {
     return {
@@ -145,6 +147,7 @@ const handleInput = function (event) {
 
 const changeCuestion = function (event, type) {
   //Arreglar el presionar rapido
+  if (totalQuestions === 1) return;
   type === "next" ? ++numberCuestion : --numberCuestion;
 
   if (numberCuestion === totalQuestions - 1) {
@@ -173,20 +176,32 @@ const changeCuestion = function (event, type) {
 init();
 
 const sendData = function (event) {
-  myModal.show();
-  $.ajax({
-    url: "/responder_encuesta",
-    type: "POST",
-    data: { responses: JSON.stringify(responses) },
-    success: function (result) {
-      window.location.href = "/";
-      // delay();
-    },
+  const [estado] = responses.respuestas.map((element) => {
+    if (element.type === "alternativa") {
+      if (element.response.idOpcion === "") return element;
+    } else if (element.type === "desarrollo") {
+      if ((element.response = "")) return element;
+    }
   });
 
-  async function delay() {
-    await new Promise((done) => setTimeout(() => done(), 3000));
-    // myModal.hide();
-    window.location.href = "/";
+  console.log(estado);
+  if (estado === undefined) {
+    myModal.show();
+    $.ajax({
+      url: "/responder_encuesta",
+      type: "POST",
+      data: { responses: JSON.stringify(responses) },
+      success: function (result) {
+        window.location.href = "/";
+        // delay();
+      },
+    });
+
+    async function delay() {
+      await new Promise((done) => setTimeout(() => done(), 3000));
+      // myModal.hide();
+    }
+  } else {
+    alert("TIENES QUE RESPONDER TODAS LAS PREGUNTAS");
   }
 };

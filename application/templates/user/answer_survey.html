@@ -26,8 +26,8 @@
       </div>
     
     <div class="d-flex justify-content-center gap-5 mt-3 me-4">
-      <button type="button" class="suveryQuestions__button"><img src="/static/resources/flecha-izquierda.png" class="img-fluid image__row leftRow" onclick="changeCuestion(event,'back')"></button>
-      <button type="button" class="suveryQuestions__button"><img src="/static/resources/flecha-izquierda.png" class="img-fluid image__row rotate rightRow " onclick="changeCuestion(event,'next')"></button>
+      <button type="button" class="suveryQuestions__button"><img src="/static/resources/flecha-izquierda.png" class="img-fluid image__row leftRow invisible" onclick="changeCuestion(event,'back')"></button>
+      <button type="button" class="suveryQuestions__button"><img src="/static/resources/flecha-izquierda.png" class="img-fluid image__row rotate rightRow  invisible" onclick="changeCuestion(event,'next')"></button>
     </div>
 </section>
 
@@ -60,4 +60,5 @@
 </script>
 
 <script src="{{ url_for("static", filename="js/answer_survey.js" ) }}"></script>
+<!-- <script src="{{ url_for("static", filename="js/survey_preguntas.js" ) }}"></script> -->
 {% endblock jsFiles %}

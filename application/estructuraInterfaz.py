@@ -1,6 +1,7 @@
 from .consultas import *
 
-def crear_dataSurvey(id_encuesta): 
+
+def crear_dataSurvey(id_encuesta):
     datos_encuesta_creada = obtener_encuesta_creada(id_encuesta)
     questions = []
     # Primero almacenaremos las preguntas de desarrollo.
@@ -39,7 +40,6 @@ def crear_dataSurvey(id_encuesta):
             print(datos_encuesta_creada["strings_opciones"][indexOp])
             print(indexOp)
             indexOp += 1
-        indexOp = j
         questions.append(data)
         i += 1
 

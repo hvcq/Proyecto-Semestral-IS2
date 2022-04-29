@@ -397,7 +397,6 @@ const sendData = function () {
     data: { surveyData: JSON.stringify(data.dataSurvey) },
     success: function (result) {
       delay();
-      window.location.href = "/";
       //if result === true pasa esto. Si no muestra la modal de error.
       // alert(result);
       // delay();
@@ -406,6 +405,7 @@ const sendData = function () {
 
   async function delay() {
     await new Promise((done) => setTimeout(() => done(), 3000));
+    window.location.href = "/";
     // myModal.hide();
   }
 };

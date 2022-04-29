@@ -193,12 +193,12 @@ const sendData = function (event) {
       data: { responses: JSON.stringify(responses) },
       success: function (result) {
         delay();
-        window.location.href = "/";
       },
     });
 
     async function delay() {
       await new Promise((done) => setTimeout(() => done(), 3000));
+      window.location.href = "/";
       // myModal.hide();
     }
   } else {

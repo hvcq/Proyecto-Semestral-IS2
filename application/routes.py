@@ -58,8 +58,7 @@ def crear_encuesta():
 def responder_encuesta():
     if request.method == 'POST':
         responses = json.loads(request.form.get("responses"))
-        guardar_respuesta(responses)
-        return print()
+        return guardar_respuesta(responses)
     return redirect("/")
 
 
@@ -101,62 +100,6 @@ def answer_survey(id_encuesta):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         dataSurvey = crear_dataSurvey(id_encuesta)
         print(dataSurvey)
-    # dataSurvey = {
-    #    "id": 1,
-    #    "title": "Encuesta de la Universidad",
-    #    "description": "Lorem ipsum dolor sit amet consectetur adipiscing elit, duis et arcu ante aliquam suscipit, integer pulvinar fames accumsan semper aenean. Nibh cursus ullamcorper auctor egestas integer aliquam taciti malesuada faucibus congue risus, duis lacinia lobortis ornare sagittis lectus interdum est semper dapibus venenatis elementum, laoreet facilisis libero tristique class euismod dictumst dignissim rhoncus molestie. Gravida fermentum ad nullam iaculis curae rutrum convallis consequat aptent, vitae risus massa tellus mi sociosqu class senectus vehicula mauris, pellentesque pulvinar nisl at nostra hac inceptos et.",
-    #    "questions": [
-    #        {
-    #            "id": 1,
-    #            "statement": "¿Cual es tu nombre?",
-    #            "type": "desarrollo",
-    #            "alternatives": []
-    #        },
-    #        {
-    #            "id": 2,
-    #            "statement": "Indica tu correo electronico",
-    #            "type": "desarrollo",
-    #            "alternatives": []
-    #
-    #        },
-    #        {
-    #            "id": 1,
-    #            "statement": "Te gustan los gatos",
-    #            "type": "alternativa",
-    #            "alternatives": [
-    #                {
-    #                    "id": 1,
-    #                    "textAlt": "Si obvio!"
-    #                },
-    #                {
-    #                    "id": 2,
-    #                    "textAlt": "No"
-    #                }
-    #            ]
-    #
-    #        },
-    #        {
-    #            "id": 2,
-    #            "statement": "Cual de estos colores te gustan mas",
-    #            "type": "alternativa",
-    #            "alternatives": [
-    #                {
-    #                    "id": 3,
-    #                    "textAlt": "Azul"
-    #                },
-    #                {
-    #                    "id": 4,
-    #                    "textAlt": "Rojo"
-    #                },
-    #                {
-    #                    "id": 5,
-    #                    "textAlt": "Morado"
-    #                }
-    #            ]
-    #
-    #        }
-    #    ]
-    # }
         return render_template("user/answer_survey.html", data=dataSurvey)
     else:
         print("Error: Encuesta no existente")

@@ -5,6 +5,8 @@
   git commit --amend --no-edit NO TANTOS COMMITS.
 */
 
+console.log(dataSurvey);
+
 let numberCuestion = 0;
 let totalQuestions = dataSurvey.questions.length;
 let responses = {
@@ -20,6 +22,11 @@ const title = document.querySelector(".titleSurvey");
 const leftRow = document.querySelector(".leftRow");
 const rightRow = document.querySelector(".rightRow");
 const questionContainer = document.querySelector(".accordion");
+var myModal = new bootstrap.Modal(document.querySelector(".myModalId"), {
+  keyboard: false,
+});
+
+console.log(myModal);
 title.classList.remove("invisible");
 
 //Primera iteración
@@ -47,7 +54,7 @@ const insertQuestion = function (pos) {
     (element) => element.idPregunta === id && element.type === type
   );
 
-  console.log(respuesta);
+  console.log(id + type + statement);
 
   if (type === "desarrollo") {
     questionContainer.insertAdjacentHTML(
@@ -161,30 +168,25 @@ const changeCuestion = function (event, type) {
   function change() {
     if (numberCuestion >= 0) insertQuestion(numberCuestion);
   }
-  document.querySelector(".question").style.opacity = 1;
 };
 
 init();
 
-// const responses = {
-//   idEncuesta: "idEcuesta",
-//   usuario: {
-//     name: "nombre",
-//     correo: "example@udec.cl",
-//   },
-//   respuestas: [
-//     {
-//       idPregunta: "idPregunta",
-//       type: "desarrollo",
-//       response: "mi respuesta",
-//     },
-//     {
-//       idPregunta: "idPregunta",
-//       type: "alternativa",
-//       response: {
-//         idOpcion: "idOpcion",
-//         textAlt: "color azul",
-//       },
-//     },
-//   ],
-// };
+const sendData = function (event) {
+  myModal.show();
+  $.ajax({
+    url: "/responder_encuesta",
+    type: "POST",
+    data: { responses: JSON.stringify(responses) },
+    success: function (result) {
+      window.location.href = "/";
+      // delay();
+    },
+  });
+
+  async function delay() {
+    await new Promise((done) => setTimeout(() => done(), 3000));
+    // myModal.hide();
+    window.location.href = "/";
+  }
+};

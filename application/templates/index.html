@@ -3,20 +3,20 @@
 {% block body %}
 
     <h1>Inicio Encuestas</h1>
-    <form action="/ir_a_crear_nueva_encuesta" method="GET">
-        <a href="http://127.0.0.1:3000" class = "estilo_boton_1">Home</a>
-        <button type="submit">Crear nueva encuesta</button>
-    </form>
-    <form action="/ir_a_ultima_encuesta" method="GET">
-        <button type="submit">Ir a ultima encuesta</button>
-    </form>
+    <div class="d-flex flex-column ms-2 p-0 gap-2">
+        <form action="/ir_a_crear_nueva_encuesta" method="GET">
+            <button class="btn btn-primary" type="submit">Crear nueva encuesta</button>
+        </form>
+        <form action="/ir_a_ultima_encuesta" method="GET">
+            <button class="btn btn-primary" type="submit">Ir a ultima encuesta</button>
+        </form>
 
-    <h3>Introducir en la base de datos</h3>
-    <form action="/guardar_admin" method="POST">
-        <input type="text" name="nombre" placeholder="Nombre">
-        <input type="text" name="email" placeholder="Email">
-        <button type="submit">Guardar</button>
-    </form>
+        <form action="/answer_survey/1" method="GET">
+            <button class="btn btn-primary" type="submit">Contestar encuesta</button>
+        </form>
+
+    </div>
+    
 
 {% endblock %}
 

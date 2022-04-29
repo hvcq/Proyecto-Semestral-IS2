@@ -390,22 +390,21 @@ const handleInputs = function (event) {
 // HANDLE INPUTS FIN--------------------------------------------------------
 
 const sendData = function () {
+  myModal.show();
   $.ajax({
     url: "/crear_encuesta",
     type: "POST",
     data: { surveyData: JSON.stringify(data.dataSurvey) },
     success: function (result) {
+      window.location.href = "/";
       //if result === true pasa esto. Si no muestra la modal de error.
       // alert(result);
-      console.log(myModal);
-      myModal.show();
-      delay();
+      // delay();
     },
   });
 
   async function delay() {
     await new Promise((done) => setTimeout(() => done(), 3000));
     // myModal.hide();
-    window.location.href = "/";
   }
 };

@@ -396,6 +396,7 @@ const sendData = function () {
     type: "POST",
     data: { surveyData: JSON.stringify(data.dataSurvey) },
     success: function (result) {
+      delay();
       window.location.href = "/";
       //if result === true pasa esto. Si no muestra la modal de error.
       // alert(result);

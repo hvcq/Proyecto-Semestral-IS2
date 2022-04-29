@@ -192,8 +192,8 @@ const sendData = function (event) {
       type: "POST",
       data: { responses: JSON.stringify(responses) },
       success: function (result) {
+        delay();
         window.location.href = "/";
-        // delay();
       },
     });
 

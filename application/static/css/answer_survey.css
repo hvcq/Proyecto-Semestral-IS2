@@ -1,126 +1,129 @@
-/* .survey{
-    opacity: 0;
-    transition: opacity 1.5s;
-} */
+.survey {
+  opacity: 0;
+  transition: opacity 1.3s;
+}
 
 /* body{
     overflow-x:scroll;
     overflow-y:hidden;
 } */
 
-.survey{
-    margin-top: 3%;
+.survey {
+  margin-top: 3%;
 }
 
-.question{
-    /* opacity: 0; */
-    transition: opacity 5s !important;
+.question {
+  opacity: 0;
+  transition: opacity 1s !important;
 }
 
-.question__card{
-    background-color: #fff;
-    border-radius: 10px 10px 10px 10px !important;
-    width: 65% !important;
+.question__card {
+  background-color: #fff;
+  border-radius: 10px 10px 10px 10px !important;
+  width: 65% !important;
 }
 
 textarea {
-    border: 0 !important;
-    border-bottom: 0.5px solid #fff !important;
-    border-radius: 0 !important;
-    transition: border-bottom 0.15s ease-in !important;
+  border: 0 !important;
+  border-bottom: 0.5px solid #fff !important;
+  border-radius: 0 !important;
+  transition: border-bottom 0.15s ease-in !important;
 }
 
 textarea:focus {
-    border-bottom: 2px solid var(--color-dot) !important;
+  border-bottom: 2px solid var(--color-dot) !important;
 }
 
-.question__number{
-    font-size: 1.2rem;
+.question__number {
+  font-size: 1.2rem;
 }
 
 .question__number--rounded {
-    background: var(--color-principal);
-    border-radius: 0.8em;  
-    color: #fff;
-    display: inline-block;
-    font-weight: bold;
-    line-height: 1em;
-    text-align: center;
-    width: 1.2em; 
-    height: 1.2em;
+  background: var(--color-principal);
+  border-radius: 0.8em;
+  color: #fff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1em;
+  text-align: center;
+  width: 1.2em;
+  height: 1.2em;
 }
 
-.survey_alternative{
-    border-radius: 50% !important;
-    width: 1.8em;
-    height: 1.8em;
-    margin: 0 !important;
+.survey_alternative {
+  border-radius: 50% !important;
+  width: 1.8em;
+  height: 1.8em;
+  margin: 0 !important;
 }
 
-.textOption{
-    width: 90%; 
-    font-size: 1.1rem;
+.textOption {
+  width: 90%;
+  font-size: 1.1rem;
 }
 
-
-.imgUser{
-    width: 50%;
+.imgUser {
+  width: 50%;
 }
 
-.survey__image{
-    width: 90% !important;
-
+.survey__image {
+  width: 90% !important;
 }
 
-.suveryQuestions__button{
-    border: 0;
-    margin: 0;
-    border-radius: 50%;
-    background-color: transparent;
-    padding: 1%;
-    width: 10%;
-    transition: all .2s ease-in-out;
+.suveryQuestions__button {
+  border: 0;
+  margin: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  padding: 1%;
+  width: 10%;
+  transition: all 0.2s ease-in-out;
 }
 
-.suveryQuestions__button:hover{
-    padding: 0;
-    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
+.suveryQuestions__button:hover {
+  padding: 0;
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
 }
 
-.image__row{
-    width: 15rem;
+.image__row {
+  width: 15rem;
 }
 
-.rotate{
-    transform: rotate(-180deg);
+.rotate {
+  transform: rotate(-180deg);
+}
+
+.sendResponse {
+  opacity: 0;
+  transition: opacity 1s;
 }
 
 .btn-flotante {
-	font-size: 16px; /* Cambiar el tamaño de la tipografia */
-	text-transform: uppercase; /* Texto en mayusculas */
-	font-weight: bold; /* Fuente en negrita o bold */
-	color: #ffffff; /* Color del texto */
-	border-radius: 5px; /* Borde del boton */
-	letter-spacing: 2px; /* Espacio entre letras */
-	background-color: #0162cd; /* Color de fondo */
-	padding: 18px 30px; /* Relleno del boton */
-	position: fixed;
-	bottom: 40px;
-	right: 40px;
-	transition: all 300ms ease 0ms;
-	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-	z-index: 99;
+  font-size: 16px; /* Cambiar el tamaño de la tipografia */
+  text-transform: uppercase; /* Texto en mayusculas */
+  font-weight: bold; /* Fuente en negrita o bold */
+  color: #ffffff; /* Color del texto */
+  border-radius: 5px; /* Borde del boton */
+  letter-spacing: 2px; /* Espacio entre letras */
+  background-color: #0162cd; /* Color de fondo */
+  padding: 18px 30px; /* Relleno del boton */
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  transition: all 300ms ease 0ms;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  z-index: 99;
 }
 .btn-flotante:hover {
-	/* background-color: #2c2fa5; Color de fondo al pasar el cursor */
-	box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
-	transform: translateY(-7px);
+  /* background-color: #2c2fa5; Color de fondo al pasar el cursor */
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-7px);
 }
 @media only screen and (max-width: 600px) {
- 	.btn-flotante {
-		font-size: 14px;
-		padding: 12px 20px;
-		bottom: 20px;
-		right: 20px;
-	}
-} 
+  .btn-flotante {
+    font-size: 14px;
+    padding: 12px 20px;
+    bottom: 20px;
+    right: 20px;
+  }
+}

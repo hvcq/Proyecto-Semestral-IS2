@@ -15,7 +15,7 @@
   *Implementar un fade a las cards.
  */
 
-console.log(data.dataSurvey.questions);
+console.log(data.dataSurvey);
 
 let poolId = {
   alternativa: [0],
@@ -181,7 +181,14 @@ const deleteElement = function (event) {
 
 // CHANGE TYPE INICIO--------------------------------------------------------
 
-const changeResponse = function (id, deleteText, addText, type, idOption) {
+const changeResponse = function (
+  id,
+  deleteText,
+  addText,
+  type,
+  idOption1,
+  idOption2
+) {
   let elementToDelete = document.querySelector(`#${type + id} > ${deleteText}`);
   let elementToAdd = document.querySelector(`#${type + id} > ${addText}`);
   console.log(elementToAdd);
@@ -195,7 +202,14 @@ const changeResponse = function (id, deleteText, addText, type, idOption) {
         .getAttribute("id")
         .slice(8)} class="list__alternatives ms-3">
         <div id="${
-          "opcion" + idOption
+          "opcion" + idOption1
+        }" class="form-check d-flex align-items-center gap-2">
+          <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
+          <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+          <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+        </div>
+        <div id="${
+          "opcion" + idOption2
         }" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
           <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
@@ -242,10 +256,16 @@ const setToAlternative = function (event) {
     const idNew = newId("alternativa");
     poolId.alternativa.push(idNew);
     question.type = "alternativa";
-    question.alternatives.push({
-      id: 1,
-      textAlt: "",
-    });
+    question.alternatives.push(
+      {
+        id: 1,
+        textAlt: "",
+      },
+      {
+        id: 2,
+        textAlt: "",
+      }
+    );
     question.id = idNew;
 
     parent.setAttribute("alternative", "true");
@@ -254,7 +274,8 @@ const setToAlternative = function (event) {
       ".textReference",
       ".survey__elementTitle",
       "desarrollo",
-      1
+      1,
+      2
     );
     parent.setAttribute("id", `alternativa${idNew}`);
     console.log(parent);
@@ -300,7 +321,7 @@ const deleteAlternative = function (event) {
   let idOpcion = element.getAttribute("id").slice(6);
   let idParent = parent.parentNode.parentNode.getAttribute("id").slice(11);
 
-  if (parent.childElementCount > 1) {
+  if (parent.childElementCount > 2) {
     const [result] = data.dataSurvey.questions.filter(
       (question) =>
         question.id === parseInt(idParent) && question.type === "alternativa"
@@ -409,3 +430,19 @@ const sendData = function () {
     // myModal.hide();
   }
 };
+
+// Effects and others.
+
+const tx = document.getElementsByTagName("textarea");
+for (let i = 0; i < tx.length; i++) {
+  tx[i].setAttribute(
+    "style",
+    "height:" + tx[i].scrollHeight + "px;overflow-y:hidden;"
+  );
+  tx[i].addEventListener("input", OnInput, false);
+}
+
+function OnInput() {
+  this.style.height = "auto";
+  this.style.height = this.scrollHeight + "px";
+}

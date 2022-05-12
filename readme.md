@@ -11,6 +11,7 @@ Antes de correr la aplicacion es necesario instalar algunas dependecias, estas d
 * psycopg2 (permite el uso de Postresql con SQLAlchemy)
 * ddtrace (Permite rastrear solicitudes al servidor)
 * python-dotenv (Permite entregar la configuración del servidor a traves de un archivo)
+* flask-mail (Para enviar emails usando flask)
 
 Luego para ejecutar la aplicacion se debe ir al directorio donde esta el archivo ***wsgi.py*** y a continuacion abrir la terminar e ingresar:
 

@@ -8,6 +8,8 @@ from flask import make_response, redirect, render_template, request, url_for
 
 from .models import *
 
+#TEMPORAL
+from .mail import *
 
 @app.route("/")
 def index():
@@ -104,3 +106,16 @@ def answer_survey(id_encuesta):
     else:
         print("Error: Encuesta no existente")
         return redirect("/")
+
+# Enviar mails
+@app.route("/mail_sent", methods=['POST'] )
+def send_mail():
+    if request.method == 'POST':
+        send_mail = Send_Mail()
+        send_mail.recipients('laravena2017@udec.cl')
+        send_mail.recipients('laravena2017@inf.udec.cl')
+        send_mail.recipients('ldaravena@outlook.com')
+        send_mail.recipients('ld.aravena@gmail.com')
+        
+        send_mail.send_mail()
+        return "correos enviados!"

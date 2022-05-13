@@ -111,11 +111,13 @@ def answer_survey(id_encuesta):
 @app.route("/mail_sent", methods=['POST'] )
 def send_mail():
     if request.method == 'POST':
+        #Crea el objeto send_mail
         send_mail = Send_Mail()
-        send_mail.recipients('laravena2017@udec.cl')
-        send_mail.recipients('laravena2017@inf.udec.cl')
-        send_mail.recipients('ldaravena@outlook.com')
-        send_mail.recipients('ld.aravena@gmail.com')
+        # send_mail.recipients('laravena2017@udec.cl')
+        # send_mail.recipients('laravena2017@inf.udec.cl')
+        # send_mail.recipients('ldaravena@outlook.com')
+        # send_mail.recipients('ld.aravena@gmail.com')
         
+        #Metodo para enviar los mails
         send_mail.send_mail()
         return "correos enviados!"

@@ -104,3 +104,4 @@ def answer_survey(id_encuesta):
     else:
         print("Error: Encuesta no existente")
         return redirect("/")
+

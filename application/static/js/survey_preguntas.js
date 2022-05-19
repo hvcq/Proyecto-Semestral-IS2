@@ -17,6 +17,17 @@
 
 console.log(data.dataSurvey);
 
+function initTooltip() {
+  const buttons = [...document.querySelectorAll("[data-toggle='tooltip']")];
+  console.log(buttons);
+  var tooltipList = buttons.map((element) => {
+    const toogle = new bootstrap.Tooltip(element);
+    toogle._config.placement = "bottom";
+    return toogle;
+  });
+  console.log(tooltipList);
+}
+
 let poolId = {
   alternativa: [0],
   desarrollo: [0],
@@ -58,9 +69,9 @@ const insertQuestion = function (statement, alternatives, type, id) {
           </div>
         </div>
         <div class="d-flex justify-content-end gap-2 mt-3 me-4">
-          <button type="button" class="suveryQuestions__button"><img name="alternativa"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
-          <button type="button" class="suveryQuestions__button"><img name="alternativa"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
-          <button type="button" class="suveryQuestions__button"><img name="alternativa"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo"><img name="alternativa"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Alternativa"><img name="alternativa"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar pregunta"><img name="alternativa"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
         </div>
     </div>
     `
@@ -80,9 +91,9 @@ const insertQuestion = function (statement, alternatives, type, id) {
             placeholder="Cuadro de respuesta de referencia" disabled></textarea>
         </div>
         <div class="d-flex justify-content-end gap-2 mt-3 me-4">
-          <button type="button" class="suveryQuestions__button"><img name="desarrollo"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
-          <button type="button" class="suveryQuestions__button"><img name="desarrollo"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
-          <button type="button" class="suveryQuestions__button"><img name="desarrollo"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo"><img name="desarrollo"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Alternativa"><img name="desarrollo"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar pregunta"><img name="desarrollo"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
         </div>
       </div>
     `
@@ -116,6 +127,7 @@ if (
       element.type,
       element.id
     );
+    initTooltip();
   }
 }
 
@@ -150,6 +162,7 @@ const addQuestion = function () {
   poolId.desarrollo.push(questionAdd.id);
   moveScroll(idNew);
   console.log(data.dataSurvey.questions);
+  initTooltip();
 };
 
 const deleteElement = function (event) {

@@ -11,6 +11,10 @@
     transition: opacity 1.5s; */
 }
 
+.survey__card:focus {
+  box-shadow: #0162cd 0px 5px 15px !important;
+}
+
 .survey__elementTitle {
   font-size: 2em !important;
   /* height: 10px !important; */

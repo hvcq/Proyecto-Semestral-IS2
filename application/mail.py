@@ -32,7 +32,7 @@ class Send_Mail:
 
             for user in self.users:
                 subject ="Saludos "+ user
-                message = "Hola "+ user +" Este es un mensaje de prueba"
+                message = "Hola "+ user +" Este es un el link de su encuesta: http://localhost:3000/encuesta1/"+user+"/"
 
                 msg= Message(recipients=[user], body=message, subject=subject)
                 #print(user)

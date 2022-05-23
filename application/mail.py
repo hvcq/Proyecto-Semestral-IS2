@@ -19,9 +19,9 @@ class Send_Mail:
 
     #def __init__(self):
   
-    def recipients(self, recipient):
-
-        self.mails.append(recipient)
+    def get_mails(self):
+        pass
+        
 
     def send_mail(self):
 
@@ -39,10 +39,4 @@ class Send_Mail:
 
                 conn.send(msg)
 
-    # def send_mail(self):
-
-    #     mail = Mail(app) # Crea el objeto 'mail'
-    #     mail.init_app(app) # Inicia el objeto 'mail'
-    #     msg = Message(subject='Saludos 7', recipients=self.mails, body='Mail de prueba 7, saludos'
-    #     )
-    #     mail.send(msg)
+  

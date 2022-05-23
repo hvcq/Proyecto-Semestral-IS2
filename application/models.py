@@ -89,16 +89,16 @@ class Encuestado(db.Model):
 Respuesta_Desarrollo = Table('respuesta_desarrollo', db.Model.metadata,
                              Column('id_pregunta_desarrollo', ForeignKey(
                                  'pregunta_desarrollo.id_pregunta_desarrollo'), primary_key=True),
-                             Column('id_encuestado', ForeignKey(
-                                 'encuestado.id_encuestado'), primary_key=True),
+                             Column('email', ForeignKey(
+                                 'encuestado.email'), primary_key=True),
                              Column('respuesta_encuestado', String(2000), nullable=False)
                              )
 
 Respuesta_Alternativa = Table('respuesta_alternativa', db.Model.metadata,
                               Column('id_opcion', ForeignKey(
                                   'opcion.id_opcion'), primary_key=True),
-                              Column('id_encuestado', ForeignKey(
-                                  'encuestado.id_encuestado'), primary_key=True)
+                              Column('email', ForeignKey(
+                                  'encuestado.email'), primary_key=True)
                               )
 
 class Registrado(db.Model):

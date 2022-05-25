@@ -22,8 +22,13 @@ class Send_Mail:
     #def __init__(self):
   
     def get_mails(self):
-        record = db.session.query(Encuestado).filter_by(activo=True).all()
+        print("\n\nMails:\n\n")
+
+        record = db.session.query(Encuestado).all()
         for rec in record:
+
+            print(rec.email + "\n")
+
             self.mails.append(rec.email)
 
 

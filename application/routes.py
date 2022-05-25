@@ -114,9 +114,10 @@ def send_mail():
         #Crea el objeto send_mail
         send_mail = Send_Mail()
 
+        send_mail.get_mails()
         #Metodo para enviar los mails
-        send_mail.send_mail()
-        return "correos enviados!"
+        #send_mail.send_mail()
+        return "correos obtenidos!"
 
 @app.route("/test_mail/<coded_mail>")
 def decode_mail(coded_mail):

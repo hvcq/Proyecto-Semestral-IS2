@@ -111,22 +111,36 @@ def answer_survey(id_encuesta):
 @app.route("/mail_sent", methods=['POST'] )
 def send_mail():
     if request.method == 'POST':
-        #Crea el objeto send_mail
+        #Crea el objeto send_mail:
         send_mail = Send_Mail()
 
+        #Obtiene mails desde BD:
         send_mail.get_mails()
-        #Metodo para enviar los mails
+
+        #Metodo para enviar los mails:
         #send_mail.send_mail()
         return "correos obtenidos!"
 
+#Ruta para testear mails activos, no activos y no existentes en la base de datos
+#Desde una url codificada con base64: 
 @app.route("/test_mail/<coded_mail>")
 def decode_mail(coded_mail):
     obj = Send_Mail()
-    mail = obj.decode_link(coded_mail) #Decodificacion funciona bien
 
-    #No testeado
-    rec = db.session.query(Encuestado).filter_by(email=mail).all()
-    if rec != None:
+    #Decodifica mails desde URL:
+    mail = obj.decode_link(coded_mail) 
+
+    #Obtiene registro desde BD, segun el mail decodificado
+    rec = db.session.query(Encuestado).filter_by(email=mail).first()
+
+    #Si el mail existe:
+    if rec!= None:
+
+        #Si el mail esta activo:
         if rec.activo == True:
-            return "Mail Valido"
+            return ("Mail Activo: " + rec.email)
+        else:
+            return ("Mail No Activo: " + rec.email)
+    else:
+        return "Mail No Registrado"
 

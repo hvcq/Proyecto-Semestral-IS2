@@ -6,8 +6,8 @@ class Send_Mail:
 
     mails = []
 
-    #Lista de mails para hacer testing
-    users = {'ld.aravena@gmail.com', 'laravena2017@udec.cl', 'laravena2017@inf.udec.cl'}
+    #Lista de mails para hacer testing:
+    #users = {'ld.aravena@gmail.com', 'laravena2017@udec.cl', 'laravena2017@inf.udec.cl'}
 
     #Configuraciones del servidor de mail
     app.config['MAIL_SERVER']= 'smtp-mail.outlook.com'
@@ -24,12 +24,12 @@ class Send_Mail:
     def get_mails(self):
         print("\n\nMails:\n\n")
 
-        record = db.session.query(Encuestado).all()
+        record = db.session.query(Encuestado).filter_by(activo=True).all()
         for rec in record:
-
-            print(rec.email + "\n")
-
             self.mails.append(rec.email)
+
+        for i in self.mails:
+            print (i + "\n")
 
 
     def encode_link(self, str):
@@ -50,15 +50,15 @@ class Send_Mail:
         with mail.connect() as conn:
 
             #modo testing
-            for user in self.users: 
+            for user in self.mails: 
                 mail_coded = self.encode_link(user)
                 mail_decoded = self.decode_link(mail_coded)
                 
-                print("CODED: "+mail_coded)
-                print("DECODED: "+mail_decoded)
+                #print("CODED: "+mail_coded)
+                #print("DECODED: "+mail_decoded)
 
                 subject ="Saludos "+ user
-                message = "Hola "+ user +" Este es un el link codificado: \nhttp://localhost:3000/test_mail/"+ mail_coded + "\n\ncorreo original: " + mail_decoded + "\n\nSaludos"
+                message = "Hola "+ user +" Este es el link codificado: \nhttp://localhost:3000/test_mail/"+ mail_coded + "\n\ncorreo original: " + mail_decoded + "\n\nSaludos"
 
                 msg = Message(recipients=[user], body=message, subject=subject)
 

@@ -6,7 +6,8 @@ class Send_Mail:
 
     mails = []
 
-    users = {'ld.aravena@gmail.com', 'laravena2017@inf.udec.cl', 'laravena2017@udec.cl'}
+    #Lista de mails para hacer testing
+    users = {'ld.aravena@gmail.com', 'laravena2017@udec.cl', 'laravena2017@inf.udec.cl'}
 
     #Configuraciones del servidor de mail
     app.config['MAIL_SERVER']= 'smtp-mail.outlook.com'
@@ -33,7 +34,7 @@ class Send_Mail:
 
     def decode_link(self, str):
         base_bytes = str.encode("ascii")
-        str_bytes = base64.decode(base_bytes)
+        str_bytes = base64.b64decode(base_bytes)
         return str_bytes.decode("ascii")
 
     def send_mail(self):
@@ -43,13 +44,17 @@ class Send_Mail:
 
         with mail.connect() as conn:
 
-            for user in self.mails:
-                subject ="Saludos "+ user
-                message = "Hola "+ user +" Este es un el link de su encuesta: http://localhost:3000/encuesta1/"+ self.encode_link(user)+"/"
+            #modo testing
+            for user in self.users: 
+                mail_coded = self.encode_link(user)
+                mail_decoded = self.decode_link(mail_coded)
+                
+                print("CODED: "+mail_coded)
+                print("DECODED: "+mail_decoded)
 
-                msg= Message(recipients=[user], body=message, subject=subject)
-                #print(user)
+                subject ="Saludos "+ user
+                message = "Hola "+ user +" Este es un el link codificado: \nhttp://localhost:3000/test_mail/"+ mail_coded + "\n\ncorreo original: " + mail_decoded + "\n\nSaludos"
+
+                msg = Message(recipients=[user], body=message, subject=subject)
 
                 conn.send(msg)
-
-  

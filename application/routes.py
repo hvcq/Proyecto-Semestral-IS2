@@ -113,11 +113,19 @@ def send_mail():
     if request.method == 'POST':
         #Crea el objeto send_mail
         send_mail = Send_Mail()
-        # send_mail.recipients('laravena2017@udec.cl')
-        # send_mail.recipients('laravena2017@inf.udec.cl')
-        # send_mail.recipients('ldaravena@outlook.com')
-        # send_mail.recipients('ld.aravena@gmail.com')
-        
+
         #Metodo para enviar los mails
         send_mail.send_mail()
         return "correos enviados!"
+
+@app.route("/test_mail/<coded_mail>")
+def decode_mail(coded_mail):
+    obj = Send_Mail()
+    mail = obj.decode_link(coded_mail) #Decodificacion funciona bien
+
+    #No testeado
+    rec = db.session.query(Encuestado).filter_by(email=mail).all()
+    if rec != None:
+        if rec.activo == True:
+            return "Mail Valido"
+

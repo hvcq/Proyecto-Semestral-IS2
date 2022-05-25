@@ -1,0 +1,14 @@
+.imgUser {
+  width: 50%;
+}
+
+
+.card{
+  background-color: var(--color-white);
+  border-radius: 10px 10px 10px 10px;
+  margin: 2% .5% 2% .5%;
+  padding: 1%;
+  border: 0;
+}
+
+

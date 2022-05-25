@@ -14,6 +14,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/login")
+def login():
+    return render_template("loginPage.html", data={})
+
+
 @app.route("/guardar_admin", methods=['POST'])
 def guardar_admin():
     if request.method == 'POST':
@@ -105,3 +110,10 @@ def answer_survey(id_encuesta):
         print("Error: Encuesta no existente")
         return redirect("/")
 
+
+@app.route("/dashboard_admin")
+@app.route("/dashboard_admin/<string:section>")
+def dashboard_admin(section="Encuestas"):
+    return render_template("admin/dashboardAdmin.html", data={
+        "options": ["Encuestas", "Usuarios", "Configuración"],
+        "selected": section})

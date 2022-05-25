@@ -111,9 +111,9 @@ def answer_survey(id_encuesta):
         return redirect("/")
 
 
-@app.route("/dashboard_admin")
+@app.route("/dashboard_admin/")
 @app.route("/dashboard_admin/<string:section>")
-def dashboard_admin(section="Encuestas"):
+def dashboard_admin(section="encuestas"):
     return render_template("admin/dashboardAdmin.html", data={
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section})

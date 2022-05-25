@@ -17,12 +17,12 @@ const config = {
   options: {
     reponsive: true,
     maintainAspectRatio: true,
-    aspectRatio: 2.3,
+    aspectRatio: 2,
     onResize: null,
     resizeDelay: 0,
     plugins: {
       legend: {
-        position: 'bottom',
+        position: 'top',
       },
     },
   },

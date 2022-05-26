@@ -8,6 +8,8 @@ from flask import make_response, redirect, render_template, request, url_for
 
 from .models import *
 
+#TEMPORAL
+from .mail import *
 
 @app.route("/")
 def index():
@@ -110,6 +112,43 @@ def answer_survey(id_encuesta):
         print("Error: Encuesta no existente")
         return redirect("/")
 
+# Enviar mails
+@app.route("/mail_sent", methods=['POST'] )
+def send_mail():
+    if request.method == 'POST':
+        #Crea el objeto send_mail:
+        send_mail = Send_Mail()
+
+        #Obtiene mails desde BD:
+        send_mail.get_mails()
+
+        #Metodo para enviar los mails:
+        #send_mail.send_mail()
+        return "correos obtenidos!"
+
+#Ruta para testear mails activos, no activos y no existentes en la base de datos
+#Desde una url codificada con base64: 
+@app.route("/test_mail/<coded_mail>")
+def decode_mail(coded_mail):
+    obj = Send_Mail()
+
+    #Decodifica mails desde URL:
+    mail = obj.decode_link(coded_mail) 
+
+    #Obtiene registro desde BD, segun el mail decodificado
+    rec = db.session.query(Encuestado).filter_by(email=mail).first()
+
+    #Si el mail existe:
+    if rec!= None:
+
+        #Si el mail esta activo:
+        if rec.activo == True:
+            return ("Mail Activo: " + rec.email)
+        else:
+            return ("Mail No Activo: " + rec.email)
+    else:
+        return "Mail No Registrado"
+
 
 @app.route("/dashboard_admin/")
 @app.route("/dashboard_admin/<string:section>")
@@ -117,3 +156,4 @@ def dashboard_admin(section="encuestas"):
     return render_template("admin/dashboardAdmin.html", data={
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section})
+

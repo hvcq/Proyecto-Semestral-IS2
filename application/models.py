@@ -10,6 +10,7 @@ class Admin(db.Model):
     id_admin = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(100), nullable=False)
     email = Column(String(50), nullable=False)
+    password = Column(String(32), nullable=False)
 
 
 class Encuesta(db.Model):
@@ -81,22 +82,30 @@ Alternativas = Table('alternativas', db.Model.metadata,
 
 class Encuestado(db.Model):
     __tablename__ = 'encuestado'
-    id_encuestado = Column(Integer, primary_key=True, autoincrement=True)
-    nombre = Column(String(100))
-    email = Column(String(50), nullable=False)
+    email = Column(String(50), primary_key=True)
+    activo = Column(Boolean, nullable=False)
 
 
 Respuesta_Desarrollo = Table('respuesta_desarrollo', db.Model.metadata,
                              Column('id_pregunta_desarrollo', ForeignKey(
                                  'pregunta_desarrollo.id_pregunta_desarrollo'), primary_key=True),
-                             Column('id_encuestado', ForeignKey(
-                                 'encuestado.id_encuestado'), primary_key=True),
+                             Column('email', ForeignKey(
+                                 'encuestado.email'), primary_key=True),
                              Column('respuesta_encuestado', String(2000), nullable=False)
                              )
 
 Respuesta_Alternativa = Table('respuesta_alternativa', db.Model.metadata,
                               Column('id_opcion', ForeignKey(
                                   'opcion.id_opcion'), primary_key=True),
-                              Column('id_encuestado', ForeignKey(
-                                  'encuestado.id_encuestado'), primary_key=True)
+                              Column('email', ForeignKey(
+                                  'encuestado.email'), primary_key=True)
                               )
+
+class Registrado(db.Model):
+    __tablename__ = 'registrado'
+    id_encuestado = Column(Integer, primary_key=True, autoincrement=True)
+    password = Column(String(32), nullable=False)
+    nombre = Column(String(100), nullable=False)
+    rut = Column(String(10), nullable=False)
+    genero = Column(String(1))
+    fecha_nacimiento = Column(Date())

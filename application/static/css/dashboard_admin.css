@@ -1,0 +1,67 @@
+.imgUser {
+  width: 50%;
+}
+
+.card {
+  background-color: var(--color-white);
+  border-radius: 10px 10px 10px 10px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  border: 0;
+}
+
+th {
+  color: var(--color-unselected);
+}
+
+.imgDot {
+  width: 30px;
+  height: 30px;
+}
+
+.btn-circle {
+  background-color: transparent !important;
+}
+
+.imgShortcuts {
+  width: 35% !important;
+}
+
+.img--center1 {
+  margin-left: 11%;
+}
+.img--center2 {
+  margin-left: 5%;
+}
+.img--center3 {
+  margin-left: 11%;
+}
+
+.btnShortcut {
+  width: 50%;
+  background-color: #ff3e69;
+  border: 0;
+  margin-top: 2%;
+}
+
+.btnShortcut:hover {
+  background-color: #e8345d;
+}
+
+.input-group {
+  width: 18%;
+  height: 45px;
+}
+
+.colorSearch {
+  background-color: #f7f7f7 !important;
+}
+
+.imgSearch {
+  width: 20px;
+}
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 48vh;
+}

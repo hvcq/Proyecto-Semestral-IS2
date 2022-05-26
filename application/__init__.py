@@ -3,7 +3,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 # from ddtrace import patch_all  <-- ddtrace no lo usaremos por ahora
 
-
 db = SQLAlchemy()
 # patch_all() <-- esto da bug
 

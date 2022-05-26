@@ -44,6 +44,7 @@ const init = function () {
     };
   });
   insertQuestion(0);
+  document.querySelector(".survey").style.opacity = 1;
   document.querySelector(".question").style.opacity = 1;
 };
 
@@ -151,9 +152,9 @@ const changeCuestion = function (event, type) {
   type === "next" ? ++numberCuestion : --numberCuestion;
 
   if (numberCuestion === totalQuestions - 1) {
-    document.querySelector(".sendResponse").classList.remove("invisible");
+    document.querySelector(".sendResponse").style.opacity = 1;
   } else {
-    document.querySelector(".sendResponse").classList.add("invisible");
+    document.querySelector(".sendResponse").style.opacity = 0;
   }
 
   numberCuestion === 0
@@ -167,9 +168,18 @@ const changeCuestion = function (event, type) {
 
   const elements = document.querySelectorAll(".question");
   elements[1]?.remove();
+  delay();
 
   function change() {
-    if (numberCuestion >= 0) insertQuestion(numberCuestion);
+    if (numberCuestion >= 0) {
+      document.querySelector(".question").style.opacity = 0;
+      insertQuestion(numberCuestion);
+    }
+  }
+
+  async function delay() {
+    await new Promise((done) => setTimeout(() => done(), 5));
+    document.querySelector(".question").style.opacity = 1;
   }
 };
 
@@ -199,7 +209,7 @@ const sendData = function (event) {
     async function delay() {
       await new Promise((done) => setTimeout(() => done(), 3000));
       window.location.href = "/";
-      // myModal.hide();
+      myModal.hide();
     }
   } else {
     alert("TIENES QUE RESPONDER TODAS LAS PREGUNTAS");

@@ -1,0 +1,153 @@
+{% extends "base_dashboard.html" %}
+
+
+{% block title %}Dashboard Admin{% endblock title %}
+
+{% block cssFiles %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard_admin.css" ) }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<script src="https://kit.fontawesome.com/9c3c5148b3.js" crossorigin="anonymous"></script>
+{% endblock cssFiles %}
+
+{% block content %}
+{% if data.selected == 'encuestas' %}
+
+  <div class="d-flex text-center ms-5 me-5 gap-4">
+    <div class="card shadow text-center" style="width: 100%;">
+      <canvas id="myChart" class="mt-3 mb-3"></canvas>
+      <h5 class="">Actividad del usuario</h4>
+    </div>
+    <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
+      <img class="imgShortcuts img--center1 mb-3" src="{{ url_for("static", filename="resources/add.png" ) }}">
+      <h5>¿Deseas agregar una encuesta?</h5>
+      <button type="button" class="btn btn-danger btnShortcut">Crear encuesta</button>
+    </div>
+    <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
+      <img class="imgShortcuts img--center2 mb-3" src="{{ url_for("static", filename="resources/add-user.png" ) }}">
+      <h5>¿Deseas agregar un usuario?</h5>
+      <button type="button" class="btn btn-danger btnShortcut">Añadir usuario</button>
+    </div>
+    <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
+      <img class="imgShortcuts img--center3 mb-3" src="{{ url_for("static", filename="resources/edit.png" ) }}">
+      <h5>¿Deseas editar tu perfil?</h5>
+      <button type="button" class="btn btn-danger btnShortcut">Editar perfil</button>
+    </div>
+    
+    
+  </div>
+
+  <div class="ms-5 me-5 mt-2 mb-2 pt-1 card shadow">
+    <div class="d-flex border-bottom align-items-center gap-5 p-3">
+      <h4 class="text-secondary">Mis encuestas</h4>
+      <div class="input-group shadow-sm rounded-5">
+        <span class="input-group-text border-0 colorSearch">
+          <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
+        </span>
+        <input type="text" class="form-control border-0 colorSearch" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+    </div>
+
+
+
+    <table class="table table-hover align-middle table-borderless">
+      <thead>
+        <tr>
+          <th scope="col">Estado</th>
+          <th scope="col">Nombre encuesta</th>
+          <th scope="col">Visitas</th>
+          <th scope="col">Respuestas</th>
+          <th scope="col">Fecha de creacion</th>
+          <th scope="col" class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td scope="row">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            </div>
+          </td>
+          <td >Encuesta de los gatos salvajes</td>
+          <td>
+            1200
+          </td>
+          <td>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
+                aria-valuemax="100">25%</div>
+            </div>
+          </td>
+          <td>
+            22 de Febrero del 2022
+          </td>
+          <td class="text-center">
+            <div class="btn-group dropstart">
+              <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="imgDot" src="{{ url_for("static", filename="resources/dots.png" ) }}" alt="">
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownCenterBtn">
+                <li><a class="dropdown-item" href="#">Publicar</a></li>
+                <li><a class="dropdown-item" href="#">Eliminar</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            </div>
+          </td>
+          <td>Encuesta de los gatos salvajes</td>
+          <td>
+            1200
+          </td>
+          <td>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
+                aria-valuemax="100">25%</div>
+            </div>
+          </td>
+          <td>
+            22 de Febrero del 2022
+          </td>
+          <td class="text-center">
+            <div class="btn-group dropstart">
+              <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="imgDot" src="{{ url_for("static", filename="resources/dots.png" ) }}" alt="">
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownCenterBtn">
+                <li><a class="dropdown-item" href="#">Publicar</a></li>
+                <li><a class="dropdown-item" href="#">Eliminar</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% elif data.selected == "usuarios" %}
+<h1>Dashboard Usuarios</h1>
+
+
+
+{% else %}
+<h1>Dashboard Configuracion</h1>
+{% endif %}
+
+{% endblock content %}
+
+
+
+{% block jsFiles %}
+
+<script>
+  const data = {{ data | tojson }}
+</script>
+<script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
+<script src="{{ url_for("static", filename="js/dashboard_admin.js" ) }}"></script>
+
+{% endblock jsFiles %}

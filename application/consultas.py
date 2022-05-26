@@ -117,18 +117,18 @@ def guardar_encuesta(surveyData):
 
 def guardar_respuesta(responses):
     encuestado_aux = Encuestado(
-        nombre=responses["usuario"]["name"], email=responses["usuario"]["correo"])
+        email=responses["usuario"]["correo"],activo=True)
     db.session.add(encuestado_aux)
     db.session.commit()
     for i in range(0, len(responses["respuestas"])):
         if responses["respuestas"][i]["type"] == "desarrollo":
             respuesta_desarrollo_aux = Respuesta_Desarrollo.insert().values(
-                id_pregunta_desarrollo=responses["respuestas"][i]["idPregunta"], id_encuestado=encuestado_aux.id_encuestado, respuesta_encuestado=responses["respuestas"][i]["response"])
+                id_pregunta_desarrollo=responses["respuestas"][i]["idPregunta"], email=encuestado_aux.email, respuesta_encuestado=responses["respuestas"][i]["response"])
             db.engine.execute(respuesta_desarrollo_aux)
             db.session.commit()
         else:
             respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
-                id_opcion=responses["respuestas"][i]["response"]["idOpcion"], id_encuestado=encuestado_aux.id_encuestado)
+                id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=encuestado_aux.email)
             db.engine.execute(respuesta_alternativa_aux)
             db.session.commit()
     return "guardado"

@@ -60,3 +60,8 @@ th {
 .imgSearch {
   width: 20px;
 }
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 48vh;
+}

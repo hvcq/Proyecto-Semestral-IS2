@@ -22,6 +22,9 @@ class Encuesta(db.Model):
     fecha_fin = Column(Date())
     activa = Column(Boolean, nullable=False)
     comentario = Column(String(500))
+    visitas = Column(Integer)
+    respuestas = Column(Integer)
+    total_asignados = Column(Integer)
 
 
 Crea_Encuesta = Table('crea_encuesta', db.Model.metadata,

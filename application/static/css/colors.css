@@ -1,11 +1,10 @@
 :root {
-    --color-principal: #06c;
-    --color-body: #f2f3f4;
-    --color-white: #fff;
-    --color-dot: #000;
-    --color-selected: #000;
-    --color-text: #000;
-    --color-unselected: #adadad;
-    --color-button-hover: #f2f3f4;
-
-  }
+  --color-principal: #06c;
+  --color-body: #f2f3f4;
+  --color-white: #fff;
+  --color-dot: #000;
+  --color-selected: #000;
+  --color-text: #000;
+  --color-unselected: #adadad;
+  --color-button-hover: #f2f3f4;
+}

@@ -10,6 +10,16 @@
 {% block content %}
 {% if data.selected == 'encuestas' %}
 
+<div class="container-fluid d-flex flex-column">
+
+  <div class="d-flex text-center">
+    <div class="card shadow w-50">
+      <h5>Actividad del usuario</h5>
+      <canvas id="myChart" class="margin-0"></canvas>
+    </div>
+    <div class="card shadow w-100">Chart2</div>
+  </div>
+
 
   <div class="m-2 bg-white rounded shadow">
     <h3 class="ms-4 mt-4 mb-4">Mis encuestas</h3>
@@ -66,7 +76,109 @@
 </div>
 
 {% elif data.selected == "usuarios" %}
-<h1>Dashboard Usuarios</h1>
+  <div> //container
+    <div> //primer row
+      <h1><b>Usuarios</b></h1>
+      200 total
+      Ordenar por:
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Dropdown button
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Ingresa email
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><button name = "button">X</button></li>
+          <li><input type = "email"> <input type = "submit" value = "enviar"></li>
+          <li></li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+          data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
+
+    </div>
+    
+    <div>
+      <div>
+        <input type = "checkbox">
+        <input type = "button" value = '<'>
+        <input type = "button" value = '>'>
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Mark </th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Edad</th>
+            <th scope="col">Fecha de registro</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td scope="row">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox">
+              </div>
+            </td>
+            <td>Victor Ivan</td>
+            <td>
+              Avila Rojas-Murphy
+            </td>
+            <td>
+              <div>
+                vavila2018@udec.cl
+              </div>
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              26/05/2022
+            </td>
+            <td class="text-center">
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  ...
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+
 
 {% else %}
 <h1>Dashboard Configuracion</h1>

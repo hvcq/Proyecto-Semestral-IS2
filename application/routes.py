@@ -100,6 +100,12 @@ def Survey(id_encuesta, section="preguntas"):
             "questions": []
         }
         return render_template("admin/survey.html", data={
+            "userData": {
+                "username": "Benjamin Fernandez",
+                "email": "bfernandez@inf.udec.cl",
+                "role": "Admin",
+             },
+            "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
             "id": id_encuesta,
@@ -110,6 +116,12 @@ def Survey(id_encuesta, section="preguntas"):
     else:
         dataSurvey = crear_dataSurvey(id_encuesta)
         return render_template("admin/survey.html", data={
+            "userData": {
+                "username": "Benjamin Fernandez",
+                "email": "bfernandez@inf.udec.cl",
+                "role": "Admin",
+            },
+            "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
             "id": id_encuesta,
@@ -177,6 +189,12 @@ def decode_mail(coded_mail):
 def dashboard_admin(section="encuestas",active="false"):
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
     return render_template("admin/dashboardAdmin.html", data={
+        "userData": {
+            "username": "Benjamin Cristobal Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "role": "Admin",
+        },
+        "url": "dashboard_admin",
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section,
         "active": active,
@@ -213,8 +231,8 @@ def dashboard_admin(section="encuestas",active="false"):
                 "end_date": "30 de agosto del 2022",
                 "active" : bool(0),
                 "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
+                "visits": 0,
+                "answers" : {"total":0,"current_answers": 0}
 
             },
             {

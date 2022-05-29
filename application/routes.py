@@ -90,6 +90,7 @@ def cambiar_estado():
 @app.route("/survey/<int:id_encuesta>/")
 @app.route("/survey/<int:id_encuesta>/<string:section>")
 def Survey(id_encuesta, section="preguntas"):
+
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
         # if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
         #    return redirect("/")
@@ -136,7 +137,14 @@ def answer_survey(id_encuesta):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         dataSurvey = crear_dataSurvey(id_encuesta)
         print(dataSurvey)
-        return render_template("user/answer_survey.html", data=dataSurvey)
+        return render_template("user/answer_survey.html", data={
+            "userData":{
+                "username": "Anonimo",
+                "email": "example@udec.cl",
+                "role": "none",
+            },
+            "dataSurvey":dataSurvey
+            })
     else:
         print("Error: Encuesta no existente")
         return redirect("/")

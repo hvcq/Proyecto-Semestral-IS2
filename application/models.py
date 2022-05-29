@@ -10,7 +10,7 @@ class Admin(db.Model):
     id_admin = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(100), nullable=False)
     email = Column(String(50), nullable=False)
-    password = Column(String(32), nullable=False)
+    password = Column(String(108), nullable=False)
 
 
 class Encuesta(db.Model):

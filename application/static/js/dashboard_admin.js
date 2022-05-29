@@ -1,5 +1,6 @@
 'use strict';
 
+console.log(data);
 let current_id;
 const containerSurveys = document.querySelector('.surveys');
 let surveys = data.dataSurveys;
@@ -26,7 +27,7 @@ const insertRow = function (survey) {
     } onclick="statusSurvey(event)"> 
         </div>
       </td>
-      <td filtroTitle="true">${survey.title}</td>
+      <td filtroTitle="true"><a href="/survey/${survey.id_survey}/preguntas">${survey.title}</a></td>
       <td>
         ${survey.visits}
       </td>

@@ -10,7 +10,7 @@ class Admin(db.Model):
     id_admin = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String(100), nullable=False)
     email = Column(String(50), nullable=False)
-    password = Column(String(32), nullable=False)
+    password = Column(String(108), nullable=False)
 
 
 class Encuesta(db.Model):
@@ -106,9 +106,10 @@ Respuesta_Alternativa = Table('respuesta_alternativa', db.Model.metadata,
 
 class Registrado(db.Model):
     __tablename__ = 'registrado'
-    id_encuestado = Column(Integer, primary_key=True, autoincrement=True)
-    password = Column(String(32), nullable=False)
+    id_registrado = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(50), ForeignKey("encuestado.email"))
+    password = Column(String(108), nullable=False)
     nombre = Column(String(100), nullable=False)
-    rut = Column(String(10), nullable=False)
+    rut = Column(String(12), nullable=False)
     genero = Column(String(1))
     fecha_nacimiento = Column(Date())

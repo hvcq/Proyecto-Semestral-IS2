@@ -1,26 +1,24 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block body %}
 
-{% block body %}
+<h1>Inicio Encuestas</h1>
+<div class="d-flex flex-column ms-2 p-0 gap-2">
+  <form action="/ir_a_crear_nueva_encuesta" method="GET">
+    <button class="btn btn-primary" type="submit">Crear nueva encuesta</button>
+  </form>
+  <form action="/ir_a_ultima_encuesta" method="GET">
+    <button class="btn btn-primary" type="submit">Ir a ultima encuesta</button>
+  </form>
 
-    <h1>Inicio Encuestas</h1>
-    <div class="d-flex flex-column ms-2 p-0 gap-2">
-        <form action="/ir_a_crear_nueva_encuesta" method="GET">
-            <button class="btn btn-primary" type="submit">Crear nueva encuesta</button>
-        </form>
-        <form action="/ir_a_ultima_encuesta" method="GET">
-            <button class="btn btn-primary" type="submit">Ir a ultima encuesta</button>
-        </form>
+  <form action="/answer_survey/1" method="GET">
+    <button class="btn btn-primary" type="submit">Contestar encuesta</button>
+  </form>
 
-        <form action="/answer_survey/1" method="GET">
-            <button class="btn btn-primary" type="submit">Contestar encuesta</button>
-        </form>
+  <form action="/mail_sent " method="POST">
+    <button class="btn btn-primary" type="submit">Enviar Mails</button>
+  </form>
 
-        <form action="/mail_sent " method="POST">
-            <button class="btn btn-primary" type="submit">Enviar Mails</button>
-        </form>
-
-    </div>
-    
+  <button class="btn btn-primary" onclick="window.location.href='/dashboard_admin/'">Dashboard_admin</button>
+  <button class="btn btn-primary" onclick="window.location.href='/login'">Login</button>
+</div>
 
 {% endblock %}
-

@@ -364,7 +364,7 @@ const handleInputs = function (event) {
 const sendData = function () {
   myModal.show();
   $.ajax({
-    url: '/mail_sent',
+    url: '/crear_encuesta',
     type: 'POST',
     data: { surveyData: JSON.stringify(data.dataSurvey) },
     success: function (result) {
@@ -377,7 +377,7 @@ const sendData = function () {
 
   async function delay() {
     await new Promise(done => setTimeout(() => done(), 3000));
-    window.location.href = '/';
+    window.location.href = '/dashboard_admin';
     // myModal.hide();
   }
 };

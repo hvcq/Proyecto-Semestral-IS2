@@ -19,7 +19,7 @@
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              {{data.description}}
+              {{data.dataSurvey.description}}
             </div>
           </div>
         </div>   
@@ -56,9 +56,9 @@
 
 {% block jsFiles %}
 <script>
-  const dataSurvey = {{ data | tojson }}
+  const data = {{ data | tojson }}
 </script>
 
 <script src="{{ url_for("static", filename="js/answer_survey.js" ) }}"></script>
-<!-- <script src="{{ url_for("static", filename="js/survey_preguntas.js" ) }}"></script> -->
+<script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 {% endblock jsFiles %}

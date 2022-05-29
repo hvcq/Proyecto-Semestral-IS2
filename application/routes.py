@@ -116,6 +116,7 @@ def cambiar_estado():
 @login_required
 @admin_required
 def Survey(id_encuesta, section="preguntas"):
+
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
         # if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
         #    return redirect("/")
@@ -126,6 +127,12 @@ def Survey(id_encuesta, section="preguntas"):
             "questions": []
         }
         return render_template("admin/survey.html", data={
+            "userData": {
+                "username": "Benjamin Fernandez",
+                "email": "bfernandez@inf.udec.cl",
+                "role": "Admin",
+             },
+            "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
             "id": id_encuesta,
@@ -136,6 +143,12 @@ def Survey(id_encuesta, section="preguntas"):
     else:
         dataSurvey = crear_dataSurvey(id_encuesta)
         return render_template("admin/survey.html", data={
+            "userData": {
+                "username": "Benjamin Fernandez",
+                "email": "bfernandez@inf.udec.cl",
+                "role": "Admin",
+            },
+            "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
             "id": id_encuesta,
@@ -150,7 +163,15 @@ def answer_survey(id_encuesta):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         dataSurvey = crear_dataSurvey(id_encuesta)
         print(dataSurvey)
-        return render_template("user/answer_survey.html", data=dataSurvey)
+        return render_template("user/answer_survey.html", data={
+            "userData":{
+                "username": "Anonimo",
+                "email": "example@udec.cl",
+                "role": "None",
+            },
+            "selected": "answer",
+            "dataSurvey":dataSurvey
+            })
     else:
         print("Error: Encuesta no existente")
         return redirect("/")
@@ -205,6 +226,12 @@ def decode_mail(coded_mail):
 def dashboard_admin(section="encuestas",active="false"):
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
     return render_template("admin/dashboardAdmin.html", data={
+        "userData": {
+            "username": "Benjamin Cristobal Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "role": "Admin",
+        },
+        "url": "dashboard_admin",
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section,
         "active": active,

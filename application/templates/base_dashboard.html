@@ -8,7 +8,8 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css" ) }}"> <link rel="stylesheet" href="{{ url_for("static", filename="css/colors.css" ) }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css" ) }}"> <link rel="stylesheet" href="{{ url_for("static",
+    filename="css/colors.css" ) }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {% block cssFiles %} {% endblock cssFiles %}
   </head>
@@ -25,7 +26,20 @@
         {% endfor %}
       </div>
 
-      <div class="d-flex justify-content-center"><img src="{{ url_for("static", filename="resources/man.png" ) }}" class="img-fluid imgUser" alt="Foto de perfil"></div>
+      <div class="btn-group">
+        <div data-bs-toggle="dropdown" style="width: 60px; height: 60px; border-radius: 50%">
+          <img src="{{ url_for("static", filename="resources/user_blue.png" ) }}" class="profileImg">
+        </div>
+        <ul class="dropdown-menu dropdown-menu-start p-0">
+          <li class="d-flex flex-column text-white" style="background-color: #1784d5">
+            <h6 class="align-self-end ms-3 me-3 mt-2" style="font-size: 0.8em">{{data.userData.role}}</h6>
+            <h5 class="ms-3 me-3 mb-0 fw-bold">{{data.userData.username}}</h5>
+            <h6 class="ms-3 me-3 mb-1 mt-1" style="font-size: 0.9em">{{data.userData.email}}</h6>
+          </li>
+          <li><button class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3" type="button">Perfil</button></li>
+          <li><button class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3" type="button">Cerrar sesión</button></li>
+        </ul>
+      </div>
     </nav>
 
     {% block content %} {% endblock content %}

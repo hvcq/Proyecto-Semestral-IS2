@@ -1,4 +1,4 @@
-{% extends "base_dashboard.html" %}
+{% extends "base_template.html" %}
 
 
 {% block title %}Dashboard Admin{% endblock title %}
@@ -40,15 +40,31 @@
     
   </div>
 
-  <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead">
-    <div class="d-flex border-bottom align-items-center gap-5 p-3 sticky-top bg-white">
-      <h4 class="text-secondary">Mis encuestas</h4>
-      <div class="input-group shadow-sm rounded-5 search">
-        <span class="input-group-text border-0 colorSearch">
-          <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
-        </span>
-        <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+  <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead" style="height: 45vh;">
+    <div class="d-flex border-bottom align-items-center gap-5 p-3 sticky-top bg-white justify-content-between">
+
+        <h4 class="text-secondary">Mis encuestas</h4>
+        <div class="input-group shadow-sm rounded-5 search">
+          <span class="input-group-text border-0 colorSearch">
+            <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
+          </span>
+          <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+
+      
+
+      <div class="dropdown-center">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+          Centered dropdown
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownCenterBtn">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Action two</a></li>
+          <li><a class="dropdown-item" href="#">Action three</a></li>
+        </ul>
       </div>
+
+      
     </div>
 
 
@@ -56,11 +72,12 @@
     <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
       <thead>
         <tr class="bg-white">
-          <th scope="col">Estado</th>
-          <th scope="col">Nombre encuesta</th>
-          <th scope="col">Visitas</th>
-          <th scope="col">Respuestas</th>
-          <th scope="col">Fecha de creacion</th>
+          <th scope="col" style="width: 8%;">Estado</th>
+          <th scope="col" style="width: 20%;">Nombre encuesta</th>
+          <th scope="col" style="width: 8%;">Visitas</th>
+          <th scope="col" style="width: 20%;">Respuestas</th>
+          <th scope="col" style="width: 23%;">Fecha de creacion</th>
+          <th scope="col">Autor</th>
           <th scope="col" class="text-center">Acciones</th>
         </tr>
       </thead>
@@ -90,7 +107,405 @@
 
 
 {% elif data.selected == "usuarios" %}
-<h1>Dashboard Usuarios</h1>
+  <div class="ms-5 me-5"> <!-- container -->
+
+    <div class="d-flex flex-row justify-content-between"> <!-- Primer row -->
+      <div class="d-flex aling-items-center gap-5">
+        <div class="d-flex gap-3 align-items-center"> 
+          <h1><b>Usuarios</b></h1>
+          <p class="m-0">200 total</p>
+        </div>
+  
+        <div class="d-flex align-items-center gap-3">
+          <p class="m-0">Ordenar por:</p>
+          <div class="dropdown" style="z-index: 10000;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group dropstart d-flex align-items-center" style="z-index: 10000;">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Ingresa email
+        </button>
+
+        <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton1"> <!--acá había un d-flex que hacía que el botón estuviera
+        siempre abierto, ahora, el por qué? no sé no te voy a mentir-->
+          <div class="d-flex flex-row justify-content-between">
+            <p class="m-0" style="opacity: 0">.</p>
+            <button type="button" class="btn-close col-12 align-self-end" aria-label="Close"></button>
+          </div>
+          <div class="mb-3">
+            <input placeholder="Ingresa el email" type="email" class="form-control col-12" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <p class="m-0"></p>
+            <button type="button" class="btn btn-primary w-50 col-12">Primary</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2 mb-2 card shadow tableFixHead" style="height: 75vh;">
+      <div class="d-flex border-bottom align-items-center gap-5 p-3 bg-white justify-content-between sticky-top">
+        <div class="input-group shadow-sm rounded-5 search">
+          <span class="input-group-text border-0 colorSearch">
+            <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
+          </span>
+          <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        
+      </div>
+  
+  
+  
+      <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
+        <thead>
+          <tr class="bg-white">
+            <th scope="col"><input class="form-check-input" type="checkbox"></th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Edad</th>
+            <th scope="col">Fecha de registro</th>
+            <th scope="col" class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="surveys">
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}" style="z-index: 10000;">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr id="Encuesta${survey.id_survey}">
+            <td scope="row">
+              <input class="form-check-input" type="checkbox">
+            </td>
+            <td filtroTitle="true">Benjamin Cristobal</td>
+            <td>
+             Fernandez Vera
+            </td>
+            <td>
+              bfernandez@inf.udec.cl
+            </td>
+            <td>
+              22
+            </td>
+            <td>
+              None
+            </td>
+            <td class="text-center">
+              <div class="btn-group dropstart">
+                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="imgDot" src="/static/resources/dots.png" alt="">
+                </button>
+                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+
 
 
 
@@ -108,6 +523,10 @@
   const data = {{ data | tojson }}
 </script>
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
+{% if data.selected == 'encuestas' %}
 <script src="{{ url_for("static", filename="js/dashboard_admin.js" ) }}"></script>
+{% elif data.selected == "usuarios" %}
+{% endif %}
+
 
 {% endblock jsFiles %}

@@ -1,5 +1,6 @@
 'use strict';
 
+console.log(data);
 let current_id;
 const containerSurveys = document.querySelector('.surveys');
 let surveys = data.dataSurveys;
@@ -13,7 +14,7 @@ const init = function () {
 };
 
 const insertRow = function (survey) {
-  let percentage = Number.parseFloat((survey.answers.current_answers * 100) / survey.answers.total).toFixed(1);
+  let percentage = survey.answers.total === 0 ? 0 : Number.parseFloat((survey.answers.current_answers * 100) / survey.answers.total).toFixed(0);
 
   containerSurveys.insertAdjacentHTML(
     'beforeend',
@@ -21,15 +22,17 @@ const insertRow = function (survey) {
     <tr id="Encuesta${survey.id_survey}">
       <td scope="row">
         <div class="form-check form-switch">
-          <input idEncuesta="${survey.id_survey}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" ${survey.active ? 'checked' : ''} onclick="statusSurvey(event)"> 
+          <input idEncuesta="${survey.id_survey}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" ${
+      survey.active ? 'checked' : ''
+    } onclick="statusSurvey(event)"> 
         </div>
       </td>
-      <td filtroTitle="true">${survey.title}</td>
+      <td filtroTitle="true"><a href="/survey/${survey.id_survey}/preguntas">${survey.title}</a></td>
       <td>
         ${survey.visits}
       </td>
       <td>
-        <div class="progress">
+        <div class="progress w-75">
           <div class="progress-bar" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0"
             aria-valuemax="100">${percentage}%</div>
         </div>
@@ -37,12 +40,15 @@ const insertRow = function (survey) {
       <td>
         ${survey.start_date}
       </td>
+      <td>
+        None
+      </td>
       <td class="text-center">
         <div class="btn-group dropstart">
           <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
             <img class="imgDot" src="/static/resources/dots.png" alt="">
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
+          <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
             <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Publicar</a></li>
             <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
           </ul>

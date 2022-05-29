@@ -38,13 +38,13 @@ def login():
             else:
                 # aqui deberia desplegar un mensaje con el error
                 print("error: password no coincide")
-                return render_template("auth/login.html")
+                return render_template("login.html")
         else:
             # aqui deberia desplegar un mensaje con el error
             print("error: email no existe")
-            return render_template("auth/login.html")
+            return render_template("login.html")
     else:
-        return render_template("auth/login.html")
+        return render_template("login.html")
 
 @app.route("/logout")
 def logout():

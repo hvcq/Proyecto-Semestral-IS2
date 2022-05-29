@@ -1,8 +1,8 @@
 """Archivo ejecutable"""
 from application import create_app
-
+from flask import redirect
 def status_401(error):
-    return "<h1>No tienes acceso a esta página</h1>"
+    return redirect("/login")
     
 def status_404(error):
     return "<h1>Página no encontrada</h1>"

@@ -1,6 +1,9 @@
 """Rutas de la aplicacion"""
+from flask_login import LoginManager, login_user, logout_user, login_required
 from .consultas import *
 from .estructuraInterfaz import *
+from .modeluser import *
+from .decorators import *
 import json
 
 from flask import current_app as app
@@ -11,29 +14,46 @@ from .models import *
 #TEMPORAL
 from .mail import *
 
+login_manager_app=LoginManager(app)
+
+@login_manager_app.user_loader
+def load_user(id):
+    return ModelUser.get_by_id(id)
+
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return redirect(url_for("login"))
 
-
-@app.route("/login")
+@app.route("/login", methods=['GET','POST'])
 def login():
-    return render_template("loginPage.html", data={})
-
-
-@app.route("/guardar_admin", methods=['POST'])
-def guardar_admin():
     if request.method == 'POST':
-        nombre = request.form['nombre']
-        email = request.form['email']
-        admi_aux = Admin(nombre=nombre, email=email)
-        db.session.add(admi_aux)
-        db.session.commit()
-        return 'received'
+        user = User(0, request.form['email'], request.form['password'],"","indefinido")
+        logged_user = ModelUser.login(user)
+        if logged_user != None:
+            print(logged_user.email)
+            if logged_user.password:
+                login_user(logged_user)
+                print(logged_user.password)
+                return redirect(url_for("dashboard_admin"))
+            else:
+                # aqui deberia desplegar un mensaje con el error
+                print("error: password no coincide")
+                return render_template("auth/login.html")
+        else:
+            # aqui deberia desplegar un mensaje con el error
+            print("error: email no existe")
+            return render_template("auth/login.html")
+    else:
+        return render_template("auth/login.html")
 
-
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
 
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
+@login_required
+@admin_required
 def crea_nueva_encuesta():
     if db.session.query(Encuesta).order_by(Encuesta.id_encuesta.desc()).first() == None:
         return redirect("/survey/1/preguntas")
@@ -45,6 +65,8 @@ def crea_nueva_encuesta():
 
 
 @app.route("/ir_a_ultima_encuesta", methods=['GET'])
+@login_required
+@admin_required
 def ir_a_ultima_encuesta():
     if db.session.query(Encuesta).order_by(Encuesta.id_encuesta.desc()).first() == None:
         return redirect("/survey/1/preguntas")
@@ -62,6 +84,8 @@ def crear_encuesta():
     return redirect("/")
 
 @app.route("/delete_survey", methods=['POST'])
+@login_required
+@admin_required
 def delete_survey():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
@@ -89,6 +113,8 @@ def cambiar_estado():
 @app.route("/survey/")
 @app.route("/survey/<int:id_encuesta>/")
 @app.route("/survey/<int:id_encuesta>/<string:section>")
+@login_required
+@admin_required
 def Survey(id_encuesta, section="preguntas"):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
         # if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
@@ -119,7 +145,7 @@ def Survey(id_encuesta, section="preguntas"):
         )
 
 
-@ app.route("/answer_survey/<int:id_encuesta>")
+@app.route("/answer_survey/<int:id_encuesta>")
 def answer_survey(id_encuesta):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         dataSurvey = crear_dataSurvey(id_encuesta)
@@ -130,7 +156,7 @@ def answer_survey(id_encuesta):
         return redirect("/")
 
 # Enviar mails
-@app.route("/mail_sent", methods=['POST'] )
+@app.route("/mail_sent", methods=['POST'])
 def send_mail():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
@@ -174,146 +200,14 @@ def decode_mail(coded_mail):
 @app.route("/dashboard_admin/")
 @app.route("/dashboard_admin/<string:section>")
 @app.route("/dashboard_admin/<string:section>/<string:active>")
+@login_required
+@admin_required
 def dashboard_admin(section="encuestas",active="false"):
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
     return render_template("admin/dashboardAdmin.html", data={
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section,
         "active": active,
-        "dataSurveys": [
-            {
-                "id_survey": 0,
-                "title": "Los gatos son lo mejor del mundo",
-                "description": "Los gatos si tu lo piensas son lo mejor por diferentes razones. Primero son gatos, segundo son lindos",
-                "start_date": "22 de julio del 2022",
-                "end_date": "30 de julio del 2022",
-                "active" : bool(1),
-                "comentario": "",
-                "visits": 200,
-                "answers" : {"total":1200,"current_answers": 200}
-
-            },
-            {
-                "id_survey": 1,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(0),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-            {
-                "id_survey": 2,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(0),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-            {
-                "id_survey": 3,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(0),
-                "comentario": "",
-                "visits": 600,
-                "answers" : {"total":600,"current_answers": 600}
-
-            },
-            {
-                "id_survey": 4,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(0),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-            {
-                "id_survey": 5,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(1),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-            {
-                "id_survey": 6,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(0),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-            {
-                "id_survey": 7,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(0),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-            {
-                "id_survey": 8,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(1),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-             {
-                "id_survey": 9,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(0),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            },
-             {
-                "id_survey": 10,
-                "title": "Los perros son lo mejor del mundo",
-                "description": "Los perros si tu lo piensas son lo mejor por diferentes razones. Primero son perros, segundo son lindos",
-                "start_date": "23 de julio del 2022",
-                "end_date": "30 de agosto del 2022",
-                "active" : bool(1),
-                "comentario": "",
-                "visits": 400,
-                "answers" : {"total":600,"current_answers": 400}
-
-            }
-        ]
+        "dataSurveys": obtener_encuestas()
         }
         )
-

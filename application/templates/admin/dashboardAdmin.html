@@ -4,6 +4,9 @@
 {% block title %}Dashboard Admin{% endblock title %}
 
 {% block cssFiles %}
+<h3>Nombre: {{current_user.nombre}}</h3>
+<h3>email: {{current_user.email}}</h3>
+<a class="btn btn-secondary" href="{{ url_for('logout') }}">Cerrar sesion</a>
 <link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard_admin.css" ) }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <script src="https://kit.fontawesome.com/9c3c5148b3.js" crossorigin="anonymous"></script>

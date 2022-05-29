@@ -377,7 +377,7 @@ const sendData = function () {
 
   async function delay() {
     await new Promise(done => setTimeout(() => done(), 3000));
-    window.location.href = '/';
+    window.location.href = '/dashboard_admin';
     // myModal.hide();
   }
 };

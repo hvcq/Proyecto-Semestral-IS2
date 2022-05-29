@@ -77,11 +77,14 @@ def ir_a_ultima_encuesta():
 
 
 @app.route("/crear_encuesta", methods=['POST'])
+@login_required
+@admin_required
 def crear_encuesta():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
-        return guardar_encuesta(surveyData)
-    return redirect("/")
+        guardar_encuesta(surveyData)
+        return redirect(url_for("dashboard_admin"))
+    return redirect(url_for("dashboard_admin"))
 
 @app.route("/delete_survey", methods=['POST'])
 @login_required

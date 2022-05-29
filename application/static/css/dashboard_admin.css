@@ -39,6 +39,7 @@ th {
 
 .btnShortcut {
   width: 50%;
+  min-width: 100px;
   background-color: #ff3e69;
   border: 0;
   margin-top: 2%;

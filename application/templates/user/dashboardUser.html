@@ -38,30 +38,14 @@
   </div>
 
   <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead">
-    <div class="d-flex border-bottom align-items-center gap-5 p-3 sticky-top bg-white justify-content-between">
-      <div>
-        <h4 class="text-secondary">Mis encuestas</h4>
-        <div class="input-group shadow-sm rounded-5 search">
-          <span class="input-group-text border-0 colorSearch">
-            <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
-          </span>
-          <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+    <div class="d-flex border-bottom align-items-center gap-5 p-3 sticky-top bg-white">
+      <h4 class="text-secondary">Mis encuestas</h4>
+      <div class="input-group shadow-sm rounded-5 search">
+        <span class="input-group-text border-0 colorSearch">
+          <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
+        </span>
+        <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
       </div>
-      </div>
-      
-
-      <div class="dropdown-center">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-          Centered dropdown
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownCenterBtn">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Action two</a></li>
-          <li><a class="dropdown-item" href="#">Action three</a></li>
-        </ul>
-      </div>
-
-      
     </div>
 
 
@@ -69,12 +53,11 @@
     <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
       <thead>
         <tr class="bg-white">
-          <th scope="col" style="width: 8%;">Estado</th>
-          <th scope="col" style="width: 20%;">Nombre encuesta</th>
-          <th scope="col" style="width: 8%;">Visitas</th>
-          <th scope="col" style="width: 20%;">Respuestas</th>
-          <th scope="col" style="width: 23%;">Fecha de creacion</th>
-          <th scope="col">Autor</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Nombre encuesta</th>
+          <th scope="col">Visitas</th>
+          <th scope="col">Respuestas</th>
+          <th scope="col">Fecha de creacion</th>
           <th scope="col" class="text-center">Acciones</th>
         </tr>
       </thead>

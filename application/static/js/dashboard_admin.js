@@ -32,13 +32,16 @@ const insertRow = function (survey) {
         ${survey.visits}
       </td>
       <td>
-        <div class="progress">
+        <div class="progress w-75">
           <div class="progress-bar" role="progressbar" style="width: ${percentage}%;" aria-valuenow="${percentage}" aria-valuemin="0"
             aria-valuemax="100">${percentage}%</div>
         </div>
       </td>
       <td>
         ${survey.start_date}
+      </td>
+      <td>
+        None
       </td>
       <td class="text-center">
         <div class="btn-group dropstart">

@@ -101,11 +101,12 @@ textarea:focus {
 .btn-right {
   bottom: 40px;
   right: 40px;
-  background-color: var(--color-principal); /* Color de fondo */
+  background-color: #1085d6; /* Color de fondo */
 }
 .btn-left {
   bottom: 40px;
   right: 40px;
+  background-color: #ff3e69;
 }
 
 .btn-flotante:hover {

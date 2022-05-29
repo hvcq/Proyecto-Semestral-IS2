@@ -5,8 +5,6 @@
   git commit --amend --no-edit NO TANTOS COMMITS.
 */
 
-console.log(data);
-
 let dataSurvey = data.dataSurvey;
 
 let numberCuestion = 0;

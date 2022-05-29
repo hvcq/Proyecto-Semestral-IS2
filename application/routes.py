@@ -141,8 +141,9 @@ def answer_survey(id_encuesta):
             "userData":{
                 "username": "Anonimo",
                 "email": "example@udec.cl",
-                "role": "none",
+                "role": "None",
             },
+            "selected": "answer",
             "dataSurvey":dataSurvey
             })
     else:

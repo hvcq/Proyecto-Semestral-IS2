@@ -1,6 +1,42 @@
 from .models import *
 from datetime import datetime, date
 
+def obtener_encuestas():
+    """Consulta para obtener todas las encuestas de la bd"""
+    lista_encuestas = []
+    if db.session.query(Encuesta).first() == None:
+        return lista_encuestas
+    else:
+        tuplas_de_encuestas = db.session.query(Encuesta).order_by(Encuesta.id_encuesta).all()
+        for tupla_encuesta in tuplas_de_encuestas:
+            datos_encuesta_aux = {}
+            datos_encuesta_aux.clear()
+            if tupla_encuesta.fecha_fin == None:
+                datos_encuesta_aux = {
+                    "id_survey": tupla_encuesta.id_encuesta,
+                    "title": tupla_encuesta.titulo,
+                    "description": tupla_encuesta.descripcion,
+                    "start_date": tupla_encuesta.fecha_inicio,
+                    "end_date": "",
+                    "active" : tupla_encuesta.activa,
+                    "comentario": tupla_encuesta.comentario,
+                    "visits": tupla_encuesta.visitas,
+                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas}
+                }
+            else:
+                datos_encuesta_aux = {
+                    "id_survey": tupla_encuesta.id_encuesta,
+                    "title": tupla_encuesta.titulo,
+                    "description": tupla_encuesta.descripcion,
+                    "start_date": tupla_encuesta.fecha_inicio,
+                    "end_date": tupla_encuesta.fecha_fin,
+                    "active" : tupla_encuesta.activa,
+                    "comentario": tupla_encuesta.comentario,
+                    "visits": tupla_encuesta.visitas,
+                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas}
+                }
+            lista_encuestas.append(datos_encuesta_aux)
+        return lista_encuestas
 
 def obtener_encuesta_creada(id_encuesta):
     """Consulta para obtener datos de preguntas de desarrollo"""
@@ -80,8 +116,8 @@ def obtener_encuesta_creada(id_encuesta):
 
 
 def guardar_encuesta(surveyData):
-    encuesta_aux = Encuesta(
-        titulo=surveyData["title"], descripcion=surveyData["description"], fecha_inicio=date.today(), activa=True)
+    encuesta_aux = Encuesta(titulo=surveyData["title"], descripcion=surveyData["description"],
+        fecha_inicio=date.today(), activa=True, comentario="", visitas=0, respuestas=0, total_asignados=0)
     db.session.add(encuesta_aux)
     db.session.commit()
     for i in range(0, len(surveyData["questions"])):

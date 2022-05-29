@@ -1,6 +1,9 @@
 """Rutas de la aplicacion"""
+from flask_login import LoginManager, login_user, logout_user, login_required
 from .consultas import *
 from .estructuraInterfaz import *
+from .modeluser import *
+from .decorators import *
 import json
 
 from flask import current_app as app
@@ -11,29 +14,47 @@ from .models import *
 #TEMPORAL
 from .mail import *
 
+login_manager_app=LoginManager(app)
+
+@login_manager_app.user_loader
+def load_user(id):
+    return ModelUser.get_by_id(id)
+
 @app.route("/")
 def index():
+    # return redirect(url_for("login"))
     return render_template("index.html")
 
-
-@app.route("/login")
+@app.route("/login", methods=['GET','POST'])
 def login():
-    return render_template("loginPage.html", data={})
-
-
-@app.route("/guardar_admin", methods=['POST'])
-def guardar_admin():
     if request.method == 'POST':
-        nombre = request.form['nombre']
-        email = request.form['email']
-        admi_aux = Admin(nombre=nombre, email=email)
-        db.session.add(admi_aux)
-        db.session.commit()
-        return 'received'
+        user = User(0, request.form['email'], request.form['password'],"","indefinido")
+        logged_user = ModelUser.login(user)
+        if logged_user != None:
+            print(logged_user.email)
+            if logged_user.password:
+                login_user(logged_user)
+                print(logged_user.password)
+                return redirect(url_for("dashboard_admin"))
+            else:
+                # aqui deberia desplegar un mensaje con el error
+                print("error: password no coincide")
+                return render_template("login.html")
+        else:
+            # aqui deberia desplegar un mensaje con el error
+            print("error: email no existe")
+            return render_template("login.html")
+    else:
+        return render_template("login.html")
 
-
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
 
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
+@login_required
+@admin_required
 def crea_nueva_encuesta():
     if db.session.query(Encuesta).order_by(Encuesta.id_encuesta.desc()).first() == None:
         return redirect("/survey/1/preguntas")
@@ -45,6 +66,8 @@ def crea_nueva_encuesta():
 
 
 @app.route("/ir_a_ultima_encuesta", methods=['GET'])
+@login_required
+@admin_required
 def ir_a_ultima_encuesta():
     if db.session.query(Encuesta).order_by(Encuesta.id_encuesta.desc()).first() == None:
         return redirect("/survey/1/preguntas")
@@ -55,13 +78,18 @@ def ir_a_ultima_encuesta():
 
 
 @app.route("/crear_encuesta", methods=['POST'])
+@login_required
+@admin_required
 def crear_encuesta():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
-        return guardar_encuesta(surveyData)
-    return redirect("/")
+        guardar_encuesta(surveyData)
+        return redirect(url_for("dashboard_admin"))
+    return redirect(url_for("dashboard_admin"))
 
 @app.route("/delete_survey", methods=['POST'])
+@login_required
+@admin_required
 def delete_survey():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
@@ -89,6 +117,8 @@ def cambiar_estado():
 @app.route("/survey/")
 @app.route("/survey/<int:id_encuesta>/")
 @app.route("/survey/<int:id_encuesta>/<string:section>")
+@login_required
+@admin_required
 def Survey(id_encuesta, section="preguntas"):
 
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
@@ -132,7 +162,7 @@ def Survey(id_encuesta, section="preguntas"):
         )
 
 
-@ app.route("/answer_survey/<int:id_encuesta>")
+@app.route("/answer_survey/<int:id_encuesta>")
 def answer_survey(id_encuesta):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         dataSurvey = crear_dataSurvey(id_encuesta)
@@ -151,7 +181,7 @@ def answer_survey(id_encuesta):
         return redirect("/")
 
 # Enviar mails
-@app.route("/mail_sent", methods=['POST'] )
+@app.route("/mail_sent", methods=['POST'])
 def send_mail():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
@@ -195,6 +225,8 @@ def decode_mail(coded_mail):
 @app.route("/dashboard_admin/")
 @app.route("/dashboard_admin/<string:section>")
 @app.route("/dashboard_admin/<string:section>/<string:active>")
+@login_required
+@admin_required
 def dashboard_admin(section="encuestas",active="false"):
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
     return render_template("admin/dashboardAdmin.html", data={
@@ -210,4 +242,3 @@ def dashboard_admin(section="encuestas",active="false"):
         "dataSurveys": obtener_encuestas()
         }
         )
-

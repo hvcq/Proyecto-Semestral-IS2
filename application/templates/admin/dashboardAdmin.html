@@ -87,59 +87,60 @@
 
 
 {% elif data.selected == "usuarios" %}
-  <div> //container
-    <div> //primer row
-      <h1><b>Usuarios</b></h1>
-      200 total
-      Ordenar por:
+  <div class="ms-5 me-5"> <!-- container -->
 
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          Dropdown button
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
+
+    <div class="d-flex flex-row justify-content-between"> <!-- Primer row -->
+      <div class="d-flex aling-items-center gap-5">
+        <div class="d-flex gap-3 align-items-center"> 
+          <h1><b>Usuarios</b></h1>
+          <p class="m-0">200 total</p>
+        </div>
+  
+        <div class="d-flex align-items-center gap-3">
+          <p class="m-0">Ordenar por:</p>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div class="dropdown">
+      <div class="btn-group dropstart d-flex align-items-center">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
           data-bs-toggle="dropdown" aria-expanded="false">
           Ingresa email
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><button name = "button">X</button></li>
-          <li><input type = "email"> <input type = "submit" value = "enviar"></li>
-          <li></li>
-        </ul>
-      </div>
 
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-          data-bs-toggle="dropdown" aria-expanded="false">
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
+        <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton1"> <!--acá había un d-flex que hacía que el botón estuviera
+        siempre abierto, ahora, el por qué? no sé no te voy a mentir-->
+          <div class="d-flex flex-row justify-content-between">
+            <p class="m-0" style="opacity: 0">.</p>
+            <button type="button" class="btn-close col-12 align-self-end" aria-label="Close"></button>
+          </div>
+          <div class="mb-3">
+            <input placeholder="Ingresa el email" type="email" class="form-control col-12" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <p class="m-0"></p>
+            <button type="button" class="btn btn-primary w-50 col-12">Primary</button>
+          </div>
+        </div>
       </div>
-
     </div>
-    
+    <!--tabla estatica normal-->
     <div>
-      <div>
-        <input type = "checkbox">
-        <input type = "button" value = '<'>
-        <input type = "button" value = '>'>
-      </div>
       <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">Mark </th>
+            <th scope="col"><input type = "checkbox"></th>
             <th scope="col">Nombres</th>
             <th scope="col">Apellidos</th>
             <th scope="col">Correo</th>
@@ -149,7 +150,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr class="bg-white">
             <td scope="row">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox">
@@ -187,6 +188,22 @@
         </tbody>
       </table>
     </div>
+    <!--tabla del benja que no te mentire, no supe como replicarla ._.XD-->
+    <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
+      <thead>
+        <tr class="bg-white">
+          <th scope="col"><input type = "checkbox"></th>
+          <th scope="col">Nombres</th>
+          <th scope="col">Apellidos</th>
+          <th scope="col">Correo</th>
+          <th scope="col">edad</th>
+          <th scope="col">Fecha de registro</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="surveys">
+      </tbody>
+    </table>
   </div>
   
 

@@ -11,10 +11,11 @@ from .models import *
 #TEMPORAL
 from .mail import *
 
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 @app.route("/login")
 def login():
@@ -58,8 +59,8 @@ def ir_a_ultima_encuesta():
 def crear_encuesta():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
-        return guardar_encuesta(surveyData)
-    return redirect("/")
+        guardar_encuesta(surveyData)
+        return "Exitoso"
 
 @app.route("/delete_survey", methods=['POST'])
 def delete_survey():

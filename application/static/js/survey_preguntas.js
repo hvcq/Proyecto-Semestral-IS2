@@ -364,7 +364,7 @@ const handleInputs = function (event) {
 const sendData = function () {
   myModal.show();
   $.ajax({
-    url: '/mail_sent',
+    url: '/crear_encuesta',
     type: 'POST',
     data: { surveyData: JSON.stringify(data.dataSurvey) },
     success: function (result) {

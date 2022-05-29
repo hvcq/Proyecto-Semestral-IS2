@@ -10,20 +10,24 @@
 
 /*CODIGO--------------------------------*/
 
-body{
+body {
   background-color: var(--color-body);
 }
 
-.nav-link{
+.nav {
+  height: 1vh;
+}
+
+.nav-link {
   text-decoration: none !important;
   color: black;
 }
 
-.nav-item{
+.nav-item {
   display: inline;
 }
 
-.dot{
+.dot {
   margin-top: 3px;
   width: 13px;
   height: 13px;
@@ -35,39 +39,102 @@ body{
   transition: all 0.3s ease-in-out;
 }
 
-.nav__element a:hover,a:focus, a:active{
+.nav__element a:hover,
+a:focus,
+a:active {
   color: var(--color-text-selected) !important;
-  text-shadow:
-    -.3px -.3px 0 var(--color-selected),
-    .3px -.3px 0 var(--color-selected),
-    -.3px .3px 0 var(--color-selected),
-    .3px .3px 0 var(--color-selected);
-    -webkit-transition: all .5s;
-    -moz-transition: all .5s;
-    -o-transition: all .5s;
-    transition: all .5s;
+  text-shadow: -0.3px -0.3px 0 var(--color-selected), 0.3px -0.3px 0 var(--color-selected), -0.3px 0.3px 0 var(--color-selected),
+    0.3px 0.3px 0 var(--color-selected);
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
 }
 
-.nav__element a{
+.nav__element a {
   color: var(--color-unselected);
 }
 
-a:hover + .dot{
+a:hover + .dot {
   background: var(--color-dot);
   border-color: var(--color-selected);
 }
 
-a:focus + .dot{
+a:focus + .dot {
   background: var(--color-dot);
   border-color: var(--color-selected);
 }
 
-.enable{
+.enable {
   color: var(--color-selected);
   background: var(--color-dot);
   border-color: var(--color-selected);
 }
 
+.profileImg {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  padding: 0;
+  transition: padding 0.3s;
+}
+
+.profileImg:hover {
+  padding: 10%;
+}
+
+@keyframes slideInProfile {
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(3.5rem);
+    opacity: 1;
+  }
+
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+}
+@keyframes slideInAction {
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(2.6rem);
+    opacity: 1;
+  }
+
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .animate {
+    animation-duration: 0.3s;
+    -webkit-animation-duration: 0.3s;
+    animation-fill-mode: both;
+    -webkit-animation-fill-mode: both;
+  }
+}
+
+.slideInProfile {
+  -webkit-animation-name: slideInProfile;
+  animation-name: slideInProfile;
+}
+
+.slideInAction {
+  -webkit-animation-name: slideInAction;
+  animation-name: slideInAction;
+}
 
 /*CODIGO--------------------------------*/
 
@@ -258,9 +325,9 @@ select {
    */
 
 button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
+[type='button'],
+[type='reset'],
+[type='submit'] {
   -webkit-appearance: button;
 }
 
@@ -269,9 +336,9 @@ button,
    */
 
 button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
@@ -281,9 +348,9 @@ button::-moz-focus-inner,
    */
 
 button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
+[type='button']:-moz-focusring,
+[type='reset']:-moz-focusring,
+[type='submit']:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -332,8 +399,8 @@ textarea {
    * 2. Remove the padding in IE 10.
    */
 
-[type="checkbox"],
-[type="radio"] {
+[type='checkbox'],
+[type='radio'] {
   box-sizing: border-box; /* 1 */
   padding: 0; /* 2 */
 }
@@ -342,8 +409,8 @@ textarea {
    * Correct the cursor style of increment and decrement buttons in Chrome.
    */
 
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
   height: auto;
 }
 
@@ -352,7 +419,7 @@ textarea {
    * 2. Correct the outline style in Safari.
    */
 
-[type="search"] {
+[type='search'] {
   -webkit-appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
@@ -361,7 +428,7 @@ textarea {
    * Remove the inner padding in Chrome and Safari on macOS.
    */
 
-[type="search"]::-webkit-search-decoration {
+[type='search']::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 

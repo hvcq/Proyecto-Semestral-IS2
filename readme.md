@@ -2,7 +2,7 @@
 
 Antes de correr la aplicacion es necesario instalar algunas dependecias, estas dependencias se instalan a traves del comando ***pip install nombre_dependencia***
 ## Nombre de dependencias necesarias para su funcionamiento
-
+* virtualenv (para entornos virtuales, necesario para varias librerias)
 * Flask
 * Flask-SQLAlchemy
 * SQLAlchemy
@@ -10,6 +10,8 @@ Antes de correr la aplicacion es necesario instalar algunas dependecias, estas d
 * ddtrace (Permite rastrear solicitudes al servidor)
 * python-dotenv (Permite entregar la configuración del servidor a traves de un archivo)
 * flask-mail (Para enviar emails usando flask)
+* flask-login (Para control de login y vistas)
+* flask-WTF (Para creacion de token de password)
 
 Luego para ejecutar la aplicacion se debe ir al directorio donde esta el archivo ***wsgi.py*** y a continuacion abrir la terminar e ingresar:
 

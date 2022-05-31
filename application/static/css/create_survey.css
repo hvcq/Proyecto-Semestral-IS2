@@ -4,7 +4,7 @@
 }
 
 .survey__card {
-  background-color: #fff;
+  background-color: var(--color-white);
   border-radius: 10px 10px 10px 10px;
   width: 65% !important;
   /* opacity: 0;
@@ -12,7 +12,7 @@
 }
 
 .survey__card:focus {
-  box-shadow: #0162cd 0px 5px 15px !important;
+  box-shadow: var(--color-survey-card-focus) 0px 5px 15px !important;
 }
 
 .survey__elementTitle {
@@ -25,7 +25,7 @@
 textarea {
   padding: 3px !important;
   border: 0 !important;
-  border-bottom: 0.5px solid #fff !important;
+  border-bottom: 0.5px solid var(--color-white) !important;
   border-radius: 0 !important;
   transition: border-bottom 0.15s ease-in !important;
   width: 94% !important;
@@ -35,7 +35,7 @@ textarea {
 .border__dotted {
   border: var(--color-unselected) 4px dashed !important;
   border-radius: 20px !important;
-  background-color: #fff !important;
+  background-color: var(--color-white) !important;
 }
 
 textarea:focus {
@@ -74,21 +74,21 @@ textarea:focus {
 .survey__inputAlt {
   width: 88%;
   border: 0;
-  border-bottom: 0.5px solid #fff !important;
+  border-bottom: 0.5px solid var(--color-white) !important;
   transition: all 0.15s ease-in !important;
 }
 
 .survey__inputAlt:focus {
   outline: none;
   box-shadow: none;
-  border-bottom: 2px solid black !important;
+  border-bottom: 2px solid var(--color-black) !important;
 }
 
 .btn-flotante {
   font-size: 16px; /* Cambiar el tamaño de la tipografia */
   text-transform: uppercase; /* Texto en mayusculas */
   font-weight: bold; /* Fuente en negrita o bold */
-  color: #ffffff; /* Color del texto */
+  color: var(--color-white); /* Color del texto */
   border-radius: 5px; /* Borde del boton */
   letter-spacing: 2px; /* Espacio entre letras */
 
@@ -101,12 +101,12 @@ textarea:focus {
 .btn-right {
   bottom: 40px;
   right: 40px;
-  background-color: #1085d6; /* Color de fondo */
+  background-color: var(--color-de-fondo-derecha-createsurvey); /* Color de fondo */
 }
 .btn-left {
   bottom: 40px;
   right: 40px;
-  background-color: #ff3e69;
+  background-color: var(--color-de-fondo-izquierda-createsurvey);
 }
 
 .btn-flotante:hover {

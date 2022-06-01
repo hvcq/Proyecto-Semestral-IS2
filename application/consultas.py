@@ -51,8 +51,10 @@ def obtener_encuesta_creada(id_encuesta):
             ids_preguntas_desarrollo.append(
                 tupla_desarrollo_encuesta.id_pregunta_desarrollo)
         tuplas_pregunta_desarrollo = db.session.query(Pregunta_Desarrollo).filter(
-            Pregunta_Desarrollo.id_pregunta_desarrollo.in_(ids_preguntas_desarrollo)).all()
+            Pregunta_Desarrollo.id_pregunta_desarrollo.in_(ids_preguntas_desarrollo)).order_by(Pregunta_Desarrollo.numero).all()
+        ids_preguntas_desarrollo.clear()
         for tupla_pregunta_desarrollo in tuplas_pregunta_desarrollo:
+            ids_preguntas_desarrollo.append(tupla_pregunta_desarrollo.id_pregunta_desarrollo)
             numeros_preguntas_desarrollo.append(
                 tupla_pregunta_desarrollo.numero)
             enunciados_preguntas_desarrollo.append(
@@ -75,8 +77,10 @@ def obtener_encuesta_creada(id_encuesta):
             ids_preguntas_alternativas.append(
                 tupla_alternativa_encuesta.id_pregunta_alternativa)
         tuplas_pregunta_alternativa = db.session.query(Pregunta_Alternativa).filter(
-            Pregunta_Alternativa.id_pregunta_alternativa.in_(ids_preguntas_alternativas)).all()
+            Pregunta_Alternativa.id_pregunta_alternativa.in_(ids_preguntas_alternativas)).order_by(Pregunta_Alternativa.numero).all()
+        ids_preguntas_alternativas.clear()
         for tupla_pregunta_alternativa in tuplas_pregunta_alternativa:
+            ids_preguntas_alternativas.append(tupla_pregunta_alternativa.id_pregunta_alternativa)
             numeros_preguntas_alternativas.append(
                 tupla_pregunta_alternativa.numero)
             enunciados_preguntas_alternativas.append(
@@ -120,9 +124,10 @@ def guardar_encuesta(surveyData):
     db.session.add(encuesta_aux)
     db.session.commit()
     for i in range(0, len(surveyData["questions"])):
+        print(surveyData["questions"][i])
         if surveyData["questions"][i]["type"] == "desarrollo":
             pregunta_desarrollo_aux = Pregunta_Desarrollo(
-                enunciado=surveyData["questions"][i]["statement"])
+                enunciado=surveyData["questions"][i]["statement"], numero=i+1)
             db.session.add(pregunta_desarrollo_aux)
             db.session.commit()
             desarrollo_encuesta_aux = Desarrollo_Encuesta.insert().values(id_encuesta=encuesta_aux.id_encuesta,
@@ -131,7 +136,7 @@ def guardar_encuesta(surveyData):
             db.session.commit()
         else:
             pregunta_alternativa_aux = Pregunta_Alternativa(
-                enunciado=surveyData["questions"][i]["statement"])
+                enunciado=surveyData["questions"][i]["statement"], numero=i+1)
             db.session.add(pregunta_alternativa_aux)
             db.session.commit()
             alternativa_encuesta_aux = Alternativa_Encuesta.insert().values(

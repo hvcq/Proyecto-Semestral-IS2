@@ -51,6 +51,8 @@
 
 
 {% elif data.selected == "respuestas" %}
+
+
 <p>Respuestas</p>
 {% else %}
 <p>Configuracion</p>
@@ -65,5 +67,10 @@
 </script>
 
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
+{% if data.selected == "preguntas" %}
 <script src="{{ url_for("static", filename="js/survey_preguntas.js" ) }}"></script>
+{% elif data.selected == "respuestas" %}
+<script src="{{ url_for("static", filename="js/survey_respuestas.js" ) }}"></script>
+{% endif %}
+
 {% endblock jsFiles %}

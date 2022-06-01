@@ -14,26 +14,17 @@ from .models import *
 #TEMPORAL
 from .mail import *
 
-<<<<<<< HEAD
-
-=======
 login_manager_app=LoginManager(app)
 
 @login_manager_app.user_loader
 def load_user(id):
     return ModelUser.get_by_id(id)
->>>>>>> 73b6e7dd61b6f17df0a46c168c4f65962f43acf2
 
 @app.route("/")
 def index():
-    # return redirect(url_for("login"))
     return render_template("index.html")
 
-<<<<<<< HEAD
-@app.route("/login")
-=======
 @app.route("/login", methods=['GET','POST'])
->>>>>>> 73b6e7dd61b6f17df0a46c168c4f65962f43acf2
 def login():
     if request.method == 'POST':
         user = User(0, request.form['email'], request.form['password'],"","indefinido")
@@ -92,12 +83,7 @@ def crear_encuesta():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
         guardar_encuesta(surveyData)
-<<<<<<< HEAD
         return "Exitoso"
-=======
-        return redirect(url_for("dashboard_admin"))
-    return redirect(url_for("dashboard_admin"))
->>>>>>> 73b6e7dd61b6f17df0a46c168c4f65962f43acf2
 
 @app.route("/delete_survey", methods=['POST'])
 @login_required
@@ -143,11 +129,7 @@ def Survey(id_encuesta, section="preguntas"):
             "questions": []
         }
         return render_template("admin/survey.html", data={
-            "userData": {
-                "username": "Benjamin Fernandez",
-                "email": "bfernandez@inf.udec.cl",
-                "role": "Admin",
-             },
+
             "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
@@ -159,11 +141,7 @@ def Survey(id_encuesta, section="preguntas"):
     else:
         dataSurvey = crear_dataSurvey(id_encuesta)
         return render_template("admin/survey.html", data={
-            "userData": {
-                "username": "Benjamin Fernandez",
-                "email": "bfernandez@inf.udec.cl",
-                "role": "Admin",
-            },
+
             "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
@@ -180,11 +158,7 @@ def answer_survey(id_encuesta):
         dataSurvey = crear_dataSurvey(id_encuesta)
         print(dataSurvey)
         return render_template("user/answer_survey.html", data={
-            "userData":{
-                "username": "Anonimo",
-                "email": "example@udec.cl",
-                "role": "None",
-            },
+
             "selected": "answer",
             "dataSurvey":dataSurvey
             })
@@ -241,12 +215,9 @@ def decode_mail(coded_mail):
 @admin_required
 def dashboard_admin(section="encuestas",active="false"):
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
+    
     return render_template("admin/dashboardAdmin.html", data={
-        "userData": {
-            "username": "Benjamin Cristobal Fernandez Vera",
-            "email": "bfernandez@inf.udec.cl",
-            "role": "Admin",
-        },
+
         "url": "dashboard_admin",
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section,

@@ -114,7 +114,6 @@ def obtener_encuesta_creada(id_encuesta):
     }
     return datos_encuesta_creada
 
-
 def guardar_encuesta(surveyData):
     encuesta_aux = Encuesta(titulo=surveyData["title"], descripcion=surveyData["description"],
         fecha_inicio=date.today(), activa=True, comentario="", visitas=0, respuestas=0, total_asignados=0)
@@ -149,7 +148,6 @@ def guardar_encuesta(surveyData):
                 db.engine.execute(alternativas_aux)
                 db.session.commit()
     return "guardado"
-
 
 def guardar_respuesta(responses):
     encuestado_aux = Encuestado(

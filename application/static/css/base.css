@@ -20,7 +20,7 @@ body {
 
 .nav-link {
   text-decoration: none !important;
-  color: black;
+  color: var(--color-black);
 }
 
 .nav-item {

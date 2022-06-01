@@ -18,7 +18,7 @@
 }
 
 .question__card {
-  background-color: #fff;
+  background-color: var(--color-white);
   border-radius: 10px 10px 10px 10px !important;
   width: 65% !important;
 }
@@ -41,7 +41,7 @@ textarea:focus {
 .question__number--rounded {
   background: var(--color-principal);
   border-radius: 0.8em;
-  color: #fff;
+  color: var(--color-white);
   display: inline-block;
   font-weight: bold;
   line-height: 1em;
@@ -102,10 +102,10 @@ textarea:focus {
   font-size: 16px; /* Cambiar el tamaño de la tipografia */
   text-transform: uppercase; /* Texto en mayusculas */
   font-weight: bold; /* Fuente en negrita o bold */
-  color: #ffffff; /* Color del texto */
+  color: var(--color-white); /* Color del texto */
   border-radius: 5px; /* Borde del boton */
   letter-spacing: 2px; /* Espacio entre letras */
-  background-color: #0162cd; /* Color de fondo */
+  background-color: var(--color-background); /* Color de fondo */
   padding: 18px 30px; /* Relleno del boton */
   position: fixed;
   bottom: 40px;

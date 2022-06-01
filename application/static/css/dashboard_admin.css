@@ -40,13 +40,13 @@ th {
 .btnShortcut {
   width: 50%;
   min-width: 100px;
-  background-color: #ff3e69;
+  background-color: var(--color-botonshortcut-dashoboard-admin);
   border: 0;
   margin-top: 2%;
 }
 
 .btnShortcut:hover {
-  background-color: #e8345d;
+  background-color: var(--color-hover-dashboard-admin);
 }
 
 .input-group {
@@ -55,7 +55,7 @@ th {
 }
 
 .colorSearch {
-  background-color: #f7f7f7 !important;
+  background-color: var(--color-search) !important;
 }
 
 .imgSearch {

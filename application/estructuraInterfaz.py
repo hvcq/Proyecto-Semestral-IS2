@@ -6,11 +6,11 @@ def crear_dataSurvey(id_encuesta):
     questions = []
     # Tenemos ordenados numero, enunciado y comentario por numero (numero de pregunta)
     # data.id representa el numero de pregunta
-    tam = len(datos_encuesta_creada["ids_preguntas_desarrollo"]) + len(datos_encuesta_creada["ids_preguntas_alternativas"])
+    cantidad_total_preguntas = len(datos_encuesta_creada["ids_preguntas_desarrollo"]) + len(datos_encuesta_creada["ids_preguntas_alternativas"])
     i = 0
     indexOp = 0
-    while i < tam:
-        if datos_encuesta_creada["numeros_preguntas_desarrollo"][0] == i+1:
+    while i < cantidad_total_preguntas:
+        if len(datos_encuesta_creada["numeros_preguntas_desarrollo"]) > 0 and datos_encuesta_creada["numeros_preguntas_desarrollo"][0] == i+1:
             data = {
                 "id": datos_encuesta_creada["numeros_preguntas_desarrollo"].pop(0),
                 "type": "desarrollo",
@@ -25,9 +25,9 @@ def crear_dataSurvey(id_encuesta):
                 "statement": datos_encuesta_creada["enunciados_preguntas_alternativas"].pop(0),
                 "alternatives": []
             }
-            tamAlt = datos_encuesta_creada["cantidad_opciones_por_pregunta"].pop(0)
+            cantidad_alternativas = datos_encuesta_creada["cantidad_opciones_por_pregunta"].pop(0)
             j = 0
-            while j < tamAlt:
+            while j < cantidad_alternativas:
                 dataOption = {
                     "id": datos_encuesta_creada["ids_opciones"][indexOp],
                     "textAlt": datos_encuesta_creada["strings_opciones"][indexOp]

@@ -86,8 +86,7 @@ def crear_encuesta():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
         guardar_encuesta(surveyData)
-        return redirect(url_for("dashboard_admin"))
-    return redirect(url_for("dashboard_admin"))
+        return "Exitoso"
 
 @app.route("/delete_survey", methods=['POST'])
 @login_required
@@ -133,11 +132,7 @@ def Survey(id_encuesta, section="preguntas"):
             "questions": []
         }
         return render_template("admin/survey.html", data={
-            "userData": {
-                "username": "Benjamin Fernandez",
-                "email": "bfernandez@inf.udec.cl",
-                "role": "Admin",
-             },
+
             "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
@@ -149,11 +144,7 @@ def Survey(id_encuesta, section="preguntas"):
     else:
         dataSurvey = crear_dataSurvey(id_encuesta)
         return render_template("admin/survey.html", data={
-            "userData": {
-                "username": "Benjamin Fernandez",
-                "email": "bfernandez@inf.udec.cl",
-                "role": "Admin",
-            },
+
             "url": "survey",
             "options": ["Preguntas", "Respuestas", "Configuración"],
             "selected": section,
@@ -188,11 +179,7 @@ def answer_survey(id_encuesta):
         dataSurvey = crear_dataSurvey(id_encuesta)
         print(dataSurvey)
         return render_template("user/answer_survey.html", data={
-            "userData":{
-                "username": "Anonimo",
-                "email": "example@udec.cl",
-                "role": "None",
-            },
+
             "selected": "answer",
             "dataSurvey":dataSurvey
             })
@@ -249,12 +236,10 @@ def decode_mail(coded_mail):
 @admin_required
 def dashboard_admin(section="encuestas",active="false"):
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
-    return render_template("admin/dashboardAdmin.html", data={
-        "userData": {
-            "username": "Benjamin Cristobal Fernandez Vera",
-            "email": "bfernandez@inf.udec.cl",
-            "role": "Admin",
-        },
+
+    if section == "encuestas":
+        return render_template("admin/dashboardAdmin.html", data={
+
         "url": "dashboard_admin",
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section,
@@ -262,3 +247,51 @@ def dashboard_admin(section="encuestas",active="false"):
         "dataSurveys": obtener_encuestas()
         }
         )
+    elif section == "usuarios":
+        return render_template("admin/dashboardAdmin.html", data={
+
+        "url": "dashboard_admin",
+        "options": ["Encuestas", "Usuarios", "Configuración"],
+        "selected": section,
+        "active": active,
+        "dataUsers": [{
+            "id_user": 0,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        },
+        {
+            "id_user": 1,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        },
+        {
+            "id_user": 2,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        },
+        {
+            "id_user": 3,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        }
+        ]
+        }
+        )
+    
+    

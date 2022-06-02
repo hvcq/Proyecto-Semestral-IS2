@@ -171,6 +171,8 @@ const config = {
 
 const myChart = new Chart(document.getElementById('myChart'), config);
 
+//Filter
+
 const filterSearch = function () {
   let input, filter, tr, txtValue, trList;
   input = document.querySelector('.searchInput');

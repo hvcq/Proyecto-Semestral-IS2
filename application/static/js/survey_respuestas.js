@@ -9,7 +9,6 @@ const initAns = function () {
 };
 
 const insertRowAnswer = function (answer) {
-
   containerAnswers.insertAdjacentHTML(
     'beforeend',
     `

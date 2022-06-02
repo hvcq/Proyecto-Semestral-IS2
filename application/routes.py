@@ -233,8 +233,9 @@ def decode_mail(coded_mail):
 @admin_required
 def dashboard_admin(section="encuestas",active="false"):
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
-    
-    return render_template("admin/dashboardAdmin.html", data={
+
+    if section == "encuestas":
+        return render_template("admin/dashboardAdmin.html", data={
 
         "url": "dashboard_admin",
         "options": ["Encuestas", "Usuarios", "Configuración"],
@@ -243,3 +244,51 @@ def dashboard_admin(section="encuestas",active="false"):
         "dataSurveys": obtener_encuestas()
         }
         )
+    elif section == "usuarios":
+        return render_template("admin/dashboardAdmin.html", data={
+
+        "url": "dashboard_admin",
+        "options": ["Encuestas", "Usuarios", "Configuración"],
+        "selected": section,
+        "active": active,
+        "dataUsers": [{
+            "id_user": 0,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        },
+        {
+            "id_user": 1,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        },
+        {
+            "id_user": 2,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        },
+        {
+            "id_user": 3,
+            "name": "Benjamin Cristobal",
+            "lastName": "Fernandez Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "22",
+            "registration_date": "22 de enero",
+            "gender": "M"
+        }
+        ]
+        }
+        )
+    
+    

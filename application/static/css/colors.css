@@ -7,4 +7,13 @@
   --color-text: #000;
   --color-unselected: #adadad;
   --color-button-hover: #f2f3f4;
+  --color-survey-card-focus: #0162cd;
+  --color-background: #0162cd;
+  --color-black: #000;
+  --color-de-fondo-derecha-createsurvey:#1085d6;
+  --color-de-fondo-izquierda-createsurvey:#ff3e69;
+  --color-botonshortcut-dashoboard-admin:#ff3e69;
+  --color-hover-dashboard-admin:#e8345d;
+  --color-search:#f7f7f7;
+  --color-border-img-user: green;
 }

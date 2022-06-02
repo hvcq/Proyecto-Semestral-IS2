@@ -14,7 +14,7 @@ if (data.selected !== 'answer') {
 const profileSection = document.querySelector('.profileList');
 const profilePicture = document.querySelector('.profileImg');
 
-if (data.userData.role === 'Admin') {
+if (role === 'admin') {
   profileSection.setAttribute('style', 'background-color: #1784d5');
   profilePicture.setAttribute('src', '/static/resources/user_blue.png');
 } else {

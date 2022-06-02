@@ -4,11 +4,6 @@
 {% block title %}Dashboard Admin{% endblock title %}
 
 {% block cssFiles %}
-<h3>Nombre: {{current_user.nombre}}</h3>
-<h3>email: {{current_user.email}}</h3>
-<h3>password: {{current_user.password}}</h3>
-<h3>rol: {{current_user.rol}}</h3>
-<a class="btn btn-secondary" href="{{ url_for('logout') }}">Cerrar sesion</a>
 <link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard_admin.css" ) }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <script src="https://kit.fontawesome.com/9c3c5148b3.js" crossorigin="anonymous"></script>
@@ -43,21 +38,24 @@
   </div>
 
   <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead" style="height: 45vh;">
-    <div class="d-flex border-bottom align-items-center gap-5 p-3 sticky-top bg-white justify-content-between">
-
-        <h4 class="text-secondary">Mis encuestas</h4>
-        <div class="input-group shadow-sm rounded-5 search">
-          <span class="input-group-text border-0 colorSearch">
-            <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
-          </span>
-          <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+    <div class="d-flex border-bottom align-items-center p-3 sticky-top bg-white justify-content-between">
+        <div class="d-flex gap-3 align-items-center justify-content-between ">
+          <h4 class="text-secondary" style="width: 250px;">Mis encuestas</h4>
+          <div class="input-group shadow-sm rounded-5 search w-100">
+            <span class="input-group-text border-0 colorSearch">
+              <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
+            </span>
+            <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
         </div>
+        
 
       
 
       <div class="dropdown-center">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-          Centered dropdown
+        <button class="btn btn-secondary border-0" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false" disabled style="background-color: #1b97f3;">
+          Filtro
+          <img class="imgSearch" src="{{ url_for("static", filename="resources/filter.png" ) }}">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownCenterBtn">
           <li><a class="dropdown-item" href="#">Action</a></li>
@@ -115,46 +113,34 @@
       <div class="d-flex aling-items-center gap-5">
         <div class="d-flex gap-3 align-items-center"> 
           <h1><b>Usuarios</b></h1>
-          <p class="m-0">200 total</p>
+          <p class="m-0 text-secondary totalUsers"></p>
         </div>
   
         <div class="d-flex align-items-center gap-3">
-          <p class="m-0">Ordenar por:</p>
+          <p class="m-0 text-secondary">Ordenar por:</p>
           <div class="dropdown" style="z-index: 10000;">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+            <button class="btn btn-secondary dropdown-toggle bg-transparent border-0 text-dark btnOrder" type="button" id="dropdownMenuButton1"
               data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown button
+              Nombre
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <ul class="dropdown-menu slideInOrder animate" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" onclick="filterUser(event)">Nombre</a></li>
+              <li><a class="dropdown-item" onclick="filterUser(event)">Apellido</a></li>
+              <li><a class="dropdown-item" onclick="filterUser(event)">Estado</a></li>
+              <li><a class="dropdown-item" onclick="filterUser(event)">Edad</a></li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="btn-group dropstart d-flex align-items-center" style="z-index: 10000;">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          Ingresa email
+      <div class="d-flex align-items-center gap-2">
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa Correo">
+        <button class="btn btn-primary h-50 d-flex gap-2" type="submit" value="button" onclick="addUser(event)">
+          <img src="{{ url_for("static", filename="resources/addUserBtn.png" ) }}" isImage="true">
+          Añadir
         </button>
-
-        <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton1"> <!--acá había un d-flex que hacía que el botón estuviera
-        siempre abierto, ahora, el por qué? no sé no te voy a mentir-->
-          <div class="d-flex flex-row justify-content-between">
-            <p class="m-0" style="opacity: 0">.</p>
-            <button type="button" class="btn-close col-12 align-self-end" aria-label="Close"></button>
-          </div>
-          <div class="mb-3">
-            <input placeholder="Ingresa el email" type="email" class="form-control col-12" id="exampleInputEmail1" aria-describedby="emailHelp">
-          </div>
-          <div class="d-flex flex-row justify-content-between">
-            <p class="m-0"></p>
-            <button type="button" class="btn btn-primary w-50 col-12">Primary</button>
-          </div>
-        </div>
       </div>
+
     </div>
 
     <div class="mt-2 mb-2 card shadow tableFixHead" style="height: 75vh;">
@@ -163,7 +149,7 @@
           <span class="input-group-text border-0 colorSearch">
             <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
           </span>
-          <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+          <input type="text" class="form-control border-0 colorSearch searchInputUser" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
         </div>
         
       </div>
@@ -171,344 +157,24 @@
   
   
       <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
-        <thead>
+        <thead class="theadUsers">
           <tr class="bg-white">
             <th scope="col"><input class="form-check-input" type="checkbox"></th>
-            <th scope="col">Nombres</th>
-            <th scope="col">Apellidos</th>
-            <th scope="col">Correo</th>
+            <th scope="col" style="width: 15%;">Nombres</th>
+            <th scope="col" style="width: 15%;">Apellidos</th>
+            <th scope="col" style="width: 15%;">Correo</th>
             <th scope="col">Edad</th>
-            <th scope="col">Fecha de registro</th>
+            <th scope="col">Rut</th>
+            <th scope="col">Estado</th>
             <th scope="col" class="text-center">Acciones</th>
           </tr>
         </thead>
-        <tbody class="surveys">
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}" style="z-index: 10000;">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-          <tr id="Encuesta${survey.id_survey}">
-            <td scope="row">
-              <input class="form-check-input" type="checkbox">
-            </td>
-            <td filtroTitle="true">Benjamin Cristobal</td>
-            <td>
-             Fernandez Vera
-            </td>
-            <td>
-              bfernandez@inf.udec.cl
-            </td>
-            <td>
-              22
-            </td>
-            <td>
-              None
-            </td>
-            <td class="text-center">
-              <div class="btn-group dropstart">
-                <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="imgDot" src="/static/resources/dots.png" alt="">
-                </button>
-                <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-                  <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                  <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
+        <tbody class="users">
         </tbody>
       </table>
     </div>
   </div>
   
-
-
 
 
 {% else %}
@@ -523,11 +189,13 @@
 
 <script>
   const data = {{ data | tojson }}
+  const role = {{current_user.rol | tojson}}
 </script>
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 {% if data.selected == 'encuestas' %}
-<script src="{{ url_for("static", filename="js/dashboard_admin.js" ) }}"></script>
+<script src="{{ url_for("static", filename="js/dashboard_adminEncuestas.js" ) }}"></script>
 {% elif data.selected == "usuarios" %}
+<script src="{{ url_for("static", filename="js/dashboard_adminUsuarios.js" ) }}"></script>
 {% endif %}
 
 

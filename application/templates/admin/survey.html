@@ -51,6 +51,8 @@
 
 
 {% elif data.selected == "respuestas" %}
+
+
 <p>Respuestas</p>
 <h2>Dashboard Respuestas</h2>
 <div class="d-flex text-center ms-5 me-5 gap-4">
@@ -135,6 +137,7 @@
 {% block jsFiles %}
 <script>
   const data = {{ data | tojson }}
+  const role = {{current_user.rol | tojson}};
 </script>
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 

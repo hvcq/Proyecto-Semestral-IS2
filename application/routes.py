@@ -106,6 +106,13 @@ def responder_encuesta():
         return guardar_respuesta(responses)
     return redirect("/")
 
+@app.route("/agregar_usuario", methods=['POST'])
+def agregar_usuario():
+    if request.method == 'POST':
+        responses = json.loads(request.form.get("response"))
+        return "SE GUARDO EL USUARIO CON EXITO"
+    return redirect("/")
+
 @app.route("/cambiar_estado", methods=['POST'])
 def cambiar_estado():
     if request.method == 'POST':
@@ -256,41 +263,61 @@ def dashboard_admin(section="encuestas",active="false"):
         "options": ["Encuestas", "Usuarios", "Configuración"],
         "selected": section,
         "active": active,
-        "dataUsers": [{
+        "dataUsers": [
+            {
             "id_user": 0,
-            "name": "Benjamin Cristobal",
-            "lastName": "Fernandez Vera",
+            "name": "Fernando Cristobal",
+            "lastName": "Ramirez Vera",
             "email": "bfernandez@inf.udec.cl",
             "age": "22",
             "registration_date": "22 de enero",
-            "gender": "M"
-        },
-        {
+            "gender": "M",
+            "state": bool(0),
+            "rut": "xx.xxx.xxx-x"
+             },
+            {
             "id_user": 1,
             "name": "Benjamin Cristobal",
             "lastName": "Fernandez Vera",
             "email": "bfernandez@inf.udec.cl",
-            "age": "22",
+            "age": "30",
             "registration_date": "22 de enero",
-            "gender": "M"
+            "gender": "M",
+            "state": bool(1),
+            "rut": "xx.xxx.xxx-x"
         },
         {
             "id_user": 2,
-            "name": "Benjamin Cristobal",
-            "lastName": "Fernandez Vera",
+            "name": "Zenjamin Cristobal",
+            "lastName": "Fuentealba Vera",
             "email": "bfernandez@inf.udec.cl",
-            "age": "22",
+            "age": "40",
             "registration_date": "22 de enero",
-            "gender": "M"
+            "gender": "M",
+            "state": bool(0),
+            "rut": "xx.xxx.xxx-x"
         },
         {
             "id_user": 3,
             "name": "Benjamin Cristobal",
-            "lastName": "Fernandez Vera",
+            "lastName": "Alvial Vera",
             "email": "bfernandez@inf.udec.cl",
-            "age": "22",
+            "age": "18",
             "registration_date": "22 de enero",
-            "gender": "M"
+            "gender": "M",
+            "state": bool(0),
+            "rut": "xx.xxx.xxx-x"
+        },
+        {
+            "id_user": 4,
+            "name": "Genjamin Cristobal",
+            "lastName": "Montesino Vera",
+            "email": "bfernandez@inf.udec.cl",
+            "age": "50",
+            "registration_date": "22 de enero",
+            "gender": "M",
+            "state": bool(1),
+            "rut": "xx.xxx.xxx-x"
         }
         ]
         }

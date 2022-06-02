@@ -65,7 +65,6 @@ const statusSurvey = function (event) {
   const input = event.target;
   const id = input.attributes[0].textContent;
   const [survey] = surveys.filter(element => `${element.id_survey}` === id);
-
   survey.active ? (survey.active = false) : (survey.active = true);
 
   const response = {

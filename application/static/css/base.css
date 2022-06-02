@@ -117,6 +117,23 @@ a:focus + .dot {
   }
 }
 
+@keyframes slideInOrder {
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(2.7rem);
+    opacity: 1;
+  }
+
+  0% {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+}
+
 @media (min-width: 768px) {
   .animate {
     animation-duration: 0.3s;
@@ -134,6 +151,11 @@ a:focus + .dot {
 .slideInAction {
   -webkit-animation-name: slideInAction;
   animation-name: slideInAction;
+}
+
+.slideInOrder {
+  -webkit-animation-name: slideInOrder;
+  animation-name: slideInOrder;
 }
 
 /*CODIGO--------------------------------*/

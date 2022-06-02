@@ -137,6 +137,7 @@
 {% block jsFiles %}
 <script>
   const data = {{ data | tojson }}
+  const role = {{current_user.rol | tojson}};
 </script>
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 

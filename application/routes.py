@@ -122,40 +122,40 @@ def cambiar_estado():
 @admin_required
 def Survey(id_encuesta, section="preguntas"):
 
-    if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
-        # if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
-        #    return redirect("/")
-        dataSurvey = {
-            "id": id_encuesta,
-            "title": "",
-            "description": "",
-            "questions": []
-        }
-        return render_template("admin/survey.html", data={
+    if section == "preguntas":
+        if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
+            # if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
+            #    return redirect("/")
+            dataSurvey = {
+                "id": id_encuesta,
+                "title": "",
+                "description": "",
+                "questions": []
+            }
+            return render_template("admin/survey.html", data={
 
-            "url": "survey",
-            "options": ["Preguntas", "Respuestas", "Configuración"],
-            "selected": section,
-            "id": id_encuesta,
-            "dataSurvey": dataSurvey,
-            "textButton": "Guardar"
-        }
-        )
-    else:
-        dataSurvey = crear_dataSurvey(id_encuesta)
-        return render_template("admin/survey.html", data={
+                "url": "survey",
+                "options": ["Preguntas", "Respuestas", "Configuración"],
+                "selected": section,
+                "id": id_encuesta,
+                "dataSurvey": dataSurvey,
+                "textButton": "Guardar"
+            }
+            )
+        else:
+            dataSurvey = crear_dataSurvey(id_encuesta)
+            return render_template("admin/survey.html", data={
 
-            "url": "survey",
-            "options": ["Preguntas", "Respuestas", "Configuración"],
-            "selected": section,
-            "id": id_encuesta,
-            "dataSurvey": dataSurvey,
-            "textButton": "Modificar"
-        }
-        )
-
-def Survey(id_encuesta, section="respuestas"):
-    return render_template("admin/survey.html", data={
+                "url": "survey",
+                "options": ["Preguntas", "Respuestas", "Configuración"],
+                "selected": section,
+                "id": id_encuesta,
+                "dataSurvey": dataSurvey,
+                "textButton": "Modificar"
+            }
+            )
+    elif section == "respuestas":
+         return render_template("admin/survey.html", data={
         "url": "survey",
         "options": ["Preguntas", "Respuestas", "Configuración"],
         "selected": section,
@@ -172,6 +172,8 @@ def Survey(id_encuesta, section="respuestas"):
         ]
         }
         )
+
+   
 
 @app.route("/answer_survey/<int:id_encuesta>")
 def answer_survey(id_encuesta):

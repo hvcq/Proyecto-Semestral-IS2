@@ -22,6 +22,8 @@ def load_user(id):
 
 @app.route("/")
 def index():
+    from werkzeug.security import generate_password_hash
+    print(generate_password_hash("1234"))
     # return redirect(url_for("login"))
     return render_template("index.html")
 

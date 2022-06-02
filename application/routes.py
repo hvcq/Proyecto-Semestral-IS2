@@ -163,6 +163,24 @@ def Survey(id_encuesta, section="preguntas"):
         }
         )
 
+def Survey(id_encuesta, section="respuestas"):
+    return render_template("admin/survey.html", data={
+        "url": "survey",
+        "options": ["Preguntas", "Respuestas", "Configuración"],
+        "selected": section,
+        "id": id_encuesta,
+        "textButton": "Modificar",
+        "dataAnswers": [ 
+            {
+            "id_user": 0,
+            "name": "Leonardo Aravena",
+            "status": "Completado",
+            "date": "22 de julio del 2022",
+            "hour": "19:00 Hrs"
+        }
+        ]
+        }
+        )
 
 @app.route("/answer_survey/<int:id_encuesta>")
 def answer_survey(id_encuesta):

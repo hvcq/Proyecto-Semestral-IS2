@@ -93,9 +93,7 @@ def crear_encuesta():
 def delete_survey():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
-        print(response)
-        return "BORRADA CORRECTAMENTE"
-        #LLAMAR AL METODO PARA GUARDAR ESTADO DE ENCUESTA
+        return eliminar_encuesta(response["id_survey"])
 
 
 @app.route("/responder_encuesta", methods=['POST'])

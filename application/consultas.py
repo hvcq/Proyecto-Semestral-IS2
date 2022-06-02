@@ -120,11 +120,10 @@ def obtener_encuesta_creada(id_encuesta):
 
 def guardar_encuesta(surveyData):
     encuesta_aux = Encuesta(titulo=surveyData["title"], descripcion=surveyData["description"],
-        fecha_inicio=date.today(), activa=True, comentario="", visitas=0, respuestas=0, total_asignados=0)
+        fecha_inicio=date.today(), activa=False, comentario="", visitas=0, respuestas=0, total_asignados=0)
     db.session.add(encuesta_aux)
     db.session.commit()
     for i in range(0, len(surveyData["questions"])):
-        print(surveyData["questions"][i])
         if surveyData["questions"][i]["type"] == "desarrollo":
             pregunta_desarrollo_aux = Pregunta_Desarrollo(
                 enunciado=surveyData["questions"][i]["statement"], numero=i+1)
@@ -140,7 +139,7 @@ def guardar_encuesta(surveyData):
             db.session.add(pregunta_alternativa_aux)
             db.session.commit()
             alternativa_encuesta_aux = Alternativa_Encuesta.insert().values(
-                id_encuesta=surveyData["id"], id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa)
+                id_encuesta=encuesta_aux.id_encuesta, id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa)
             db.engine.execute(alternativa_encuesta_aux)
             db.session.commit()
             for j in range(0, len(surveyData["questions"][i]["alternatives"])):
@@ -153,6 +152,59 @@ def guardar_encuesta(surveyData):
                 db.engine.execute(alternativas_aux)
                 db.session.commit()
     return "guardado"
+
+def eliminar_encuesta(id_encuesta):
+    ids_preguntas_desarrollo = []
+    if db.session.query(Desarrollo_Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
+        tuplas_desarrollo_encuesta = db.session.query(
+            Desarrollo_Encuesta).filter_by(id_encuesta=id_encuesta).all()
+        for tupla_desarrollo_encuesta in tuplas_desarrollo_encuesta:
+            ids_preguntas_desarrollo.append(
+                tupla_desarrollo_encuesta.id_pregunta_desarrollo)
+        borra_tuplas_desarrollo_encuesta = Desarrollo_Encuesta.delete().where(Desarrollo_Encuesta.c.id_encuesta == id_encuesta)
+        db.engine.execute(borra_tuplas_desarrollo_encuesta)
+        db.session.commit()
+        tuplas_pregunta_desarrollo = db.session.query(Pregunta_Desarrollo).filter(
+            Pregunta_Desarrollo.id_pregunta_desarrollo.in_(ids_preguntas_desarrollo)).all()
+        for tupla_pregunta_desarrollo in tuplas_pregunta_desarrollo:
+            db.session.delete(tupla_pregunta_desarrollo)
+            db.session.commit()
+    ids_preguntas_alternativas = []
+    if db.session.query(Alternativa_Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
+        tuplas_alternativa_encuesta = db.session.query(
+            Alternativa_Encuesta).filter_by(id_encuesta=id_encuesta).all()
+        for tupla_alternativa_encuesta in tuplas_alternativa_encuesta:
+            ids_preguntas_alternativas.append(
+                tupla_alternativa_encuesta.id_pregunta_alternativa)
+        borra_tuplas_alternativa_encuesta = Alternativa_Encuesta.delete().where(Alternativa_Encuesta.c.id_encuesta == id_encuesta)
+        db.engine.execute(borra_tuplas_alternativa_encuesta)
+        db.session.commit()
+        ids_opciones = []
+        for id_pregunta_alternativa in ids_preguntas_alternativas:
+            if db.session.query(Alternativas).filter_by(id_pregunta_alternativa=id_pregunta_alternativa).first() != None:
+                tuplas_alternativas_aux = db.session.query(Alternativas).filter_by(
+                    id_pregunta_alternativa=id_pregunta_alternativa).all()
+                for tupla_alternativa in tuplas_alternativas_aux:
+                    ids_opciones.append(tupla_alternativa.id_opcion)
+                borra_tuplas_alternativas = Alternativas.delete().where(Alternativas.c.id_pregunta_alternativa == id_pregunta_alternativa)
+                db.engine.execute(borra_tuplas_alternativas)
+                db.session.commit()
+        tuplas_opcion = db.session.query(Opcion).filter(
+            Opcion.id_opcion.in_(ids_opciones)).all()
+        for tupla_opcion in tuplas_opcion:
+            db.session.delete(tupla_opcion)
+            db.session.commit()
+        tuplas_pregunta_alternativa = db.session.query(Pregunta_Alternativa).filter(
+            Pregunta_Alternativa.id_pregunta_alternativa.in_(ids_preguntas_alternativas)).all()
+        for tupla_pregunta_alternativa in tuplas_pregunta_alternativa:
+            db.session.delete(tupla_pregunta_alternativa)
+            db.session.commit()
+    # cuando se empiece a usar tabla crea_encuesta se debe borrar 
+    # la tupla de esa tabla antes que la tupla de la tabla encuesta
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
+    db.session.delete(encuesta)
+    db.session.commit()
+    return "BORRADA CORRECTAMENTE"
 
 def guardar_respuesta(responses):
     encuestado_aux = Encuestado(

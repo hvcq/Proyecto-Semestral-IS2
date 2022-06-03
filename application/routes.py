@@ -79,14 +79,23 @@ def ir_a_ultima_encuesta():
         return redirect("/survey/"+str(id_ultima_encuesta)+"/preguntas")
 
 
-@app.route("/crear_encuesta", methods=['POST'])
+@app.route("/create_survey", methods=['POST'])
 @login_required
 @admin_required
-def crear_encuesta():
+def create_survey():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
-        guardar_encuesta(surveyData)
-        return "Exitoso"
+        return guardar_encuesta(surveyData)
+
+
+@app.route("/modify_survey", methods=['POST'])
+@login_required
+@admin_required
+def modify_survey():
+    if request.method == 'POST':
+        surveyData = json.loads(request.form.get("surveyData"))
+        return modificar_encuesta(surveyData)
+
 
 @app.route("/delete_survey", methods=['POST'])
 @login_required
@@ -108,6 +117,7 @@ def responder_encuesta():
 def agregar_usuario():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
+        print(responses)
         return responses
     return redirect("/")
 

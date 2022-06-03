@@ -4,23 +4,23 @@ from .consultas import *
 def crear_dataSurvey(id_encuesta):
     datos_encuesta_creada = obtener_encuesta_creada(id_encuesta)
     questions = []
-    # Tenemos ordenados numero, enunciado y comentario por numero (numero de pregunta)
-    # data.id representa el numero de pregunta
+    # Se generan ordenados id_pregunta, enunciado y comentario por numero (numero de pregunta en la encuesta)
     cantidad_total_preguntas = len(datos_encuesta_creada["ids_preguntas_desarrollo"]) + len(datos_encuesta_creada["ids_preguntas_alternativas"])
     i = 0
     indexOp = 0
     while i < cantidad_total_preguntas:
         if len(datos_encuesta_creada["numeros_preguntas_desarrollo"]) > 0 and datos_encuesta_creada["numeros_preguntas_desarrollo"][0] == i+1:
             data = {
-                "id": datos_encuesta_creada["numeros_preguntas_desarrollo"].pop(0),
+                "id": datos_encuesta_creada["ids_preguntas_desarrollo"].pop(0),
                 "type": "desarrollo",
                 "statement": datos_encuesta_creada["enunciados_preguntas_desarrollo"].pop(0),
                 "alternatives": []
             }
             questions.append(data)
+            datos_encuesta_creada["numeros_preguntas_desarrollo"].pop(0)
         else:
             data = {
-                "id": datos_encuesta_creada["numeros_preguntas_alternativas"].pop(0),
+                "id": datos_encuesta_creada["ids_preguntas_alternativas"].pop(0),
                 "type": "alternativa",
                 "statement": datos_encuesta_creada["enunciados_preguntas_alternativas"].pop(0),
                 "alternatives": []
@@ -36,6 +36,7 @@ def crear_dataSurvey(id_encuesta):
                 j += 1
                 indexOp += 1
             questions.append(data)
+            datos_encuesta_creada["numeros_preguntas_alternativas"].pop(0)
         i += 1
 
     dataSurvey = {

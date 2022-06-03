@@ -160,24 +160,35 @@ def Survey(id_encuesta, section="preguntas"):
             }
             )
     elif section == "respuestas":
-         return render_template("admin/survey.html", data={
+
+        # print("Total encuestados activos: ")
+        # print(obtener_numero_encuestados_activos())
+
+        # print("Total encuestados responden: ")
+        # print(obtener_numero_encuestados_responden(id_encuesta))
+
+        #print(obtener_respuestas_opcion(id_encuesta))
+
+        obtener_encuestados_responden(id_encuesta)
+
+        return render_template("admin/survey.html", data={
         "url": "survey",
         "options": ["Preguntas", "Respuestas", "Configuración"],
         "selected": section,
         "id": id_encuesta,
         "textButton": "Modificar",
-        "dataAnswers": [ 
-            {
-            "id_user": 0,
-            "name": "Leonardo Aravena",
-            "status": "Completado",
-            "date": "22 de julio del 2022",
-            "hour": "19:00 Hrs"
-        }
-        ]
+        "dataAnswers" : obtener_encuestados_responden(id_encuesta)
+        # "dataAnswers": [ 
+        #     {
+        #     "id_user": 0,
+        #     "name": "Leonardo Aravena",
+        #     "status": "Completado",
+        #     "date": "22 de julio del 2022",
+        #     "hour": "19:00 Hrs"
+        # }
+        # ]
         }
         )
-
    
 
 @app.route("/answer_survey/<int:id_encuesta>")

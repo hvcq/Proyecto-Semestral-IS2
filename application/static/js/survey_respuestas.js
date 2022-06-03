@@ -12,20 +12,21 @@ const insertRowAnswer = function (answer) {
   containerAnswers.insertAdjacentHTML(
     'beforeend',
     `
-    <tr id="Answer${answer.id_user}">
-      <td filtroUsuario="true">${answer.name}</td>
+    <tr id="Answer${answer.id_registrado}">
+      <td filtroUsuario="true">${answer.nombre}</td>
       <td>
-        ${answer.status}
+        ${answer.email}
       </td>
       <td>
-        ${answer.date}
+        ${answer.genero}
       </td>
       <td>
-        ${answer.hour}
+        ${answer.edad}
       </td>
     </tr>
   `
   );
 };
+
 
 initAns();

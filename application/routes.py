@@ -105,6 +105,22 @@ def delete_survey():
         response = json.loads(request.form.get("response"))
         return eliminar_encuesta(response["id_survey"])
 
+@app.route("/delete_user", methods=['POST'])
+@login_required
+@admin_required
+def delete_user():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+        return "USUARIO ELIMINADO"
+
+@app.route("/unsuscribe_user", methods=['POST'])
+@login_required
+@admin_required
+def unsuscribe_user():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+        return "USUARIO DESUSCRITO"
+
 
 @app.route("/responder_encuesta", methods=['POST'])
 def responder_encuesta():
@@ -170,24 +186,35 @@ def Survey(id_encuesta, section="preguntas"):
             }
             )
     elif section == "respuestas":
-         return render_template("admin/survey.html", data={
+
+        # print("Total encuestados activos: ")
+        # print(obtener_numero_encuestados_activos())
+
+        # print("Total encuestados responden: ")
+        # print(obtener_numero_encuestados_responden(id_encuesta))
+
+        #print(obtener_respuestas_opcion(id_encuesta))
+
+        obtener_encuestados_responden(id_encuesta)
+
+        return render_template("admin/survey.html", data={
         "url": "survey",
         "options": ["Preguntas", "Respuestas", "Configuración"],
         "selected": section,
         "id": id_encuesta,
         "textButton": "Modificar",
-        "dataAnswers": [ 
-            {
-            "id_user": 0,
-            "name": "Leonardo Aravena",
-            "status": "Completado",
-            "date": "22 de julio del 2022",
-            "hour": "19:00 Hrs"
-        }
-        ]
+        "dataAnswers" : obtener_encuestados_responden(id_encuesta)
+        # "dataAnswers": [ 
+        #     {
+        #     "id_user": 0,
+        #     "name": "Leonardo Aravena",
+        #     "status": "Completado",
+        #     "date": "22 de julio del 2022",
+        #     "hour": "19:00 Hrs"
+        # }
+        # ]
         }
         )
-
    
 
 @app.route("/answer_survey/<int:id_encuesta>")

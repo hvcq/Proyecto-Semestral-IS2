@@ -1,3 +1,4 @@
+import email
 from .models import *
 from datetime import datetime, date
 
@@ -276,7 +277,145 @@ def guardar_respuesta(responses):
                 id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=encuestado_aux.email)
             db.engine.execute(respuesta_alternativa_aux)
             db.session.commit()
+
     return "Respuesta Guardada"
+
+def obtener_respuestas(id_encuesta):
+    pass
+
+def obtener_numero_encuestados_activos():
+    record = db.session.query(Encuestado).filter_by(activo=True).all()
+    return (len(record))
+
+#Se asume que no pueden dejarse encuestas a medio completar
+def obtener_numero_encuestados_responden(id_encuesta):
+
+    preguntas_alternativas = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).all()
+    
+    total_responden = 0
+
+    for op in preguntas_alternativas:
+        list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = op[1]).all()
+        #print(list_opciones)
+        suma_respuestas = 0
+        for r in list_opciones:
+            list_marcas = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = r[1]).all()
+            suma_respuestas = suma_respuestas + len(list_marcas)
+            
+        if (suma_respuestas > total_responden):
+            total_responden = suma_respuestas
+
+    return total_responden
+
+def obtener_respuestas_opcion(id_encuesta):
+    
+    record = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).all()
+
+    lista_preguntas = []
+
+    for rec in record:
+        # dato_pregunta = {}
+        # dato_pregunta.clear()
+
+        #print (rec[1])
+
+        pregunta = db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa = rec[1]).all()
+        
+        for p in pregunta:
+            
+            datos_pregunta = {}
+            datos_pregunta.clear()            
+
+            opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = p.id_pregunta_alternativa).all()
+
+            lista_opciones = []
+
+            for op in opciones:
+                resultado_opcion = {}
+                resultado_opcion.clear()
+                respuestas = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = op.id_opcion).all()
+                numero_respuestas = len(respuestas)
+
+                opcion = db.session.query(Opcion).filter_by(id_opcion = op.id_opcion).first()
+
+                resultado_opcion = {
+                    "id_opcion": op.id_opcion,
+                    "opcion": opcion.opcion,
+                    "respuestas": numero_respuestas
+                }
+
+                lista_opciones.append(resultado_opcion)
+            
+            datos_pregunta = {
+                "id_pregunta":p.id_pregunta_alternativa,
+                "numero": p.numero,
+                "enunciado": p.enunciado,
+                "comentario": p.comentario,
+                "opciones": lista_opciones
+            }
+
+            lista_preguntas.append(datos_pregunta)
+
+    return lista_preguntas
+
+def obtener_encuestados_responden(id_encuesta):
+
+    # Se obtienen la primera pregunta de alternativa de la encuestas
+    primera_pregunta_alternativa = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).first()
+
+    list_responden = []
+
+    # for op in preguntas_alternativas:
+
+    # Se obtienen las opciones de la primera pregunta
+    list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = primera_pregunta_alternativa[1]).all()
+
+    #Por cada opcion se obtienen los emails de los encuestados
+    for r in list_opciones:
+        list_marcas = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = r[1]).all()
+
+        for l in list_marcas:
+            if l != None:
+                list_responden.append(l.email)
+
+    list_encuestados = []
+
+    for i in list_responden:
+
+        datos_encuestado = {}
+        datos_encuestado.clear()
+
+        encuestado = db.session.query(Registrado).filter_by(email=i).first()
+
+        
+        if(encuestado == None):
+            datos_encuestado={
+                "id_registrado": None,
+                "email": i,
+                "nombre": "Anónimo",
+                "genero": "-",
+                "edad": "-"
+            }
+
+        else:
+            datos_encuestado={
+                "id_registrado": encuestado.id_registrado,
+                "email": i,
+                "nombre": encuestado.nombre,
+                "genero": encuestado.genero,
+                "edad": calcular_edad(encuestado.fecha_nacimiento)
+            }
+        
+        list_encuestados.append(datos_encuestado)
+
+    return (list_encuestados)
+
+
+def calcular_edad(fecha_nacimiento):
+    
+    hoy = date.today()
+    edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+    return edad
 
 def agregar_usuario_anonimo():
     

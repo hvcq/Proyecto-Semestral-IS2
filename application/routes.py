@@ -96,6 +96,22 @@ def delete_survey():
         response = json.loads(request.form.get("response"))
         return eliminar_encuesta(response["id_survey"])
 
+@app.route("/delete_user", methods=['POST'])
+@login_required
+@admin_required
+def delete_user():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+        return "USUARIO ELIMINADO"
+
+@app.route("/unsuscribe_user", methods=['POST'])
+@login_required
+@admin_required
+def unsuscribe_user():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+        return "USUARIO DESUSCRITO"
+
 
 @app.route("/responder_encuesta", methods=['POST'])
 def responder_encuesta():

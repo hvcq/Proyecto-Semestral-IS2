@@ -54,6 +54,10 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
+@app.route("/register")
+def register():
+   return render_template("register.html")
+
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
 @login_required
 @admin_required

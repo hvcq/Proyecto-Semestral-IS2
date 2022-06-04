@@ -1,32 +1,58 @@
 'use strict';
 
-const containerAnswers = document.querySelector('.answers');
+console.log(data)
 
-let answers = data.dataAnswers;
+const containerUsers = document.querySelector('.users');
 
-const initAns = function () {
-  for (const answer of answers) insertRowAnswer(answer);
+let users = data.dataUsers;
+
+const initUsr = function () {
+  for (const user of users) insertRowUser(user);
 };
 
-const insertRowAnswer = function (answer) {
-  containerAnswers.insertAdjacentHTML(
+const insertRowUser = function (user) {
+  containerUsers.insertAdjacentHTML(
     'beforeend',
     `
-    <tr id="Answer${answer.id_registrado}">
-      <td filtroUsuario="true">${answer.nombre}</td>
+    <tr id="User${user.id_registrado}">
+      <td filtroUsuario="true">${user.nombre}</td>
       <td>
-        ${answer.email}
+        ${user.email}
       </td>
       <td>
-        ${answer.genero}
+        ${user.genero}
       </td>
       <td>
-        ${answer.edad}
+        ${user.edad}
       </td>
     </tr>
   `
   );
 };
 
+initUsr();
+
+// ------ RESPUESTAS ------
+
+const containerAnswers = document.querySelector('.answers');
+
+let answers = data.dataAnswers;
+
+const initAns = function () {
+  for (const ans of answers) insertRowAnswer(ans);
+};
+
+const insertRowAnswer = function (ans) {
+  containerAnswers.insertAdjacentHTML(
+    'beforeend',
+    `
+    <tr id="Answer${ans.id_pregunta}">
+      <td>${ans.numero}</td>
+      
+    </tr>
+  `
+  );
+};
 
 initAns();
+

@@ -17,6 +17,11 @@
 
 console.log(data.dataSurvey);
 
+let poolDesarrollo = {
+  deleteDesarrollo: [],
+  addDesarrollo: [],
+};
+
 function initTooltip() {
   const buttons = [...document.querySelectorAll("[data-toggle='tooltip']")];
   console.log(buttons);
@@ -144,6 +149,7 @@ const addQuestion = function () {
     type: 'desarrollo',
     alternatives: [],
   };
+  poolDesarrollo.addDesarrollo.push(idNew);
   data.dataSurvey.questions.push(questionAdd);
   poolId.desarrollo.push(questionAdd.id);
   moveScroll(idNew);
@@ -163,7 +169,15 @@ const deleteElement = function (event) {
   } else if (parent.getAttribute('alternative') === 'false') {
     idElement = parseInt(parent.getAttribute('id').slice(10));
     typeElement = 'desarrollo';
+    resultIdArray = poolDesarrollo.addDesarrollo.filter(idQuestion => idQuestion !== idElement);
+    if (resultIdArray.length === poolDesarrollo.addDesarrollo.length) {
+      poolDesarrollo.deleteDesarrollo.push(idElement);
+    }
+
+    poolDesarrollo.addDesarrollo.length = resultIdArray;
   }
+
+  poolDelete.deleteQuestions.push(idElement);
 
   console.log(idElement + typeElement);
 
@@ -287,6 +301,8 @@ const deleteAlternative = function (event) {
   let idOpcion = element.getAttribute('id').slice(6);
   let idParent = parent.parentNode.parentNode.getAttribute('id').slice(11);
 
+  poolDelete.deleteAlternatives.push(idOpcion);
+
   if (parent.childElementCount > 2) {
     const [result] = data.dataSurvey.questions.filter(question => question.id === parseInt(idParent) && question.type === 'alternativa');
     const [option] = result.alternatives.filter(val => val.id === parseInt(idOpcion));
@@ -362,6 +378,8 @@ const handleInputs = function (event) {
 // HANDLE INPUTS FIN--------------------------------------------------------
 
 const sendData = function () {
+  data.surveyData.poolDelete = poolDelete;
+
   myModal.show();
   $.ajax({
     url: '/crear_encuesta',
@@ -374,6 +392,8 @@ const sendData = function () {
       // delay();
     },
   });
+
+  //
 
   async function delay() {
     await new Promise(done => setTimeout(() => done(), 3000));

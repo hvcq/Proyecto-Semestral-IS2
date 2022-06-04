@@ -87,24 +87,6 @@
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade myModalSure" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog modal-dialog-centered pb-5">
-    <div class="modal-content">
-      <div class="modal-body d-flex flex-column align-items-center text-center">
-        <img class="w-50" src="{{ url_for("static",
-        filename="resources/alarm.png" ) }}">
-        <h1 class="titleModal"></h1>
-        <h5>Recuerda que esta acción no se puede deshacer</h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger buttonModal">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 {% elif data.selected == "usuarios" %}
   <div class="ms-5 me-5"> <!-- container -->
@@ -180,6 +162,24 @@
 {% else %}
 <h1>Dashboard Configuracion</h1>
 {% endif %}
+
+<!-- Modal -->
+<div class="modal fade myModalSure" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-dialog-centered pb-5">
+    <div class="modal-content">
+      <div class="modal-body d-flex flex-column align-items-center text-center">
+        <img class="w-50" src="{{ url_for("static",
+        filename="resources/alarm.png" ) }}">
+        <h1 class="titleModal"></h1>
+        <h5>Recuerda que esta acción no se puede deshacer</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger buttonModal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock content %}
 

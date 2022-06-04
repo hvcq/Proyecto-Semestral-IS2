@@ -291,9 +291,12 @@ def obtener_numero_encuestados_responden(id_encuesta):
     
     total_responden = 0
 
+    if preguntas_alternativas == None:
+        return total_responden
+
     for op in preguntas_alternativas:
         list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = op[1]).all()
-        #print(list_opciones)
+    
         suma_respuestas = 0
         for r in list_opciones:
             list_marcas = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = r[1]).all()
@@ -304,18 +307,42 @@ def obtener_numero_encuestados_responden(id_encuesta):
 
     return total_responden
 
+#Se obtiene el título y descripción de la encuesta
+def obtener_titulo_encuesta(id_encuesta):
+    record = db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first()
+
+    if (record != None):
+        titulo_encuesta = {
+            "titulo" : record.titulo,
+            "descripcion" : record.descripcion
+        }
+    else:
+        titulo_encuesta = {
+            "titulo" : None,
+            "descripcion" : None,
+        }
+    return (titulo_encuesta)
+
 #Se obtienen las respuestas de cada pregunta con la cantidad por cada opción
 def obtener_respuestas_opcion(id_encuesta):
     
     record = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).all()
 
+    if record == None:
+
+        datos_pregunta = {
+                "id_pregunta": None,
+                "numero": None,
+                "enunciado": None,
+                "comentario": None,
+                "opciones": []
+            }
+            
+        return (datos_pregunta)
+
     lista_preguntas = []
 
     for rec in record:
-        # dato_pregunta = {}
-        # dato_pregunta.clear()
-
-        #print (rec[1])
 
         pregunta = db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa = rec[1]).all()
         
@@ -365,9 +392,10 @@ def obtener_encuestados_responden(id_encuesta):
     # Se obtienen la primera pregunta de alternativa de la encuestas
     primera_pregunta_alternativa = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).first()
 
-    list_responden = []
+    if primera_pregunta_alternativa == None:
+        return None
 
-    # for op in preguntas_alternativas:
+    list_responden = []
 
     # Se obtienen las opciones de la primera pregunta
     list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = primera_pregunta_alternativa[1]).all()

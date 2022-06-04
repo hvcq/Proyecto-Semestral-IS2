@@ -187,35 +187,15 @@ def Survey(id_encuesta, section="preguntas"):
             )
     elif section == "respuestas":
 
-        # print("Total encuestados activos: ")
-        # print(obtener_numero_encuestados_activos())
-
-        # print("Total encuestados responden: ")
-        # print(obtener_numero_encuestados_responden(id_encuesta))
-
-        #print(obtener_respuestas_opcion(id_encuesta))
-
-        #obtener_encuestados_responden(id_encuesta)
-
-        print(obtener_respuestas_opcion(id_encuesta))
-
         return render_template("admin/survey.html", data={
         "url": "survey",
         "options": ["Preguntas", "Respuestas", "Configuración"],
         "selected": section,
         "id": id_encuesta,
         "textButton": "Modificar",
+        "dataSurveyTitle" : obtener_titulo_encuesta(id_encuesta),
         "dataUsers" : obtener_encuestados_responden(id_encuesta),
         "dataAnswers" : obtener_respuestas_opcion(id_encuesta)
-        # "dataAnswers": [ 
-        #     {
-        #     "id_user": 0,
-        #     "name": "Leonardo Aravena",
-        #     "status": "Completado",
-        #     "date": "22 de julio del 2022",
-        #     "hour": "19:00 Hrs"
-        # }
-        # ]
         }
         )
    

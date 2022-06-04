@@ -47,13 +47,3 @@ def crear_dataSurvey(id_encuesta):
     }
 
     return dataSurvey
-
-# def crear_dataEncuestados(id_encuesta):
-
-#     datos_encuestados = obtener_encuestados_responden(id_encuesta)
-
-#     dataAnswer = {
-        
-#     }
-
-    

@@ -194,7 +194,9 @@ def Survey(id_encuesta, section="preguntas"):
 
         #print(obtener_respuestas_opcion(id_encuesta))
 
-        obtener_encuestados_responden(id_encuesta)
+        #obtener_encuestados_responden(id_encuesta)
+
+        print(obtener_respuestas_opcion(id_encuesta))
 
         return render_template("admin/survey.html", data={
         "url": "survey",
@@ -202,7 +204,8 @@ def Survey(id_encuesta, section="preguntas"):
         "selected": section,
         "id": id_encuesta,
         "textButton": "Modificar",
-        "dataAnswers" : obtener_encuestados_responden(id_encuesta)
+        "dataUsers" : obtener_encuestados_responden(id_encuesta),
+        "dataAnswers" : obtener_respuestas_opcion(id_encuesta)
         # "dataAnswers": [ 
         #     {
         #     "id_user": 0,

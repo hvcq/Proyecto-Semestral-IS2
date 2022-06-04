@@ -322,14 +322,11 @@ def guardar_respuesta(responses):
 
     return "Respuesta Guardada"
 
-def obtener_respuestas(id_encuesta):
-    pass
-
 def obtener_numero_encuestados_activos():
     record = db.session.query(Encuestado).filter_by(activo=True).all()
     return (len(record))
 
-#Se asume que no pueden dejarse encuestas a medio completar
+#Se asume que no se pueden dejar encuestas incompletas
 def obtener_numero_encuestados_responden(id_encuesta):
 
     preguntas_alternativas = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).all()
@@ -349,6 +346,7 @@ def obtener_numero_encuestados_responden(id_encuesta):
 
     return total_responden
 
+#Se obtienen las respuestas de cada pregunta con la cantidad por cada opción
 def obtener_respuestas_opcion(id_encuesta):
     
     record = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).all()
@@ -398,8 +396,12 @@ def obtener_respuestas_opcion(id_encuesta):
 
             lista_preguntas.append(datos_pregunta)
 
+    sorted(lista_preguntas, key = lambda i: i['numero'])
+
     return lista_preguntas
 
+#Se obtienen los datos de los usuarios que responden la encuesta
+#Se asume que no se pueden dejar encuestas incompletas
 def obtener_encuestados_responden(id_encuesta):
 
     # Se obtienen la primera pregunta de alternativa de la encuestas
@@ -422,13 +424,13 @@ def obtener_encuestados_responden(id_encuesta):
 
     list_encuestados = []
 
+    #Se obtienen los datos de los encuestados:
     for i in list_responden:
 
         datos_encuestado = {}
         datos_encuestado.clear()
 
         encuestado = db.session.query(Registrado).filter_by(email=i).first()
-
         
         if(encuestado == None):
             datos_encuestado={

@@ -1,6 +1,7 @@
 import email
 from .models import *
 from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 
 def obtener_encuestas():
     """Consulta para obtener todas las encuestas de la bd"""
@@ -17,7 +18,7 @@ def obtener_encuestas():
                     "id_survey": tupla_encuesta.id_encuesta,
                     "title": tupla_encuesta.titulo,
                     "description": tupla_encuesta.descripcion,
-                    "start_date": tupla_encuesta.fecha_inicio,
+                    "start_date": tupla_encuesta.fecha_inicio.strftime("%d/%m/%Y"),
                     "end_date": "",
                     "active" : tupla_encuesta.activa,
                     "comentario": tupla_encuesta.comentario,
@@ -29,7 +30,7 @@ def obtener_encuestas():
                     "id_survey": tupla_encuesta.id_encuesta,
                     "title": tupla_encuesta.titulo,
                     "description": tupla_encuesta.descripcion,
-                    "start_date": tupla_encuesta.fecha_inicio,
+                    "start_date": tupla_encuesta.fecha_inicio.strftime("%d/%m/%Y"),
                     "end_date": tupla_encuesta.fecha_fin,
                     "active" : tupla_encuesta.activa,
                     "comentario": tupla_encuesta.comentario,
@@ -38,6 +39,46 @@ def obtener_encuestas():
                 }
             lista_encuestas.append(datos_encuesta_aux)
         return lista_encuestas
+
+def obtener_usuarios():
+    """Consulta para obtener todos los usuarios encuestados (anonimos y registrados)"""
+    dataUsers = []
+    if db.session.query(Encuestado).first() == None:
+        return dataUsers
+    else:
+        tuplas_encuestados = db.session.query(Encuestado).order_by(Encuestado.email).all()
+        i = 0
+        for tupla_encuestado in tuplas_encuestados:
+            datos_encuestado_aux = {}
+            datos_encuestado_aux.clear()
+            if db.session.query(Registrado).filter_by(email=tupla_encuestado.email).first() == None:
+                datos_encuestado_aux = {
+                    "id_user": i,
+                    "name": "Anonimo",
+                    "lastName": "None",
+                    "email": tupla_encuestado.email,
+                    "age": "None",
+                    "registration_date": None,
+                    "gender": None,
+                    "state": tupla_encuestado.activo,
+                    "rut": "xx.xxx.xxx-x"
+                }
+            else:
+                tupla_registrado_aux = db.session.query(Registrado).filter_by(email=tupla_encuestado.email).first()
+                datos_encuestado_aux = {
+                    "id_user": tupla_registrado_aux.id_registrado,
+                    "name": tupla_registrado_aux.nombre,
+                    "lastName": tupla_registrado_aux.apellidos,
+                    "email": tupla_encuestado.email,
+                    "age": relativedelta(datetime.now(),datetime.combine(tupla_registrado_aux.fecha_nacimiento, datetime.min.time())).years,
+                    "registration_date": tupla_registrado_aux.fecha_registro.strftime("%d/%m/%Y"),
+                    "gender": tupla_registrado_aux.genero,
+                    "state": tupla_encuestado.activo,
+                    "rut": tupla_registrado_aux.rut
+                }
+            dataUsers.append(datos_encuestado_aux)
+            i = i + 1
+        return dataUsers
 
 def obtener_encuesta_creada(id_encuesta):
     """Consulta para obtener datos de preguntas de desarrollo"""
@@ -161,6 +202,7 @@ def guardar_encuesta(surveyData):
 
 def modificar_encuesta(surveyData):
     print(surveyData)
+    return("Modificacion Exitosa")
     # Modifica titulo y descripcion de la encuesta
     nueva_encuesta = db.session.query(Encuesta).filter_by(id_encuesta=surveyData["id"]).first()
     if surveyData["title"] == "":
@@ -447,6 +489,23 @@ def calcular_edad(fecha_nacimiento):
     edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
     return edad
 
-def agregar_usuario_anonimo():
-    
-    print()
+def agregar_encuestado_anonimo(responses):
+    encuestado_anonimo = Encuestado(email=responses["email"],activo=False)
+    db.session.add(encuestado_anonimo)
+    db.session.commit()
+    return print("Usuario anonimo agregado correctamente")
+
+def cambiar_estado_encuestado_anonimo(responses):
+    encuestado_anonimo = db.session.query(Encuestado).filter_by(email=responses["email"]).first()
+    encuestado_anonimo.estado = responses["state"]
+    db.session.commit()
+    return print("Estado de usuario anonimo cambiado correctamente")
+
+def desunscribir_registrado(response):
+    if db.session.query(Registrado).filter_by(id_registrado=response["id_survey"]).first() != None:
+        registrado_aux = db.session.query(Registrado).filter_by(id_registrado=response["id_survey"]).first()
+        db.session.delete(registrado_aux)
+        db.session.commit()
+        return "USUARIO DESUSCRITO"
+    else:
+        return "Error: este usuario no esta registrado"

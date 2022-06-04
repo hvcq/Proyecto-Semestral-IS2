@@ -55,13 +55,13 @@ def obtener_usuarios():
                 datos_encuestado_aux = {
                     "id_user": i,
                     "name": "Anonimo",
-                    "lastName": None,
+                    "lastName": "None",
                     "email": tupla_encuestado.email,
-                    "age": None,
+                    "age": "None",
                     "registration_date": None,
                     "gender": None,
                     "state": tupla_encuestado.activo,
-                    "rut": None
+                    "rut": "xx.xxx.xxx-x"
                 }
             else:
                 tupla_registrado_aux = db.session.query(Registrado).filter_by(email=tupla_encuestado.email).first()
@@ -474,7 +474,10 @@ def cambiar_estado_encuestado_anonimo(responses):
     return print("Estado de usuario anonimo cambiado correctamente")
 
 def desunscribir_registrado(response):
-    registrado_aux = db.session.query(Registrado).filter_by(id_registrado=response["id_survey"]).first()
-    db.session.delete(registrado_aux)
-    db.session.commit()
-    return "USUARIO DESUSCRITO"
+    if db.session.query(Registrado).filter_by(id_registrado=response["id_survey"]).first() != None:
+        registrado_aux = db.session.query(Registrado).filter_by(id_registrado=response["id_survey"]).first()
+        db.session.delete(registrado_aux)
+        db.session.commit()
+        return "USUARIO DESUSCRITO"
+    else:
+        return "Error: este usuario no esta registrado"

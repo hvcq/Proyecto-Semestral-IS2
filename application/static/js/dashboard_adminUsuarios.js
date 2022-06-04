@@ -103,7 +103,7 @@ const addUser = function (event) {
     age: 'None',
     registration_date: 'None',
     gender: 'None',
-    state: true,
+    state: false,
     rut: 'xx.xxx.xxx-x',
   };
 

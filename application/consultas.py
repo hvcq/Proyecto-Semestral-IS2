@@ -2,6 +2,7 @@ import email
 from .models import *
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
+import base64
 
 def obtener_encuestas():
     """Consulta para obtener todas las encuestas de la bd"""
@@ -482,7 +483,6 @@ def obtener_encuestados_responden(id_encuesta):
 
     return (list_encuestados)
 
-
 def calcular_edad(fecha_nacimiento):
     
     hoy = date.today()
@@ -509,3 +509,15 @@ def desunscribir_registrado(response):
         return "USUARIO DESUSCRITO"
     else:
         return "Error: este usuario no esta registrado"
+
+#Obtener el link personalizado desde el mail
+def codificar_mail(mail):
+    str_bytes = mail.encode("ascii")    
+    base_bytes = base64.b64encode(str_bytes)
+    return base_bytes.decode("ascii")
+
+#Obtener el mail desde el link personalizado
+def decodificar_mail(code):
+    base_bytes = code.encode("ascii")
+    str_bytes = base64.b64decode(base_bytes)
+    return str_bytes.decode("ascii")

@@ -222,18 +222,12 @@ def answer_survey(id_encuesta):
 def send_mail():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
-        print(response)
+        print(response.get("id_survey"))
+        
+        send_mail = Send_Mail()
+        send_mail.send_mail(response.get("id_survey"))
+        
         return "PUBLICADA CORRECTAMENTE"
-        #COMENTADO POR MIENTRAS PARA PROBAR QUE FUNCIONA EL LISTENER
-        # #Crea el objeto send_mail:
-        # send_mail = Send_Mail()
-
-        # #Obtiene mails desde BD:
-        # send_mail.get_mails()
-
-        # #Metodo para enviar los mails:
-        # #send_mail.send_mail()
-        # return "correos obtenidos!"
 
 #Ruta para testear mails activos, no activos y no existentes en la base de datos
 #Desde una url codificada con base64: 

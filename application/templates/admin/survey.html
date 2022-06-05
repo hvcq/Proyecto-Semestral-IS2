@@ -58,22 +58,21 @@
 <!-- <p>Respuestas</p> -->
 <!-- <h2>{{data.title}}</h2>
 <h6>{{data.description}}</h6> -->
-<div class="mx-5 my-4">
-  <h2>Encuesta de gatos</h2>
-  <h6 class="text-secondary">Los gatos son muy bonitos. Si</h6>
+<div id="surveyTitle" class="mx-5 my-4">
+  <!-- Titulo y descripcion -->
 </div>
 
 
 <div class="d-flex mx-5 gap-4">
-  <div class="card shadow firstQuestion" style="width: 50%; height: 25vh;">
-    <!--AQUI SE INSERTA LA PRIMERA PREGUNTA-->
-    <div id="containerAlternatives" class="overflow-auto mb-3"></div>
+  <div  id="containerAlternatives" class="card shadow questions overflow-auto" style="width: 50%; height: 40vh;">
+    <!--AQUI SE INSERTAN LAS PREGUNTAS-->
+    <div class="overflow-auto mb-3"></div>
   </div>
 
 
-  <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
+  <!-- <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
     <h5>Resultados </h5>
-  </div>
+  </div> -->
 
 
 
@@ -97,7 +96,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade myModalSure" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<!-- <div class="modal fade myModalSure" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-dialog-centered pb-5">
     <div class="modal-content">
@@ -112,19 +111,19 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
-<div class="modal fade myModalQuestions" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<!-- <div class="modal fade myModalQuestions" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog modal-dialog-centered pb-5">
     <div class="modal-content d-flex justify-content-center">
       <div class="card shadow firstQuestion" style="width: 50%; height: 25vh;">
         <div class="d-flex justify-content-between align-items-center">
           <h1>${ans.enunciado}</h1> <!--Mutable-->
-          <button class="btn btn-secondary bg-transparent border-0 btnOrder h-50 text-secondary" type="button" id="dropdownMenuButton1"
+          <!-- <button class="btn btn-secondary bg-transparent border-0 btnOrder h-50 text-secondary" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false" onclick="showQuestions(event)">
                 Ver las preguntas
-          </button>
+          </button> 
         </div>
         <div class="d-flex align-items-center gap-3 mb-2">
           <div class="form-check w-75">
@@ -138,7 +137,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <div class="modal fade myModalQuestions" role="dialog" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
   tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

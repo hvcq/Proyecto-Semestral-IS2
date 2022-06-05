@@ -133,7 +133,7 @@ def responder_encuesta():
 def agregar_usuario():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
-        agregar_encuestado_anonimo(responses)
+        agregar_invitado(responses)
         return responses
     return redirect("/")
 
@@ -141,7 +141,7 @@ def agregar_usuario():
 def cambiar_estado():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
-        cambiar_estado_encuestado_anonimo(responses)
+        cambiar_estado_invitado(responses)
         return responses
 
 

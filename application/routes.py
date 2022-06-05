@@ -202,20 +202,40 @@ def Survey(id_encuesta, section="preguntas"):
         }
         )
    
+@app.route("/answer_survey/<string:url>/<int:id_encuesta>")
+def answer_survey(url, id_encuesta):
 
-@app.route("/answer_survey/<int:id_encuesta>")
-def answer_survey(id_encuesta):
-    if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
-        dataSurvey = crear_dataSurvey(id_encuesta)
-        print(dataSurvey)
-        return render_template("user/answer_survey.html", data={
+    email = decodificar_mail(url)
 
-            "selected": "answer",
-            "dataSurvey":dataSurvey
-            })
-    else:
-        print("Error: Encuesta no existente")
+    print("\n"+email+"\n")
+
+    if (db.session.query(Encuestado).filter_by(email = email) == None):
+        print("Error 404")
         return redirect("/")
+
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
+
+    if encuesta != None:
+
+        if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
+            print("Encuesta ya respondida")
+            return redirect("/")
+
+        if (encuesta.activa == True):
+
+            dataSurvey = crear_dataSurvey(id_encuesta)
+            print(dataSurvey)
+            return render_template("user/answer_survey.html", data={
+
+                "selected": "answer",
+                "dataSurvey":dataSurvey, 
+                "encuestado": email
+                })
+        else:
+            return ("Encuesta no está activa")
+    else:
+        return ("Error: Encuesta no existente")
+        #return redirect("/")
 
 # Enviar mails
 @app.route("/mail_sent", methods=['POST'])
@@ -231,26 +251,26 @@ def send_mail():
 
 #Ruta para testear mails activos, no activos y no existentes en la base de datos
 #Desde una url codificada con base64: 
-@app.route("/test_mail/<coded_mail>")
-def decode_mail(coded_mail):
-    obj = Send_Mail()
+# @app.route("/test_mail/<coded_mail>")
+# def decode_mail(coded_mail):
+#     obj = Send_Mail()
 
-    #Decodifica mails desde URL:
-    mail = obj.decode_link(coded_mail) 
+#     #Decodifica mails desde URL:
+#     mail = obj.decode_link(coded_mail) 
 
-    #Obtiene registro desde BD, segun el mail decodificado
-    rec = db.session.query(Encuestado).filter_by(email=mail).first()
+#     #Obtiene registro desde BD, segun el mail decodificado
+#     rec = db.session.query(Encuestado).filter_by(email=mail).first()
 
-    #Si el mail existe:
-    if rec!= None:
+#     #Si el mail existe:
+#     if rec!= None:
 
-        #Si el mail esta activo:
-        if rec.activo == True:
-            return ("Mail Activo: " + rec.email)
-        else:
-            return ("Mail No Activo: " + rec.email)
-    else:
-        return "Mail No Registrado"
+#         #Si el mail esta activo:
+#         if rec.activo == True:
+#             return ("Mail Activo: " + rec.email)
+#         else:
+#             return ("Mail No Activo: " + rec.email)
+#     else:
+#         return "Mail No Registrado"
 
 
 @app.route("/dashboard_admin/")

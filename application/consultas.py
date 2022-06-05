@@ -443,6 +443,9 @@ def obtener_encuestados_responden(id_encuesta):
     # Se obtienen las opciones de la primera pregunta
     list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = primera_pregunta_alternativa[1]).all()
 
+    if list_opciones == None:
+        return None
+
     #Por cada opcion se obtienen los emails de los encuestados
     for r in list_opciones:
         list_marcas = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = r[1]).all()
@@ -450,6 +453,9 @@ def obtener_encuestados_responden(id_encuesta):
         for l in list_marcas:
             if l != None:
                 list_responden.append(l.email)
+
+    if list_responden == None:
+        return None
 
     list_encuestados = []
 
@@ -518,6 +524,41 @@ def codificar_mail(mail):
 
 #Obtener el mail desde el link personalizado
 def decodificar_mail(code):
+
     base_bytes = code.encode("ascii")
     str_bytes = base64.b64decode(base_bytes)
     return str_bytes.decode("ascii")
+
+#Comprueba si el encuestado ha contestado la encuesta previamente
+#True: Ya la ha contestado
+#Se asume que la encuesta es correcta, con al menos una pregunta y dos alternativas
+def comprobar_encuestado_encuesta(id_encuesta, email):
+
+    # Se obtienen la primera pregunta de alternativa
+    primera_pregunta_alternativa = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).first()
+
+     # Se obtienen las opciones de la primera pregunta
+    list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = primera_pregunta_alternativa[1]).all()
+
+    #Por cada opcion se obtienen los emails de los encuestados
+    for op in list_opciones:
+        
+        #Lista de mails de encuestados
+        list_mails = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = op[1]).all()
+
+        #Si no hay respuestas de encuestados se cambia a la siguiente opcion
+        if list_mails == None:
+            continue
+        
+        #Si existe el mail en la lista
+        if email in list_mails:
+            return True
+
+        # #Se recorre la lista comprobando los mails
+        # for i in list_mails:
+
+        #     #Si se encuentra el mail se retorna True
+        #     if i == email:
+        #         return True
+
+    return False

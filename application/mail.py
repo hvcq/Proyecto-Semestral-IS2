@@ -30,7 +30,8 @@ class Send_Mail:
 
         record = db.session.query(Registrado).filter_by(email=email).first()
         if record != None:
-            return record.nombre
+            nombre = (record.nombre + " " + record.apellidos) 
+            return nombre
         else:
             return email
 
@@ -59,7 +60,7 @@ class Send_Mail:
                 nombre = self.get_name(user)
 
                 subject ="Saludos "+ nombre
-                message = "Estimado "+ nombre +" :\n Gracias por participar en el centro de estudios públicos al contestar la siguiente encuesta: \nhttp://localhost:3000/"+ mail_coded + "/" +id_survey+ "/"
+                message = "Estimado "+ nombre +" :\nGracias por participar en el centro de estudios públicos al contestar la siguiente encuesta: \nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
 
                 msg = Message(recipients=[user], body=message, subject=subject)
 

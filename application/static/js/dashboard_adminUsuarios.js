@@ -139,7 +139,9 @@ const showModalSure = function (event) {
     button.removeEventListener('click', deleteUser);
     console.log('ENTRO UNSUSCRIBE');
     title.textContent = '¿Estas seguro que deseas desuscribir al usuario?';
-    button.addEventListener('click', setState);
+    button.addEventListener('click', function () {
+      setState();
+    });
   } else if (type === 'DELETE') {
     button.removeEventListener('click', setState);
     console.log('ENTRO DELETE');

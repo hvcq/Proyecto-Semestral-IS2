@@ -54,6 +54,10 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
+@app.route("/register")
+def register():
+   return render_template("register.html")
+
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
 @login_required
 @admin_required
@@ -186,35 +190,15 @@ def Survey(id_encuesta, section="preguntas"):
             )
     elif section == "respuestas":
 
-        # print("Total encuestados activos: ")
-        # print(obtener_numero_encuestados_activos())
-
-        # print("Total encuestados responden: ")
-        # print(obtener_numero_encuestados_responden(id_encuesta))
-
-        #print(obtener_respuestas_opcion(id_encuesta))
-
-        #obtener_encuestados_responden(id_encuesta)
-
-        print(obtener_respuestas_opcion(id_encuesta))
-
         return render_template("admin/survey.html", data={
         "url": "survey",
         "options": ["Preguntas", "Respuestas", "Configuración"],
         "selected": section,
         "id": id_encuesta,
         "textButton": "Modificar",
+        "dataSurveyTitle" : obtener_titulo_encuesta(id_encuesta),
         "dataUsers" : obtener_encuestados_responden(id_encuesta),
         "dataAnswers" : obtener_respuestas_opcion(id_encuesta)
-        # "dataAnswers": [ 
-        #     {
-        #     "id_user": 0,
-        #     "name": "Leonardo Aravena",
-        #     "status": "Completado",
-        #     "date": "22 de julio del 2022",
-        #     "hour": "19:00 Hrs"
-        # }
-        # ]
         }
         )
    
@@ -238,18 +222,12 @@ def answer_survey(id_encuesta):
 def send_mail():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
-        print(response)
+        print(response.get("id_survey"))
+        
+        send_mail = Send_Mail()
+        send_mail.send_mail(response.get("id_survey"))
+        
         return "PUBLICADA CORRECTAMENTE"
-        #COMENTADO POR MIENTRAS PARA PROBAR QUE FUNCIONA EL LISTENER
-        # #Crea el objeto send_mail:
-        # send_mail = Send_Mail()
-
-        # #Obtiene mails desde BD:
-        # send_mail.get_mails()
-
-        # #Metodo para enviar los mails:
-        # #send_mail.send_mail()
-        # return "correos obtenidos!"
 
 #Ruta para testear mails activos, no activos y no existentes en la base de datos
 #Desde una url codificada con base64: 

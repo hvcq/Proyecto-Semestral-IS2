@@ -1,8 +1,13 @@
 'use strict';
 
-console.log(data)
+console.log(data);
 
 const containerUsers = document.querySelector('.users');
+const containerQuestions = document.querySelector('#ModalQuestions');
+
+var myModal = new bootstrap.Modal(document.querySelector('.myModalQuestions'), {
+  keyboard: false,
+});
 
 let users = data.dataUsers;
 
@@ -34,7 +39,31 @@ initUsr();
 
 // ------ RESPUESTAS ------
 
-const containerAnswers = document.querySelector('.answers');
+const showQuestions = function (event) {
+  myModal.show();
+};
+
+
+const containerTitle = document.querySelector('#surveyTitle');
+
+let surveyTitle = data.dataSurveyTitle;
+
+const insertTitle = function (title){
+  containerTitle.insertAdjacentHTML(
+    'beforeend',
+    `
+    <h2>${title.titulo}</h2>
+    <h6 class="text-secondary">${title.descripcion}</h6>
+  `
+  );
+};
+
+insertTitle(surveyTitle);
+
+const containerAnswers = document.querySelector('.questions');
+const containerAlternatives = document.querySelector('#containerAlternatives');
+
+console.log(containerAnswers);
 
 let answers = data.dataAnswers;
 
@@ -46,13 +75,32 @@ const insertRowAnswer = function (ans) {
   containerAnswers.insertAdjacentHTML(
     'beforeend',
     `
-    <tr id="Answer${ans.id_pregunta}">
-      <td>${ans.numero}</td>
-      
-    </tr>
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>${ans.numero}) ${ans.enunciado}</h1>
+    </div>
   `
   );
+
+  ans.opciones.map(opcion => {
+    containerAlternatives.insertAdjacentHTML(
+      'beforeend',
+      `
+      
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <div class="form-check w-75">
+          <input class="form-check-input" type="radio" name="flexRadioDisabled" id="flexRadioDisabled" disabled>
+          <label class="form-check-label text-dark">
+            ${opcion.opcion}
+          </label>
+        </div>
+        <h6>${opcion.respuestas} respuestas</h6>
+      </div>  
+      `
+    );
+  });
 };
 
-initAns();
+// insertRowAnswer(answers);
 
+initAns();
+//Comentario para que se actualice

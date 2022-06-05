@@ -13,38 +13,40 @@
 {% if data.selected == 'preguntas' %}
 <section class="survey container d-flex flex-column">
   <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
-    <textarea id="title" onchange="handleInputs(event)" class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1"
-      placeholder="Inserte Título" autofocus style="height: 10px"></textarea>
-    <textarea onchange="handleInputs(event)" id="description" class="form-control shadow-none survey__elementDesc" rows="1"
-      placeholder="Description de la encuesta"></textarea>
+    <textarea id="title" onchange="handleInputs(event)"
+      class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1" placeholder="Inserte Título"
+      autofocus style="height: 10px"></textarea>
+    <textarea onchange="handleInputs(event)" id="description" class="form-control shadow-none survey__elementDesc"
+      rows="1" placeholder="Description de la encuesta"></textarea>
   </div>
   <div class="surveyQuestions">
   </div>
   <div class="survey__addButton text-center">
     <button type="button" class="suveryQuestions__button"><img src="{{ url_for("static",
-      filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image" onclick="addQuestion()"></button>
+        filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image" onclick="addQuestion()"></button>
   </div>
 </section>
 
-<div class="d-flex justify-content-between fixed-bottom mb-5" >
-  <button type="button" class="btn-flotante btn-left ms-4" onclick="window.location.href='/dashboard_admin'">Cancelar</button>
+<div class="d-flex justify-content-between fixed-bottom mb-5">
+  <button type="button" class="btn-flotante btn-left ms-4"
+    onclick="window.location.href='/dashboard_admin'">Cancelar</button>
   <button type="button" class="btn-flotante btn-right me-4" onclick="sendData(event)">{{data.textButton}}</button>
 </div>
 
-<div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> 
+<div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered myModal">
-  
+
     <!-- Modal content-->
     <div class="modal-content d-flex flex-column justify-content-center align-items-center p-5 gap-2 myModal shadow">
-      <img src="{{ url_for("static",
-      filename="resources/success.png" ) }}">
+      <img src="{{ url_for("static", filename="resources/success.png" ) }}">
       <h1>¡Encuesta guardada!</h1>
       <h5>Te redireccionaremos a la pagina principal</h5>
       <div class="spinner-border text-primary" role="status">
         <span class="sr-only"></span>
       </div>
     </div>
-    
+
   </div>
 </div>
 
@@ -54,45 +56,31 @@
 
 
 <!-- <p>Respuestas</p> -->
-<h2>Dashboard Respuestas</h2>
-<div class="d-flex text-left ms-5 me-5 gap-4">
-  <div class="card shadow text-left" style="width: 100%;">
-    <!-- <canvas id="myChart" class="mt-3 mb-3"></canvas> -->
-    <h5 class="">Respuestas</h4>
-    <thead>
-      <tr class="bg-white">
-        <th scope="col">1)</th>
-    </tr>
-    </thead>
-    <tbody class="answers">
-    </tbody>
+<!-- <h2>{{data.title}}</h2>
+<h6>{{data.description}}</h6> -->
+<div id="surveyTitle" class="mx-5 my-4">
+  <!-- Titulo y descripcion -->
+</div>
 
+
+<div class="d-flex mx-5 gap-4">
+  <div  id="containerAlternatives" class="card shadow questions overflow-auto" style="width: 50%; height: 40vh;">
+    <!--AQUI SE INSERTAN LAS PREGUNTAS-->
+    <div class="overflow-auto mb-3"></div>
   </div>
 
 
-  <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
-    <!-- <img class="imgShortcuts img--center1 mb-3" src="{{ url_for("static", filename="resources/add.png" ) }}"> -->
+  <!-- <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
     <h5>Resultados </h5>
-    <!-- <button type="button" class="btn btn-danger btnShortcut" onclick="window.location.href='/ir_a_crear_nueva_encuesta'">Crear encuesta</button> -->
-  </div>
-  <!-- <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
-    <img class="imgShortcuts img--center2 mb-3" src="{{ url_for("static", filename="resources/add-user.png" ) }}">
-    <h5>¿Deseas agregar un usuario?</h5>
-    <button type="button" class="btn btn-danger btnShortcut" onclick="window.location.href='usuarios/active'">Añadir usuario</button>
   </div> -->
-  <!-- <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
-    <h1 class="position-absolute">Proximamente...</h1>
-    <img class="imgShortcuts img--center3 mb-3  opacity-50" src="{{ url_for("static", filename="resources/edit.png" ) }}">
-    <h5 class=" opacity-50">¿Deseas editar tu perfil?</h5>
-    <button type="button" class="btn btn-danger btnShortcut  opacity-50" disabled>Editar perfil</button>
-  </div> -->
-  
-  
+
+
+
 </div>
 
 <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead">
 
-  <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
+  <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll">
     <thead>
       <tr class="bg-white">
         <th scope="col">Usuario</th>
@@ -108,23 +96,63 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade myModalSure" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog modal-dialog-centered pb-5">
-  <div class="modal-content">
-    <div class="modal-body d-flex flex-column align-items-center text-center">
-      <img class="w-50" src="{{ url_for("static",
-      filename="resources/alarm.png" ) }}">
-      <h1 class="titleModal"></h1>
-      <h5>Recuerda que esta acción no se puede deshacer</h5>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-      <button type="button" class="btn btn-danger buttonModal">Aceptar</button>
+<!-- <div class="modal fade myModalSure" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-dialog-centered pb-5">
+    <div class="modal-content">
+      <div class="modal-body d-flex flex-column align-items-center text-center">
+        <img class="w-50" src="{{ url_for("static", filename="resources/alarm.png" ) }}">
+        <h1 class="titleModal"></h1>
+        <h5>Recuerda que esta acción no se puede deshacer</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger buttonModal">Aceptar</button>
+      </div>
     </div>
   </div>
-</div>
+</div> -->
+
+<!-- <div class="modal fade myModalQuestions" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-dialog-centered pb-5">
+    <div class="modal-content d-flex justify-content-center">
+      <div class="card shadow firstQuestion" style="width: 50%; height: 25vh;">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1>${ans.enunciado}</h1> <!--Mutable-->
+          <!-- <button class="btn btn-secondary bg-transparent border-0 btnOrder h-50 text-secondary" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false" onclick="showQuestions(event)">
+                Ver las preguntas
+          </button> 
+        </div>
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <div class="form-check w-75">
+            <input class="form-check-input" type="radio" name="flexRadioDisabled" id="flexRadioDisabled" disabled>
+            <label class="form-check-label text-dark">
+              ${opcion.opcion}
+            </label>
+          </div>
+          <h6>${opcion.respuestas} respuestas</h6>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="modal fade myModalQuestions" role="dialog" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered myModal">
+
+    <!-- Modal content-->
+    <div id="ModalQuestions" class="modal-content d-flex flex-column justify-content-center align-items-center p-5 gap-2 shadow" style="background-color: #d7dbdd;">
+      
+      
+    </div>
+
+  </div>
 </div>
 
+<!-- comentariop -->
 
 {% else %}
 <p>Configuracion</p>
@@ -136,7 +164,7 @@
 {% block jsFiles %}
 <script>
   const data = {{ data | tojson }}
-  const role = {{current_user.rol | tojson}};
+  const role = {{ current_user.rol | tojson}};
 </script>
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 

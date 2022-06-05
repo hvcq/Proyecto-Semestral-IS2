@@ -93,7 +93,7 @@ const insertRowAnswer = function (ans) {
             ${opcion.opcion}
           </label>
         </div>
-        <h6>${opcion.respuestas} respuestas</h6>
+        <h6>${opcion.respuestas} respuestas    ${opcion.porcentaje}%</h6>
       </div>  
       `
     );

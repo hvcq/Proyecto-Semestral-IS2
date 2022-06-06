@@ -11,9 +11,9 @@
 
 {% block content %}
 <div class="container-fluid vh-100 pading-0"> <!--div container principal-->
-  <div class = "row col-12 "> <!--container de las tarjetas-->
+  <!-- <div class = "row col-12 "> 
     <div class="d-flex text-center ms-5 me-5 gap-4">
-      <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
+      <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center w-50">
         <img class="imgShortcuts img--center1 mb-3" src="{{ url_for("static", filename="resources/add.png" ) }}">
         <h5>¿Deseas crear una encuesta?</h5>
         <button type="button" class="btn btn-danger btnShortcut" onclick="window.location.href='/ir_a_crear_nueva_encuesta'">Crear encuesta</button>
@@ -26,7 +26,7 @@
     </div>
   </div>
   
-  <div class= "row"> <!--div de las tablas-->
+  <div class= "row"> 
     <table class="table col pading-5 table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
       <thead>
         <tr class="bg-white">
@@ -84,7 +84,8 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div> -->
+  <img class="vh-100 vw-100" src="{{ url_for("static", filename="resources/cat-work.gif" ) }}">
 </div>
 
 {% endblock content %}

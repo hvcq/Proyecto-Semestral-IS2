@@ -141,7 +141,7 @@ const postSurvey = function () {
 //CHARTS ------------------------------------------------------------------------------------
 
 const dataChart = {
-  labels: ['Registrados', 'Anonimos'],
+  labels: ['Registrados', 'Invitados'],
   datasets: [
     {
       data: [data.dataChart.registered, data.dataChart.anonymous],

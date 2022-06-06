@@ -585,3 +585,5 @@ def aumentar_visitas(id_encuesta):
 
     encuesta.visitas = encuesta.visitas + 1
     db.session.commit()
+    
+    return "Visitas actualizadas"

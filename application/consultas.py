@@ -3,6 +3,7 @@ from .models import *
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import base64
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def obtener_encuestas():
     """Consulta para obtener todas las encuestas de la bd"""
@@ -593,3 +594,54 @@ def comprobar_tipo_encuestado(email):
     
     else:
         return ("registrado")
+
+def registrar_encuestado(dataRegister):
+
+    if (db.session.query(Registrado).filter_by(email = dataRegister.get("email")).first() != None):
+        return "Email ya registrado"
+
+    # class Registrado(db.Model):
+    # __tablename__ = 'registrado'
+    # id_registrado = Column(Integer, primary_key=True, autoincrement=True)
+    # email = Column(String(50), ForeignKey("encuestado.email"))
+    # password = Column(String(108), nullable=False)
+    # nombre = Column(String(50), nullable=False)
+    # apellidos = Column(String(50), nullable=False)
+    # rut = Column(String(12), nullable=False)
+    # genero = Column(String(1))
+    # fecha_nacimiento = Column(Date())
+    # fecha_registro = Column(Date())
+
+    # dataRegister = {
+    #     "email" : request.form['email'],
+    #     "password" : request.form['password'],
+    #     "name" : request.form['name'],
+    #     "apellido" : request.form['surname'],
+    #     "rut" : request.form['rut'],
+    #     "genero" : request.form['gender'],
+    #     "fecha_nacimiento" : request.form['date']
+    # }
+    
+    if (db.session.query(Encuestado).filter_by(email = dataRegister.get("email")).first() == None):
+        encuestado = Encuestado(email = dataRegister.get("email"), activo = True)
+        db.session.add(encuestado)
+        db.session.commit()
+
+    password = generate_password_hash(dataRegister.get("password"))
+
+    if(dataRegister.get("gender") == 1):
+        genero = "M"
+    elif(dataRegister.get("gender") == 2):
+        genero = "F"
+    else:
+        genero = "O"
+
+    registrado = Registrado(email = dataRegister.get("email"), password = password, 
+        nombre = dataRegister.get("name"), apellidos = dataRegister.get("apellido"),
+        rut = dataRegister.get("rut"), genero = genero, fecha_nacimiento = dataRegister.get("fecha_nacimiento"),
+        fecha_registro =  date.today() )
+
+    db.session.add(registrado)
+    db.session.commit()
+
+    return "Registro Exitoso"

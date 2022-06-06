@@ -144,7 +144,7 @@ const dataChart = {
   labels: ['Registrados', 'Anonimos'],
   datasets: [
     {
-      data: [data.dataChart.anonymous, data.dataChart.registered],
+      data: [data.dataChart.registered, data.dataChart.anonymous],
       backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)'],
       hoverOffset: 4,
     },

@@ -138,13 +138,15 @@ def delete_user():
 def state_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
-        return desunscribir_registrado(response)
+        cambiar_estado_invitado(response)
+        return response
 
 
 @app.route("/responder_encuesta", methods=['POST'])
 def responder_encuesta():
     if request.method == 'POST':
         responses = json.loads(request.form.get("responses"))
+
         return guardar_respuesta(responses)
     return redirect("/")
 
@@ -160,7 +162,7 @@ def agregar_usuario():
 def cambiar_estado_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
-        cambiar_estado_invitado(responses)
+        cambiar_estado_encuesta(responses)
         return responses
 
 

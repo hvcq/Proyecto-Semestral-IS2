@@ -68,7 +68,7 @@ def obtener_usuarios():
             else:
                 tupla_registrado_aux = db.session.query(Registrado).filter_by(email=tupla_encuestado.email).first()
                 datos_encuestado_aux = {
-                    "id_user": tupla_registrado_aux.id_registrado,
+                    "id_user": i,
                     "name": tupla_registrado_aux.nombre,
                     "lastName": tupla_registrado_aux.apellidos,
                     "email": tupla_encuestado.email,
@@ -523,7 +523,7 @@ def agregar_invitado(responses):
 
 def cambiar_estado_invitado(responses):
     encuestado_invitado = db.session.query(Encuestado).filter_by(email=responses["email"]).first()
-    encuestado_invitado.estado = responses["state"]
+    encuestado_invitado.activo = responses["state"]
     db.session.commit()
     return print("Estado de usuario invitado cambiado correctamente")
 

@@ -13,6 +13,8 @@ def obtener_encuestas():
     else:
         tuplas_de_encuestas = db.session.query(Encuesta).order_by(Encuesta.id_encuesta).all()
         for tupla_encuesta in tuplas_de_encuestas:
+            crea_encuesta_aux = db.session.query(Crea_Encuesta).filter_by(id_encuesta=tupla_encuesta.id_encuesta).first()
+            admin_aux = db.session.query(Admin).filter_by(id_admin=crea_encuesta_aux.id_admin).first()
             datos_encuesta_aux = {}
             datos_encuesta_aux.clear()
             if tupla_encuesta.fecha_fin == None:
@@ -25,7 +27,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "comentario": tupla_encuesta.comentario,
                     "visits": tupla_encuesta.visitas,
-                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas}
+                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
+                    "author": admin_aux.nombre
                 }
             else:
                 datos_encuesta_aux = {
@@ -37,7 +40,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "comentario": tupla_encuesta.comentario,
                     "visits": tupla_encuesta.visitas,
-                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas}
+                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
+                    "author": admin_aux.nombre
                 }
             lista_encuestas.append(datos_encuesta_aux)
         return lista_encuestas
@@ -257,6 +261,12 @@ def eliminar_encuesta(id_encuesta):
     return "Borrada Correctamente"
 
 def guardar_respuesta(responses):
+    # Incrementa la cantidad de respuestas de una encuesta
+    encuesta_aux = db.session.query(Encuesta).filter_by(id_encuesta=responses["id"]).first()
+    respuestas_actuales = encuesta_aux.respuestas
+    encuesta_aux.respuestas = respuestas_actuales + 1
+    db.session.commit()
+    # Almacena en la base de datos las respuestas de un usuario
     for i in range(0, len(responses["respuestas"])):
         respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
             id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=responses["correo"])

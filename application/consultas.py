@@ -192,36 +192,26 @@ def modificar_encuesta(surveyData):
     i = 1
     # Modifica las preguntas de la encuesta
     for pregunta in surveyData["questions"]:
-        if pregunta["type"] == "desarrollo":
-            # si existe, modifica una pregunta de desarrollo
-            if db.session.query(Pregunta_Desarrollo).filter_by(id_pregunta_desarrollo=pregunta["id"]).first() != None:
-                pregunta_desarrollo_aux = db.session.query(Pregunta_Desarrollo).filter_by(id_pregunta_desarrollo=pregunta["id"]).first()
-                pregunta_desarrollo_aux.numero = i
-                pregunta_desarrollo_aux.enunciado = pregunta["statement"]
-                db.session.commit()
-            # else, cuando se implemente borrar pregunta de desarrollo
-        else:
-            # si existe, modifica una pregunta de alternativas
-            if db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first() != None:
-                pregunta_alternativa_aux = db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first()
-                pregunta_alternativa_aux.numero = i
-                pregunta_alternativa_aux.enunciado = pregunta["statement"]
-                db.session.commit()
-                # Modifica las alternativas de una pregunta de alternativas
-                for alternativa in pregunta["alternatives"]:
-                    # si existe, modifica dicha opcion, sino, la agrega
-                    if db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first() != None:
-                        opcion_aux = db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first()
-                        opcion_aux.opcion = alternativa["textAlt"]
-                        db.session.commit()
-                    else:
-                        opcion_aux = Opcion(opcion=alternativa["textAlt"])
-                        db.session.add(opcion_aux)
-                        db.session.commit()
-                        alternativas_aux = Alternativas.insert().values(
-                            id_pregunta_alternativa=pregunta["id"], id_opcion=opcion_aux.id_opcion)
-                        db.engine.execute(alternativas_aux)
-                        db.session.commit()
+        if db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first() != None:
+            pregunta_alternativa_aux = db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first()
+            pregunta_alternativa_aux.numero = i
+            pregunta_alternativa_aux.enunciado = pregunta["statement"]
+            db.session.commit()
+            # Modifica las alternativas de una pregunta de alternativas
+            for alternativa in pregunta["alternatives"]:
+                # si existe, modifica dicha opcion, sino, la agrega
+                if db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first() != None:
+                    opcion_aux = db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first()
+                    opcion_aux.opcion = alternativa["textAlt"]
+                    db.session.commit()
+                else:
+                    opcion_aux = Opcion(opcion=alternativa["textAlt"])
+                    db.session.add(opcion_aux)
+                    db.session.commit()
+                    alternativas_aux = Alternativas.insert().values(
+                        id_pregunta_alternativa=pregunta["id"], id_opcion=opcion_aux.id_opcion)
+                    db.engine.execute(alternativas_aux)
+                    db.session.commit()
             # else, cuando se implemente borrar pregunta de alternativas
         i = i + 1
         # Aqui se aplican operaciones de borrado de preguntas

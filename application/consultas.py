@@ -572,3 +572,12 @@ def comprobar_encuestado_encuesta(id_encuesta, email):
         #         return True
 
     return False
+
+def cambiar_estado_encuesta(responses):
+
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id_survey"]).first()
+
+    if encuesta != None:
+
+        encuesta.activa = responses["status"]
+        db.session.commit()

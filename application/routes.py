@@ -22,8 +22,8 @@ def load_user(id):
 
 @app.route("/")
 def index():
-    from werkzeug.security import generate_password_hash
-    print(generate_password_hash("1234"))
+    # from werkzeug.security import generate_password_hash
+    # print(generate_password_hash("1234"))
     # return redirect(url_for("login"))
     return render_template("index.html")
 
@@ -169,7 +169,7 @@ def Survey(id_encuesta, section="preguntas"):
             return render_template("admin/survey.html", data={
 
                 "url": "survey",
-                "options": ["Preguntas", "Respuestas", "Configuración"],
+                "options": ["Preguntas", "Respuestas"],
                 "selected": section,
                 "id": id_encuesta,
                 "dataSurvey": dataSurvey,
@@ -181,7 +181,7 @@ def Survey(id_encuesta, section="preguntas"):
             return render_template("admin/survey.html", data={
 
                 "url": "survey",
-                "options": ["Preguntas", "Respuestas", "Configuración"],
+                "options": ["Preguntas", "Respuestas"],
                 "selected": section,
                 "id": id_encuesta,
                 "dataSurvey": dataSurvey,
@@ -192,7 +192,7 @@ def Survey(id_encuesta, section="preguntas"):
 
         return render_template("admin/survey.html", data={
         "url": "survey",
-        "options": ["Preguntas", "Respuestas", "Configuración"],
+        "options": ["Preguntas", "Respuestas"],
         "selected": section,
         "id": id_encuesta,
         "textButton": "Modificar",
@@ -203,8 +203,8 @@ def Survey(id_encuesta, section="preguntas"):
         )
    
 
-@app.route("/answer_survey/<int:id_encuesta>")
-def answer_survey(id_encuesta):
+@app.route("/answer_survey/<string:email>/<int:id_encuesta>")
+def answer_survey(id_encuesta, email):
     if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         dataSurvey = crear_dataSurvey(id_encuesta)
         print(dataSurvey)
@@ -271,7 +271,7 @@ def dashboard_admin(section="encuestas",active="false"):
         return render_template("admin/dashboardAdmin.html", data={
 
         "url": "dashboard_admin",
-        "options": ["Encuestas", "Usuarios", "Configuración"],
+        "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
         "dataSurveys": obtener_encuestas()
@@ -281,7 +281,7 @@ def dashboard_admin(section="encuestas",active="false"):
         return render_template("admin/dashboardAdmin.html", data={
 
         "url": "dashboard_admin",
-        "options": ["Encuestas", "Usuarios", "Configuración"],
+        "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
         "dataUsers": obtener_usuarios()

@@ -307,6 +307,15 @@ def dashboard_admin(section="encuestas",active="false"):
         "dataUsers": obtener_usuarios()
         }
         )
+    
+@app.route("/aumentar_visita", methods=['POST'])
+def aumentar_visita():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("id_survey"))
+
+        print(response)
+        
+        return aumentar_visitas(response)  
 
 @app.route("/dashboard_user/")
 @login_required

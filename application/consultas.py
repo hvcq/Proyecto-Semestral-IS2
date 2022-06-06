@@ -81,6 +81,15 @@ def obtener_usuarios():
             i = i + 1
         return dataUsers
 
+def obtener_cantidad_registrados_e_invitados():
+    cantidad_invitados = db.session.query(Encuestado).count()
+    cantidad_registrados = db.session.query(Registrado).count()
+    dataChart = {
+        "anonymous": cantidad_invitados,
+        "registered": cantidad_registrados
+    }
+    return dataChart
+
 def obtener_encuesta_creada(id_encuesta):
     """Consulta para obtener datos de preguntas de desarrollo"""
     ids_preguntas_desarrollo = []
@@ -534,7 +543,6 @@ def codificar_mail(mail):
 
 #Obtener el mail desde el link personalizado
 def decodificar_mail(code):
-
     base_bytes = code.encode("ascii")
     str_bytes = base64.b64decode(base_bytes)
     return str_bytes.decode("ascii")

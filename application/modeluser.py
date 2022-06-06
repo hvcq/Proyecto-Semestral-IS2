@@ -52,7 +52,7 @@ class ModelUser():
             elif ModelUser.__rol_actual == "encuestado":
                 encuestado = db.session.query(Encuestado).filter_by(email=ModelUser.__email_encuestado).first()
                 if encuestado != None:
-                    return User(id, encuestado.email, None, "anonimo", "encuestado")
+                    return User(id, encuestado.email, None, "invitado", "encuestado")
                 else:
                     return None
         except Exception as ex:

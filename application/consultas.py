@@ -577,3 +577,10 @@ def registrar_encuestado(dataRegister):
     db.session.commit()
 
     return "Registro Exitoso"
+
+def aumentar_visitas(id_encuesta):
+    
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first()
+
+    encuesta.visitas = encuesta.visitas + 1
+    db.session.commit()

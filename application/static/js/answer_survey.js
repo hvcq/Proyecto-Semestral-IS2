@@ -12,7 +12,7 @@ $.ajax({
   type: 'POST',
   data: { id_survey: dataSurvey.id },
   success: function (result) {
-    delay();
+
   },
 });
 

@@ -581,3 +581,13 @@ def cambiar_estado_encuesta(responses):
 
         encuesta.activa = responses["status"]
         db.session.commit()
+
+def comprobar_tipo_encuestado(email):
+
+    encuestado = db.session.query(Registrado).filter_by(email = email).first()
+
+    if(encuestado == None):
+        return ("anonimo")
+    
+    else:
+        return ("registrado")

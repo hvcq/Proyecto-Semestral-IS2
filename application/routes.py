@@ -60,6 +60,7 @@ def register():
 
 @app.route("/register_user" ,methods=['POST'])
 def register_user():
+    
     ##email
     ##password
     ##name
@@ -67,7 +68,7 @@ def register_user():
     ##rut
     ##gender
     ##date
-    print(request)
+    print(request.form.get("gender"))
     return redirect("/invalid")
 
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
@@ -132,7 +133,7 @@ def delete_user():
 @app.route("/state_user", methods=['POST'])
 @login_required
 @admin_required
-def unsuscribe_user():
+def state_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
         return desunscribir_registrado(response)
@@ -300,7 +301,11 @@ def dashboard_admin(section="encuestas",active="false"):
         "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
-        "dataSurveys": obtener_encuestas()
+        "dataSurveys": obtener_encuestas(),
+        "dataChart": {
+            "anonymous" : 30,
+            "registered": 20,
+        }
         }
         )
     elif section == "usuarios":

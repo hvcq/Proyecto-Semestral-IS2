@@ -303,4 +303,12 @@ def dashboard_admin(section="encuestas",active="false"):
         }
         )
     
+@app.route("/aumentar_visita")
+def aumentar_visita():
+    response = json.loads(request.form.get("id_survey"))
+
+    print(response)
+
+    aumentar_visita(response)
+    return print("visitas aumentadas")  
     

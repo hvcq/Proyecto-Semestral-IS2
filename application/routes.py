@@ -152,7 +152,7 @@ def cambiar_estado_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
         
-        return responses
+        return cambiar_estado_encuesta(responses)
 
 
 @app.route("/survey/")

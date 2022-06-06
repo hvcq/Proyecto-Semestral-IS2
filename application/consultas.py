@@ -581,3 +581,4 @@ def cambiar_estado_encuesta(responses):
 
         encuesta.activa = responses["status"]
         db.session.commit()
+    return "Estado cambiado con exito!"

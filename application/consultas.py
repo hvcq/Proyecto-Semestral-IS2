@@ -3,6 +3,7 @@ from .models import *
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import base64
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def obtener_encuestas():
     """Consulta para obtener todas las encuestas de la bd"""
@@ -266,16 +267,12 @@ def eliminar_encuesta(id_encuesta):
     return "Borrada Correctamente"
 
 def guardar_respuesta(responses):
-    encuestado_aux = Encuestado(
-        email=responses["usuario"]["correo"],activo=True)
-    db.session.add(encuestado_aux)
-    db.session.commit()
     for i in range(0, len(responses["respuestas"])):
         respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
-            id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=encuestado_aux.email)
+            id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=responses["correo"])
         db.engine.execute(respuesta_alternativa_aux)
         db.session.commit()
-    return "Respuesta Guardada"
+    return "Respuestas Guardada"
 
 def obtener_numero_encuestados_activos():
     record = db.session.query(Encuestado).filter_by(activo=True).all()
@@ -375,7 +372,7 @@ def obtener_respuestas_opcion(id_encuesta):
             
             if (total_respuestas != 0):
                 for i in lista_opciones:
-                    i["porcentaje"] = (i.get("respuestas")/total_respuestas)*100
+                    i["porcentaje"] = round((i.get("respuestas")/total_respuestas)*100,1)
                 
 
             datos_pregunta = {
@@ -435,7 +432,8 @@ def obtener_encuestados_responden(id_encuesta):
             datos_encuestado={
                 "id_registrado": None,
                 "email": i,
-                "nombre": "Anónimo",
+                "nombre": "Invitado",
+                "apellido": "-", 
                 "genero": "-",
                 "edad": "-"
             }
@@ -445,6 +443,7 @@ def obtener_encuestados_responden(id_encuesta):
                 "id_registrado": encuestado.id_registrado,
                 "email": i,
                 "nombre": encuestado.nombre,
+                "apellido": encuestado.apellidos,
                 "genero": encuestado.genero,
                 "edad": calcular_edad(encuestado.fecha_nacimiento)
             }
@@ -546,3 +545,32 @@ def comprobar_tipo_encuestado(email):
     
     else:
         return ("registrado")
+
+def registrar_encuestado(dataRegister):
+
+    if (db.session.query(Registrado).filter_by(email = dataRegister.get("email")).first() != None):
+        return "Email ya registrado"
+    
+    if (db.session.query(Encuestado).filter_by(email = dataRegister.get("email")).first() == None):
+        encuestado = Encuestado(email = dataRegister.get("email"), activo = True)
+        db.session.add(encuestado)
+        db.session.commit()
+
+    password = generate_password_hash(dataRegister.get("password"))
+
+    if(dataRegister.get("gender") == 1):
+        genero = "M"
+    elif(dataRegister.get("gender") == 2):
+        genero = "F"
+    else:
+        genero = "O"
+
+    registrado = Registrado(email = dataRegister.get("email"), password = password, 
+        nombre = dataRegister.get("name"), apellidos = dataRegister.get("apellido"),
+        rut = dataRegister.get("rut"), genero = genero, fecha_nacimiento = dataRegister.get("fecha_nacimiento"),
+        fecha_registro =  date.today() )
+
+    db.session.add(registrado)
+    db.session.commit()
+
+    return "Registro Exitoso"

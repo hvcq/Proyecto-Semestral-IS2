@@ -11,10 +11,7 @@ let numberCuestion = 0;
 let totalQuestions = dataSurvey.questions.length;
 let responses = {
   id: dataSurvey.id,
-  usuario: {
-    name: 'anonimo',
-    correo: 'example@udec.cl',
-  },
+  correo: data.encuestado,
   respuestas: [],
 };
 

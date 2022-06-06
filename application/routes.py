@@ -25,7 +25,7 @@ def index():
     # from werkzeug.security import generate_password_hash
     # print(generate_password_hash("1234"))
     # return redirect(url_for("login"))
-    return render_template("index.html")
+    return render_template("login.html")
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -61,15 +61,17 @@ def register():
 @app.route("/register_user" ,methods=['POST'])
 def register_user():
     
-    ##email
-    ##password
-    ##name
-    ##surname
-    ##rut
-    ##gender
-    ##date
-    print(request.form.get("gender"))
-    return redirect("/invalid")
+    dataRegister = {
+        "email" : request.form['email'],
+        "password" : request.form['password'],
+        "name" : request.form['name'],
+        "apellido" : request.form['surname'],
+        "rut" : request.form['rut'],
+        "genero" : request.form.get("gender"),
+        "fecha_nacimiento" : request.form['date']
+    }
+    
+    return registrar_encuestado(dataRegister)
 
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
 @login_required
@@ -158,7 +160,7 @@ def agregar_usuario():
 def cambiar_estado_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
-        cambiar_estado_invitado(responses)
+        cambiar_estado_encuesta(responses)
         return responses
 
 
@@ -218,6 +220,10 @@ def Survey(id_encuesta, section="preguntas"):
 @app.route("/answer_survey/<string:url>/<int:id_encuesta>")
 def answer_survey(url, id_encuesta):
 
+    if (len(url) % 4 != 0 or len(url) == 0):
+        print("Error 404")
+        return redirect("/")
+    
     email = decodificar_mail(url)
 
     print("\n"+email+"\n")
@@ -261,30 +267,6 @@ def send_mail():
         send_mail.send_mail(response.get("id_survey"))
         
         return "PUBLICADA CORRECTAMENTE"
-
-#Ruta para testear mails activos, no activos y no existentes en la base de datos
-#Desde una url codificada con base64: 
-# @app.route("/test_mail/<coded_mail>")
-# def decode_mail(coded_mail):
-#     obj = Send_Mail()
-
-#     #Decodifica mails desde URL:
-#     mail = obj.decode_link(coded_mail) 
-
-#     #Obtiene registro desde BD, segun el mail decodificado
-#     rec = db.session.query(Encuestado).filter_by(email=mail).first()
-
-#     #Si el mail existe:
-#     if rec!= None:
-
-#         #Si el mail esta activo:
-#         if rec.activo == True:
-#             return ("Mail Activo: " + rec.email)
-#         else:
-#             return ("Mail No Activo: " + rec.email)
-#     else:
-#         return "Mail No Registrado"
-
 
 @app.route("/dashboard_admin/")
 @app.route("/dashboard_admin/<string:section>")

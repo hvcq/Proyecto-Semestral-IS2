@@ -22,6 +22,9 @@ const insertRowUser = function (user) {
     <tr id="User${user.id_registrado}">
       <td filtroUsuario="true">${user.nombre}</td>
       <td>
+        ${user.apellido}
+      </td>
+      <td>
         ${user.email}
       </td>
       <td>

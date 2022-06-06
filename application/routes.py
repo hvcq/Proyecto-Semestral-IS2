@@ -25,7 +25,7 @@ def index():
     # from werkzeug.security import generate_password_hash
     # print(generate_password_hash("1234"))
     # return redirect(url_for("login"))
-    return render_template("index.html")
+    return render_template("login.html")
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -160,7 +160,7 @@ def agregar_usuario():
 def cambiar_estado_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
-        cambiar_estado_invitado(responses)
+        cambiar_estado_encuesta(responses)
         return responses
 
 

@@ -315,23 +315,15 @@ def eliminar_encuesta(id_encuesta):
     return "Borrada Correctamente"
 
 def guardar_respuesta(responses):
-    encuestado_aux = Encuestado(
-        email=responses["usuario"]["correo"],activo=True)
-    db.session.add(encuestado_aux)
-    db.session.commit()
-    for i in range(0, len(responses["respuestas"])):
-        if responses["respuestas"][i]["type"] == "desarrollo":
-            respuesta_desarrollo_aux = Respuesta_Desarrollo.insert().values(
-                id_pregunta_desarrollo=responses["respuestas"][i]["idPregunta"], email=encuestado_aux.email, respuesta_encuestado=responses["respuestas"][i]["response"])
-            db.engine.execute(respuesta_desarrollo_aux)
-            db.session.commit()
-        else:
-            respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
-                id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=encuestado_aux.email)
-            db.engine.execute(respuesta_alternativa_aux)
-            db.session.commit()
 
-    return "Respuesta Guardada"
+    for i in range(0, len(responses["respuestas"])):
+      
+        respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
+            id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=responses["correo"])
+        db.engine.execute(respuesta_alternativa_aux)
+        db.session.commit()
+
+    return "Respuestas Guardada"
 
 def obtener_numero_encuestados_activos():
     record = db.session.query(Encuestado).filter_by(activo=True).all()
@@ -431,7 +423,7 @@ def obtener_respuestas_opcion(id_encuesta):
             
             if (total_respuestas != 0):
                 for i in lista_opciones:
-                    i["porcentaje"] = (i.get("respuestas")/total_respuestas)*100
+                    i["porcentaje"] = round((i.get("respuestas")/total_respuestas)*100,1)
                 
 
             datos_pregunta = {
@@ -491,7 +483,8 @@ def obtener_encuestados_responden(id_encuesta):
             datos_encuestado={
                 "id_registrado": None,
                 "email": i,
-                "nombre": "Anónimo",
+                "nombre": "Invitado",
+                "apellido": "-", 
                 "genero": "-",
                 "edad": "-"
             }
@@ -501,6 +494,7 @@ def obtener_encuestados_responden(id_encuesta):
                 "id_registrado": encuestado.id_registrado,
                 "email": i,
                 "nombre": encuestado.nombre,
+                "apellido": encuestado.apellidos,
                 "genero": encuestado.genero,
                 "edad": calcular_edad(encuestado.fecha_nacimiento)
             }
@@ -607,28 +601,6 @@ def registrar_encuestado(dataRegister):
 
     if (db.session.query(Registrado).filter_by(email = dataRegister.get("email")).first() != None):
         return "Email ya registrado"
-
-    # class Registrado(db.Model):
-    # __tablename__ = 'registrado'
-    # id_registrado = Column(Integer, primary_key=True, autoincrement=True)
-    # email = Column(String(50), ForeignKey("encuestado.email"))
-    # password = Column(String(108), nullable=False)
-    # nombre = Column(String(50), nullable=False)
-    # apellidos = Column(String(50), nullable=False)
-    # rut = Column(String(12), nullable=False)
-    # genero = Column(String(1))
-    # fecha_nacimiento = Column(Date())
-    # fecha_registro = Column(Date())
-
-    # dataRegister = {
-    #     "email" : request.form['email'],
-    #     "password" : request.form['password'],
-    #     "name" : request.form['name'],
-    #     "apellido" : request.form['surname'],
-    #     "rut" : request.form['rut'],
-    #     "genero" : request.form['gender'],
-    #     "fecha_nacimiento" : request.form['date']
-    # }
     
     if (db.session.query(Encuestado).filter_by(email = dataRegister.get("email")).first() == None):
         encuestado = Encuestado(email = dataRegister.get("email"), activo = True)

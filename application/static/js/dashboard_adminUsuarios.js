@@ -61,7 +61,8 @@ const insertRow = function (user) {
             <img class="imgDot" src="/static/resources/dots.png" alt="">
           </button>
           <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idUser="${user.id_user}" style="z-index: 10000;">
-            <li><a typeButton="UNSUSCRIBE" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
+          <li><a typeButton="ACTIVATE" class="dropdown-item" onclick="showModalSure(event)">Suscribir</a></li>
+            <li><a typeButton="DEACTIVATE" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
             <li><a typeButton="DELETE" class="dropdown-item disabled" onclick="showModalSure(event)">Eliminar</a></li>
           </ul>
         </div>
@@ -135,15 +136,21 @@ const showModalSure = function (event) {
   const button = document.querySelector('.buttonModal');
   const title = document.querySelector('.titleModal');
 
-  if (type === 'UNSUSCRIBE') {
+  if (type === 'DEACTIVATE') {
     button.removeEventListener('click', deleteUser);
-    console.log('ENTRO UNSUSCRIBE');
+    button.removeEventListener('click', activate);
+    console.log('ENTRO DESACTIVAR');
     title.textContent = '¿Estas seguro que deseas desuscribir al usuario?';
-    button.addEventListener('click', function () {
-      setState();
-    });
+    button.addEventListener('click', deactivate);
+  } else if (type === 'ACTIVATE') {
+    button.removeEventListener('click', deleteUser);
+    button.removeEventListener('click', deactivate);
+    console.log('ENTRO ACTIVAR');
+    title.textContent = '¿Estas seguro que deseas suscribir al usuario?';
+    button.addEventListener('click', activate);
   } else if (type === 'DELETE') {
-    button.removeEventListener('click', setState);
+    button.removeEventListener('click', deactivate);
+    button.removeEventListener('click', activate);
     console.log('ENTRO DELETE');
     title.textContent = '¿Estas seguro de eliminar al usuario?';
     button.addEventListener('click', deleteUser);
@@ -172,13 +179,44 @@ const deleteUser = function () {
   myModalSure.hide();
 };
 
-const setState = function () {
+const activate = function () {
+  const [userFilter] = users.filter(user => `${user.id_user}` === current_id);
+  userFilter.state = true;
+
   const response = {
-    id_survey: Number(current_id),
+    email: userFilter.email,
+    state: true,
   };
 
+  console.log(response);
+
+  const stateUser = document.querySelector(`#State${current_id}`);
+  console.log();
+  stateUser.className = '';
+  stateUser.className =
+    'd-flex justify-content-center fw-semibold text-success bg-success border-success bg-opacity-10 border border-opacity-10 rounded-2 ps-2 pe-2 pt-1 pb-1';
+  stateUser.textContent = 'Activo';
+
+  $.ajax({
+    url: '/state_user',
+    type: 'POST',
+    data: { response: JSON.stringify(response) },
+    success: function (result) {},
+  });
+
+  myModalSure.hide();
+};
+
+const deactivate = function () {
   const [userFilter] = users.filter(user => `${user.id_user}` === current_id);
   userFilter.state = false;
+
+  const response = {
+    email: userFilter.email,
+    state: false,
+  };
+
+  console.log(response);
 
   const stateUser = document.querySelector(`#State${current_id}`);
   console.log();

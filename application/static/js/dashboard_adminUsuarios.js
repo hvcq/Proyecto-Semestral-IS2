@@ -103,7 +103,7 @@ const addUser = function (event) {
     age: 'None',
     registration_date: 'None',
     gender: 'None',
-    state: true,
+    state: false,
     rut: 'xx.xxx.xxx-x',
   };
 
@@ -188,7 +188,7 @@ const setState = function () {
   stateUser.textContent = 'Inactivo';
 
   $.ajax({
-    url: '/unsuscribe_user',
+    url: '/state_user',
     type: 'POST',
     data: { response: JSON.stringify(response) },
     success: function (result) {},

@@ -43,7 +43,23 @@ const showQuestions = function (event) {
   myModal.show();
 };
 
-const containerAnswers = document.querySelector('.firstQuestion');
+const containerTitle = document.querySelector('#surveyTitle');
+
+let surveyTitle = data.dataSurveyTitle;
+
+const insertTitle = function (title) {
+  containerTitle.insertAdjacentHTML(
+    'beforeend',
+    `
+    <h2>${title.titulo}</h2>
+    <h6 class="text-secondary">${title.descripcion}</h6>
+  `
+  );
+};
+
+insertTitle(surveyTitle);
+
+const containerAnswers = document.querySelector('.questions');
 const containerAlternatives = document.querySelector('#containerAlternatives');
 
 console.log(containerAnswers);
@@ -56,14 +72,10 @@ const initAns = function () {
 
 const insertRowAnswer = function (ans) {
   containerAnswers.insertAdjacentHTML(
-    'afterbegin',
+    'beforeend',
     `
     <div class="d-flex justify-content-between align-items-center">
-      <h1>${ans.enunciado}</h1> <!--Mutable-->
-      <button class="btn btn-secondary bg-transparent border-0 btnOrder h-50 text-secondary" type="button" id="dropdownMenuButton1"
-            data-bs-toggle="dropdown" aria-expanded="false" onclick="showQuestions(event)">
-            Ver las preguntas
-      </button>
+      <h1>${ans.numero}) ${ans.enunciado}</h1>
     </div>
   `
   );
@@ -80,14 +92,17 @@ const insertRowAnswer = function (ans) {
             ${opcion.opcion}
           </label>
         </div>
-        <h6>${opcion.respuestas} respuestas</h6>
+        <div class="d-flex gap-5">
+          <h6>${opcion.respuestas} respuestas</h6>
+          <h6>${opcion.porcentaje}%</h6>
+        </div>
       </div>  
       `
     );
   });
 };
 
-insertRowAnswer(answers[0]);
+// insertRowAnswer(answers);
 
-// initAns();
+initAns();
 //Comentario para que se actualice

@@ -18,19 +18,22 @@ class Send_Mail:
     app.config['MAIL_PASSWORD']= 'is2team1'
     app.config['MAIL_DEFAULT_SENDER'] = 'team1is2@outlook.com'
     #app.config['MAIL_MAX_EMAILS'] = 100
-
-    #def __init__(self):
   
     def get_mails(self):
-        print("\n\nMails:\n\n")
 
         record = db.session.query(Encuestado).filter_by(activo=True).all()
         for rec in record:
             self.mails.append(rec.email)
 
-        for i in self.mails:
-            print (i + "\n")
+    #Falta testear
+    def get_name(self, email):
 
+        record = db.session.query(Registrado).filter_by(email=email).first()
+        if record != None:
+            nombre = (record.nombre + " " + record.apellidos) 
+            return nombre
+        else:
+            return email
 
     def encode_link(self, str):
         str_bytes = str.encode("ascii")
@@ -42,23 +45,22 @@ class Send_Mail:
         str_bytes = base64.b64decode(base_bytes)
         return str_bytes.decode("ascii")
 
-    def send_mail(self):
+    def send_mail(self, id_survey):
 
+        self.get_mails()
         mail = Mail(app)
         mail.init_app(app)
 
         with mail.connect() as conn:
 
-            #modo testing
             for user in self.mails: 
-                mail_coded = self.encode_link(user)
-                mail_decoded = self.decode_link(mail_coded)
                 
-                #print("CODED: "+mail_coded)
-                #print("DECODED: "+mail_decoded)
+                mail_coded = self.encode_link(user)
+                
+                nombre = self.get_name(user)
 
-                subject ="Saludos "+ user
-                message = "Hola "+ user +" Este es el link codificado: \nhttp://localhost:3000/test_mail/"+ mail_coded + "\n\ncorreo original: " + mail_decoded + "\n\nSaludos"
+                subject ="Saludos "+ nombre
+                message = "Estimado "+ nombre +" :\nGracias por participar en el centro de estudios públicos al contestar la siguiente encuesta: \nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
 
                 msg = Message(recipients=[user], body=message, subject=subject)
 

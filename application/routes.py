@@ -138,13 +138,15 @@ def delete_user():
 def state_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
-        return desunscribir_registrado(response)
+        cambiar_estado_invitado(response)
+        return response
 
 
 @app.route("/responder_encuesta", methods=['POST'])
 def responder_encuesta():
     if request.method == 'POST':
         responses = json.loads(request.form.get("responses"))
+
         return guardar_respuesta(responses)
     return redirect("/")
 
@@ -239,6 +241,8 @@ def answer_survey(url, id_encuesta):
         if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
             print("Encuesta ya respondida")
             return redirect("/")
+        
+        print("SE PASO DE LARGO")
 
         if (encuesta.activa == True):
 
@@ -248,7 +252,9 @@ def answer_survey(url, id_encuesta):
 
                 "selected": "answer",
                 "dataSurvey":dataSurvey, 
-                "encuestado": email
+                "encuestado": email,
+                "type": comprobar_tipo_encuestado(email),
+                "role":'encuestado'
                 })
         else:
             return ("Encuesta no está activa")

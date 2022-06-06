@@ -43,7 +43,7 @@
       <img src="/static/resources/success.png">
       <h1>¡Encuesta Enviada!</h1>
       <h5>Gracias por tu participación</h5>
-      <a class="mb-2" href="/register">¿Deseas registrarte?</a>
+      <a id="registerLink" class="mb-2" href="/register">¿Deseas registrarte?</a>
       <button class="btn btn-primary" onclick="window.location.href='/login'">Finalizar</button>
     </div>
     
@@ -56,6 +56,7 @@
 {% block jsFiles %}
 <script>
   const data = {{ data | tojson }}
+  const role = {{ data.role| tojson}}
 </script>
 
 <script src="{{ url_for("static", filename="js/answer_survey.js" ) }}"></script>

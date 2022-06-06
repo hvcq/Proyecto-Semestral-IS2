@@ -7,6 +7,15 @@
 
 let dataSurvey = data.dataSurvey;
 
+$.ajax({
+  url: '/aumentar_visita',
+  type: 'POST',
+  data: { id_survey: dataSurvey.id },
+  success: function (result) {
+    delay();
+  },
+});
+
 let numberCuestion = 0;
 let totalQuestions = dataSurvey.questions.length;
 let responses = {
@@ -23,7 +32,7 @@ var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
   keyboard: false,
 });
 
-console.log(myModal);
+// console.log(myModal);
 title.classList.remove('invisible');
 
 //Primera iteración
@@ -164,6 +173,10 @@ const sendData = function (event) {
 
   console.log(estado);
   if (estado === undefined) {
+    if (data.type === 'registrado') {
+      console.log('ejecutado');
+      document.querySelector('#registerLink').classList.add('invisible');
+    }
     myModal.show();
     $.ajax({
       url: '/responder_encuesta',

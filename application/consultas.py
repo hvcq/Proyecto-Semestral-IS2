@@ -68,7 +68,7 @@ def obtener_usuarios():
             else:
                 tupla_registrado_aux = db.session.query(Registrado).filter_by(email=tupla_encuestado.email).first()
                 datos_encuestado_aux = {
-                    "id_user": tupla_registrado_aux.id_registrado,
+                    "id_user": i,
                     "name": tupla_registrado_aux.nombre,
                     "lastName": tupla_registrado_aux.apellidos,
                     "email": tupla_encuestado.email,
@@ -466,7 +466,7 @@ def agregar_invitado(responses):
 
 def cambiar_estado_invitado(responses):
     encuestado_invitado = db.session.query(Encuestado).filter_by(email=responses["email"]).first()
-    encuestado_invitado.estado = responses["state"]
+    encuestado_invitado.activo = responses["state"]
     db.session.commit()
     return print("Estado de usuario invitado cambiado correctamente")
 
@@ -508,20 +508,23 @@ def comprobar_encuestado_encuesta(id_encuesta, email):
         #Lista de mails de encuestados
         list_mails = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = op[1]).all()
 
+        print("LIST MAILS")
+        print(list_mails)
+
         #Si no hay respuestas de encuestados se cambia a la siguiente opcion
         if list_mails == None:
             continue
         
         #Si existe el mail en la lista
-        if email in list_mails:
-            return True
+        # if email in list_mails:
+        #     return True
 
         # #Se recorre la lista comprobando los mails
-        # for i in list_mails:
+        for i in list_mails:
 
-        #     #Si se encuentra el mail se retorna True
-        #     if i == email:
-        #         return True
+            #Si se encuentra el mail se retorna True
+            if i[1] == email:
+                return True
 
     return False
 
@@ -558,9 +561,9 @@ def registrar_encuestado(dataRegister):
 
     password = generate_password_hash(dataRegister.get("password"))
 
-    if(dataRegister.get("gender") == 1):
+    if(dataRegister.get("genero") == 1):
         genero = "M"
-    elif(dataRegister.get("gender") == 2):
+    elif(dataRegister.get("genero") == 2):
         genero = "F"
     else:
         genero = "O"

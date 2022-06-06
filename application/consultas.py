@@ -89,7 +89,7 @@ def obtener_usuarios():
 
 def obtener_cantidad_registrados_e_invitados():
     cantidad_registrados = db.session.query(Registrado).count()
-    cantidad_invitados = db.session.query(Encuestado).count() - cantidad_registrados
+    cantidad_invitados = db.session.query(Encuestado).count()
     dataChart = {
         "anonymous": cantidad_invitados - cantidad_registrados,
         "registered": cantidad_registrados

@@ -59,7 +59,7 @@ const insertQuestion = function (statement, alternatives, type, id) {
             ${alternatives}
           </div>
           <div class="d-flex align-items-center">
-            <button onclick="addAlternative(event)" type="button" class="suveryQuestions__button opacity-75"><img src="/static/resources/plus.png" class="img-fluid survey__image"></button>
+            <button onclick="addAlternative(event)" type="button" class="suveryQuestions__button opacity-75" data-toggle="tooltip" title="Agregar alternativa"><img src="/static/resources/plus.png" class="img-fluid survey__image"></button>
             <span class="mb-1 opacity-75">Agregar alternativa</span>
           </div>
         </div>
@@ -108,7 +108,7 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
      `;
     }
     insertQuestion(element.statement, alternativeHtml, element.type, element.id);
-    initTooltip();
+    // initTooltip();
   }
 }
 
@@ -138,12 +138,12 @@ const addQuestion = function () {
     <div id="${'opcion' + 1}" class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
       <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
-      <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+      <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
     <div id="${'opcion' + 2}" class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
       <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
-      <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+      <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
 `;
   insertQuestion('', textalt, 'alternativa', idNew);
@@ -166,7 +166,7 @@ const addQuestion = function () {
   poolId.alternativa.push(questionAdd.id);
   moveScroll(idNew);
   // console.log(data.dataSurvey.questions);
-  initTooltip();
+  // initTooltip();
   textAreaFunction();
 };
 
@@ -211,12 +211,12 @@ const changeResponse = function (id, deleteText, addText, type, idOption1, idOpt
         <div id="${'opcion' + idOption1}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
           <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
-          <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
         <div id="${'opcion' + idOption2}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
           <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
-          <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
       </div>
       <div class="d-flex align-items-center">
@@ -335,7 +335,7 @@ const addAlternative = function (event) {
     <div id="opcion${idOption}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
           <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
-          <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
   `
   );

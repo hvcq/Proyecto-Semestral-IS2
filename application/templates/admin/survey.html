@@ -17,12 +17,12 @@
       class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1" placeholder="Inserte Título"
       autofocus style="height: 10px"></textarea>
     <textarea onchange="handleInputs(event)" id="description" class="form-control shadow-none survey__elementDesc"
-      rows="1" placeholder="Description de la encuesta"></textarea>
+      rows="1" placeholder="Descripción de la encuesta"></textarea>
   </div>
   <div class="surveyQuestions">
   </div>
   <div class="survey__addButton text-center">
-    <button type="button" class="suveryQuestions__button"><img src="{{ url_for("static",
+    <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Agregar pregunta"><img src="{{ url_for("static",
         filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image" onclick="addQuestion()"></button>
   </div>
 </section>

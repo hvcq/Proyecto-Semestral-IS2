@@ -305,14 +305,14 @@ def dashboard_admin(section="encuestas",active="false"):
         }
         )
     
-@app.route("/aumentar_visita")
+@app.route("/aumentar_visita", methods=['POST'])
 def aumentar_visita():
-    response = json.loads(request.form.get("id_survey"))
+    if request.method == 'POST':
+        response = json.loads(request.form.get("id_survey"))
 
-    print(response)
-
-    aumentar_visita(response)
-    return print("visitas aumentadas")  
+        print(response)
+        
+        return aumentar_visitas(response)  
 
 @app.route("/dashboard_user/")
 @login_required

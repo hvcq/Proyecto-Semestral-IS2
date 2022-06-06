@@ -17,8 +17,10 @@ const profilePicture = document.querySelector('.profileImg');
 if (role === 'admin') {
   profileSection.setAttribute('style', 'background-color: #1784d5');
   profilePicture.setAttribute('src', '/static/resources/user_blue.png');
+  console.log(profilePicture);
 } else {
   console.log('hola');
   profileSection.setAttribute('style', 'background-color: #ff3c69');
   profilePicture.setAttribute('src', '/static/resources/user_red.png');
+  console.log(profilePicture);
 }

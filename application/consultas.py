@@ -4,6 +4,7 @@ from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import base64
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import make_response, redirect, render_template, request, url_for
 
 def obtener_encuestas():
     """Consulta para obtener todas las encuestas de la bd"""
@@ -576,7 +577,7 @@ def registrar_encuestado(dataRegister):
     db.session.add(registrado)
     db.session.commit()
 
-    return "Registro Exitoso"
+    return redirect(url_for("dashboard_user"))
 
 def aumentar_visitas(id_encuesta):
     

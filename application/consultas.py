@@ -254,8 +254,11 @@ def eliminar_encuesta(id_encuesta):
         for tupla_pregunta_alternativa in tuplas_pregunta_alternativa:
             db.session.delete(tupla_pregunta_alternativa)
             db.session.commit()
-    # cuando se empiece a usar tabla crea_encuesta se debe borrar 
-    # la tupla de esa tabla antes que la tupla de la tabla encuesta
+    # Elimina relacion encuesta-admin
+    crea_encuesta = Crea_Encuesta.delete().where(Crea_Encuesta.c.id_encuesta == id_encuesta)
+    db.engine.execute(crea_encuesta)
+    db.session.commit()
+    # Con la tupla que encuesta-admin eliminada, se puede borrar la tupla de encuesta
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
     db.session.delete(encuesta)
     db.session.commit()

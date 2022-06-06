@@ -91,30 +91,7 @@ def obtener_cantidad_registrados_e_invitados():
     return dataChart
 
 def obtener_encuesta_creada(id_encuesta):
-    """Consulta para obtener datos de preguntas de desarrollo"""
-    ids_preguntas_desarrollo = []
-    numeros_preguntas_desarrollo = []
-    enunciados_preguntas_desarrollo = []
-    comentarios_preguntas_desarrollo = []
-    if db.session.query(Desarrollo_Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
-        tuplas_desarrollo_encuesta = db.session.query(
-            Desarrollo_Encuesta).filter_by(id_encuesta=id_encuesta).all()
-        for tupla_desarrollo_encuesta in tuplas_desarrollo_encuesta:
-            ids_preguntas_desarrollo.append(
-                tupla_desarrollo_encuesta.id_pregunta_desarrollo)
-        tuplas_pregunta_desarrollo = db.session.query(Pregunta_Desarrollo).filter(
-            Pregunta_Desarrollo.id_pregunta_desarrollo.in_(ids_preguntas_desarrollo)).order_by(Pregunta_Desarrollo.numero).all()
-        ids_preguntas_desarrollo.clear()
-        for tupla_pregunta_desarrollo in tuplas_pregunta_desarrollo:
-            ids_preguntas_desarrollo.append(tupla_pregunta_desarrollo.id_pregunta_desarrollo)
-            numeros_preguntas_desarrollo.append(
-                tupla_pregunta_desarrollo.numero)
-            enunciados_preguntas_desarrollo.append(
-                tupla_pregunta_desarrollo.enunciado)
-            comentarios_preguntas_desarrollo.append(
-                tupla_pregunta_desarrollo.comentario)
-
-    """Consulta para obtener datos de preguntas de alternativas"""
+    """Consulta para obtener datos de las preguntas"""
     ids_preguntas_alternativas = []
     numeros_preguntas_alternativas = []
     enunciados_preguntas_alternativas = []
@@ -156,10 +133,6 @@ def obtener_encuesta_creada(id_encuesta):
 
     """Se crea diccionario con las listas que contienen datos de la encuesta"""
     datos_encuesta_creada = {
-        "ids_preguntas_desarrollo": ids_preguntas_desarrollo,
-        "numeros_preguntas_desarrollo": numeros_preguntas_desarrollo,
-        "enunciados_preguntas_desarrollo": enunciados_preguntas_desarrollo,
-        "comentarios_preguntas_desarrollo": comentarios_preguntas_desarrollo,
         "ids_preguntas_alternativas": ids_preguntas_alternativas,
         "numeros_preguntas_alternativas": numeros_preguntas_alternativas,
         "enunciados_preguntas_alternativas": enunciados_preguntas_alternativas,
@@ -170,7 +143,7 @@ def obtener_encuesta_creada(id_encuesta):
     }
     return datos_encuesta_creada
 
-def guardar_encuesta(surveyData):
+def guardar_encuesta(surveyData,id_admin):
     if surveyData["title"] == "":
         encuesta_aux = Encuesta(titulo="titulo encuesta por defecto", descripcion=surveyData["description"],
             fecha_inicio=date.today(), activa=False, comentario="", visitas=0, respuestas=0, total_asignados=0)
@@ -179,34 +152,28 @@ def guardar_encuesta(surveyData):
             fecha_inicio=date.today(), activa=False, comentario="", visitas=0, respuestas=0, total_asignados=0)
     db.session.add(encuesta_aux)
     db.session.commit()
+    crea_encuesta_aux = Crea_Encuesta.insert().values(
+            id_admin=id_admin, id_encuesta=encuesta_aux.id_encuesta)
+    db.engine.execute(crea_encuesta_aux)
+    db.session.commit()
     i = 1
     for pregunta in surveyData["questions"]:
-        if pregunta["type"] == "desarrollo":
-            pregunta_desarrollo_aux = Pregunta_Desarrollo(
-                enunciado=pregunta["statement"], numero=i)
-            db.session.add(pregunta_desarrollo_aux)
+        pregunta_alternativa_aux = Pregunta_Alternativa(
+            enunciado=pregunta["statement"], numero=i)
+        db.session.add(pregunta_alternativa_aux)
+        db.session.commit()
+        alternativa_encuesta_aux = Alternativa_Encuesta.insert().values(
+            id_encuesta=encuesta_aux.id_encuesta, id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa)
+        db.engine.execute(alternativa_encuesta_aux)
+        db.session.commit()
+        for alternativa in pregunta["alternatives"]:
+            opcion_aux = Opcion(opcion=alternativa["textAlt"])
+            db.session.add(opcion_aux)
             db.session.commit()
-            desarrollo_encuesta_aux = Desarrollo_Encuesta.insert().values(id_encuesta=encuesta_aux.id_encuesta,
-                                                                          id_pregunta_desarrollo=pregunta_desarrollo_aux.id_pregunta_desarrollo)
-            db.engine.execute(desarrollo_encuesta_aux)
+            alternativas_aux = Alternativas.insert().values(
+                id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa, id_opcion=opcion_aux.id_opcion)
+            db.engine.execute(alternativas_aux)
             db.session.commit()
-        else:
-            pregunta_alternativa_aux = Pregunta_Alternativa(
-                enunciado=pregunta["statement"], numero=i)
-            db.session.add(pregunta_alternativa_aux)
-            db.session.commit()
-            alternativa_encuesta_aux = Alternativa_Encuesta.insert().values(
-                id_encuesta=encuesta_aux.id_encuesta, id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa)
-            db.engine.execute(alternativa_encuesta_aux)
-            db.session.commit()
-            for alternativa in pregunta["alternatives"]:
-                opcion_aux = Opcion(opcion=alternativa["textAlt"])
-                db.session.add(opcion_aux)
-                db.session.commit()
-                alternativas_aux = Alternativas.insert().values(
-                    id_pregunta_alternativa=pregunta_alternativa_aux.id_pregunta_alternativa, id_opcion=opcion_aux.id_opcion)
-                db.engine.execute(alternativas_aux)
-                db.session.commit()
         i = i + 1
     return "Encuesta Guardada"
 
@@ -261,21 +228,6 @@ def modificar_encuesta(surveyData):
     return("Modificacion Exitosa")
 
 def eliminar_encuesta(id_encuesta):
-    ids_preguntas_desarrollo = []
-    if db.session.query(Desarrollo_Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
-        tuplas_desarrollo_encuesta = db.session.query(
-            Desarrollo_Encuesta).filter_by(id_encuesta=id_encuesta).all()
-        for tupla_desarrollo_encuesta in tuplas_desarrollo_encuesta:
-            ids_preguntas_desarrollo.append(
-                tupla_desarrollo_encuesta.id_pregunta_desarrollo)
-        borra_tuplas_desarrollo_encuesta = Desarrollo_Encuesta.delete().where(Desarrollo_Encuesta.c.id_encuesta == id_encuesta)
-        db.engine.execute(borra_tuplas_desarrollo_encuesta)
-        db.session.commit()
-        tuplas_pregunta_desarrollo = db.session.query(Pregunta_Desarrollo).filter(
-            Pregunta_Desarrollo.id_pregunta_desarrollo.in_(ids_preguntas_desarrollo)).all()
-        for tupla_pregunta_desarrollo in tuplas_pregunta_desarrollo:
-            db.session.delete(tupla_pregunta_desarrollo)
-            db.session.commit()
     ids_preguntas_alternativas = []
     if db.session.query(Alternativa_Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
         tuplas_alternativa_encuesta = db.session.query(
@@ -319,17 +271,10 @@ def guardar_respuesta(responses):
     db.session.add(encuestado_aux)
     db.session.commit()
     for i in range(0, len(responses["respuestas"])):
-        if responses["respuestas"][i]["type"] == "desarrollo":
-            respuesta_desarrollo_aux = Respuesta_Desarrollo.insert().values(
-                id_pregunta_desarrollo=responses["respuestas"][i]["idPregunta"], email=encuestado_aux.email, respuesta_encuestado=responses["respuestas"][i]["response"])
-            db.engine.execute(respuesta_desarrollo_aux)
-            db.session.commit()
-        else:
-            respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
-                id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=encuestado_aux.email)
-            db.engine.execute(respuesta_alternativa_aux)
-            db.session.commit()
-
+        respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
+            id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=encuestado_aux.email)
+        db.engine.execute(respuesta_alternativa_aux)
+        db.session.commit()
     return "Respuesta Guardada"
 
 def obtener_numero_encuestados_activos():

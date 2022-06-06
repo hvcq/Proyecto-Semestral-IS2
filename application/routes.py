@@ -288,6 +288,7 @@ def dashboard_admin(section="encuestas",active="false"):
         "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
+        "dataSurvey": {"title": ""},
         "dataSurveys": obtener_encuestas(),
         "dataChart": obtener_cantidad_registrados_e_invitados()
         }
@@ -298,10 +299,12 @@ def dashboard_admin(section="encuestas",active="false"):
         "url": "dashboard_admin",
         "options": ["Encuestas", "Usuarios"],
         "selected": section,
+        "dataSurvey": {"title": ""},
         "active": active,
         "dataUsers": obtener_usuarios()
         }
         )
+<<<<<<< HEAD
     
 @app.route("/aumentar_visita")
 def aumentar_visita():
@@ -311,4 +314,18 @@ def aumentar_visita():
 
     aumentar_visita(response)
     return print("visitas aumentadas")  
+=======
+
+@app.route("/dashboard_user/")
+@login_required
+@registrado_required
+def dashboard_user():
+    ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
+    return render_template("admin/dashboardAdmin.html",data={
+        "url": "dashboard_user",
+        "options": [],
+        "role":'encuestado'
+        })
+  
+>>>>>>> ae82e3d3e3b1a47fd829a5c06bb800ff05346461
     

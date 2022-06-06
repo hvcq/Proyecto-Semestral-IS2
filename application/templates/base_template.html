@@ -16,7 +16,9 @@
 
   <body class="vh-100 vw-100 p-0 m-0">
     <nav class="container-fluid p-0 d-flex justify-content-between bg-white p-3 shadow-sm">
-      <div class="d-flex align-items-center titleSurvey invisible fs-3">{{data.title}}</div>
+      <!-- {% if data.dataSurvey.title is not none %} -->
+      <div class="d-flex align-items-center titleSurvey invisible fs-3">{{data.dataSurvey.title}}</div>
+      <!-- {% endif %} -->
       <div class="nav__list d-flex justify-content-center align-items-center" style="margin-left: 9rem">
         {% for name in data.options %}
         <div class="nav__element d-flex align-items-center gap-1" disable="true">
@@ -32,7 +34,7 @@
 
       <div class="btn-group" style="margin-right: 5%; z-index: 10001">
         <div data-bs-toggle="dropdown" style="width: 60px; height: 60px; border-radius: 50%">
-          <img src="{{ url_for("static", filename="resources/user_blue.png" ) }}" class="profileImg">
+          <img class="profileImg" />
         </div>
         <ul class="dropdown-menu dropdown-menu-start p-0 slideInProfile animate" style="width: 210px">
           <li class="d-flex flex-column text-white profileList" style="background-color: #1784d5">

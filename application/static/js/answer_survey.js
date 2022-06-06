@@ -11,13 +11,20 @@ $.ajax({
   url: '/aumentar_visita',
   type: 'POST',
   data: { id_survey: dataSurvey.id },
+<<<<<<< HEAD
+  success: function (result) {},
+=======
   success: function (result) {
 
   },
+>>>>>>> 9c28acbd660cd0961cdb9241196e8121f7955f74
 });
 
 let numberCuestion = 0;
 let totalQuestions = dataSurvey.questions.length;
+if (totalQuestions === 1) {
+  document.querySelector('.sendResponse').style.opacity = 1;
+}
 let responses = {
   id: dataSurvey.id,
   correo: data.encuestado,
@@ -129,7 +136,10 @@ const handleInput = function (event) {
 
 const changeCuestion = function (event, type) {
   //Arreglar el presionar rapido
-  if (totalQuestions === 1) return;
+  if (totalQuestions === 1) {
+    document.querySelector('.sendResponse').style.opacity = 1;
+    return;
+  }
   type === 'next' ? ++numberCuestion : --numberCuestion;
 
   if (numberCuestion === totalQuestions - 1) {

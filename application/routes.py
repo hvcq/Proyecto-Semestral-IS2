@@ -135,7 +135,6 @@ def delete_user():
 def unsuscribe_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
-        cambiar_estado_encuestado_anonimo(response)
         return desunscribir_registrado(response)
 
 

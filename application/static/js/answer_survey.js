@@ -11,9 +11,7 @@ $.ajax({
   url: '/aumentar_visita',
   type: 'POST',
   data: { id_survey: dataSurvey.id },
-  success: function (result) {
-
-  },
+  success: function (result) {},
 });
 
 let numberCuestion = 0;

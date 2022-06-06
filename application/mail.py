@@ -71,7 +71,7 @@ class Send_Mail:
                 nombre = self.get_name(user)
 
                 subject ="Saludos "+ nombre
-                message = "Estimado "+ nombre +" :\nGracias por participar en el centro de estudios públicos al contestar la siguiente encuesta: \nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
+                message = "Estimado "+ nombre +" :\nGracias por participar en el estudio público al contestar la siguiente encuesta del sistema UdecSurvey: \n\nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
 
                 msg = Message(recipients=[user], body=message, subject=subject)
 

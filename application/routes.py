@@ -214,6 +214,7 @@ def Survey(id_encuesta, section="preguntas"):
         "options": ["Preguntas", "Respuestas"],
         "selected": section,
         "id": id_encuesta,
+        "dataSurvey": {"title": ""},
         "textButton": "Modificar",
         "dataSurveyTitle" : obtener_titulo_encuesta(id_encuesta),
         "dataUsers" : obtener_encuestados_responden(id_encuesta),
@@ -322,7 +323,7 @@ def aumentar_visita():
 @registrado_required
 def dashboard_user():
     ##ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
-    return render_template("admin/dashboardAdmin.html",data={
+    return render_template("user/dashboardUser.html",data={
         "url": "dashboard_user",
         "options": [],
         "dataSurvey": {"title": ""},

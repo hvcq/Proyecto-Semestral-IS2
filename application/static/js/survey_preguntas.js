@@ -19,13 +19,12 @@ console.log(data.dataSurvey);
 
 function initTooltip() {
   const buttons = [...document.querySelectorAll("[data-toggle='tooltip']")];
-  console.log(buttons);
   var tooltipList = buttons.map(element => {
     const toogle = new bootstrap.Tooltip(element);
     toogle._config.placement = 'bottom';
     return toogle;
   });
-  console.log(tooltipList);
+  // console.log(tooltipList);
 }
 
 let poolId = {
@@ -45,7 +44,7 @@ var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
 });
 const container = document.querySelector('.survey');
 container.style.opacity = 1;
-console.log(myModal);
+// console.log(myModal);
 
 const insertQuestion = function (statement, alternatives, type, id) {
   if (type === 'alternativa') {
@@ -65,8 +64,6 @@ const insertQuestion = function (statement, alternatives, type, id) {
           </div>
         </div>
         <div class="d-flex justify-content-end gap-2 mt-3 me-4">
-          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo" disabled><img name="alternativa"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
-          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Alternativa"><img name="alternativa"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar pregunta"><img name="alternativa"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
         </div>
     </div>
@@ -85,8 +82,6 @@ const insertQuestion = function (statement, alternatives, type, id) {
             placeholder="Cuadro de respuesta de referencia" disabled></textarea>
         </div>
         <div class="d-flex justify-content-end gap-2 mt-3 me-4">
-          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo" disabled><img name="desarrollo"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
-          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Alternativa"><img name="desarrollo"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar pregunta"><img name="desarrollo"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
         </div>
       </div>
@@ -118,6 +113,7 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
 }
 
 const moveScroll = function (id) {
+  // console.log(id);
   function getOffset(el) {
     var _x = 0;
     var _y = 0;
@@ -128,26 +124,48 @@ const moveScroll = function (id) {
     }
     return { top: _y, left: _x };
   }
-  var x = getOffset(document.querySelector(`#desarrollo${id}`)).left;
-  var y = getOffset(document.querySelector(`#desarrollo${id}`)).top;
+  var x = getOffset(document.querySelector(`#alternativa${id}`)).left;
+  var y = getOffset(document.querySelector(`#alternativa${id}`)).top;
   scroll(0, y);
 };
 
 // ADD AND DELETE INICIO--------------------------------------------------------
 
 const addQuestion = function () {
-  const idNew = newId('desarrollo');
-  insertQuestion('', '', 'alternativa', idNew);
+  const idNew = newId('alternativa');
+  // console.log(idNew);
+  const textalt = `
+    <div id="${'opcion' + 1}" class="form-check d-flex align-items-center gap-2">
+      <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
+      <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+      <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+    </div>
+    <div id="${'opcion' + 2}" class="form-check d-flex align-items-center gap-2">
+      <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
+      <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+      <button type="button" class="suveryQuestions__button"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
+    </div>
+`;
+  insertQuestion('', textalt, 'alternativa', idNew);
   const questionAdd = {
     id: idNew,
     statement: '',
     type: 'alternativa',
-    alternatives: [],
+    alternatives: [
+      {
+        id: 1,
+        textAlt: '',
+      },
+      {
+        id: 2,
+        textAlt: '',
+      },
+    ],
   };
   data.dataSurvey.questions.push(questionAdd);
-  poolId.desarrollo.push(questionAdd.id);
+  poolId.alternativa.push(questionAdd.id);
   moveScroll(idNew);
-  console.log(data.dataSurvey.questions);
+  // console.log(data.dataSurvey.questions);
   initTooltip();
   textAreaFunction();
 };
@@ -223,9 +241,9 @@ const changeResponse = function (id, deleteText, addText, type, idOption1, idOpt
   }
 };
 
-const newId = function (type) {
+function newId(type) {
   return type === 'alternativa' ? Math.max(...poolId.alternativa) + 1 : Math.max(...poolId.desarrollo) + 1;
-};
+}
 
 const setToAlternative = function (event) {
   let parent = event.target.parentNode.parentNode.parentNode;
@@ -253,7 +271,7 @@ const setToAlternative = function (event) {
     changeResponse(idParent, '.textReference', '.survey__elementTitle', 'desarrollo', 1, 2);
     parent.setAttribute('id', `alternativa${idNew}`);
     console.log(parent);
-    console.log(data.dataSurvey.questions);
+    // console.log(data.dataSurvey.questions);
   }
 };
 

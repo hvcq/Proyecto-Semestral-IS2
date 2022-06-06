@@ -43,7 +43,7 @@ def obtener_encuestas():
         return lista_encuestas
 
 def obtener_usuarios():
-    """Consulta para obtener todos los usuarios encuestados (anonimos y registrados)"""
+    """Consulta para obtener todos los usuarios encuestados (invitados y registrados)"""
     dataUsers = []
     if db.session.query(Encuestado).first() == None:
         return dataUsers
@@ -56,7 +56,7 @@ def obtener_usuarios():
             if db.session.query(Registrado).filter_by(email=tupla_encuestado.email).first() == None:
                 datos_encuestado_aux = {
                     "id_user": i,
-                    "name": "Anonimo",
+                    "name": "Invitado",
                     "lastName": "None",
                     "email": tupla_encuestado.email,
                     "age": "None",
@@ -81,6 +81,15 @@ def obtener_usuarios():
             dataUsers.append(datos_encuestado_aux)
             i = i + 1
         return dataUsers
+
+def obtener_cantidad_registrados_e_invitados():
+    cantidad_invitados = db.session.query(Encuestado).count()
+    cantidad_registrados = db.session.query(Registrado).count()
+    dataChart = {
+        "anonymous": cantidad_invitados,
+        "registered": cantidad_registrados
+    }
+    return dataChart
 
 def obtener_encuesta_creada(id_encuesta):
     """Consulta para obtener datos de preguntas de desarrollo"""
@@ -506,17 +515,17 @@ def calcular_edad(fecha_nacimiento):
     edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
     return edad
 
-def agregar_encuestado_anonimo(responses):
-    encuestado_anonimo = Encuestado(email=responses["email"],activo=False)
-    db.session.add(encuestado_anonimo)
+def agregar_invitado(responses):
+    encuestado_invitado = Encuestado(email=responses["email"],activo=False)
+    db.session.add(encuestado_invitado)
     db.session.commit()
-    return print("Usuario anonimo agregado correctamente")
+    return print("Usuario invitado se ha agregado correctamente")
 
-def cambiar_estado_encuestado_anonimo(responses):
-    encuestado_anonimo = db.session.query(Encuestado).filter_by(email=responses["email"]).first()
-    encuestado_anonimo.estado = responses["state"]
+def cambiar_estado_invitado(responses):
+    encuestado_invitado = db.session.query(Encuestado).filter_by(email=responses["email"]).first()
+    encuestado_invitado.estado = responses["state"]
     db.session.commit()
-    return print("Estado de usuario anonimo cambiado correctamente")
+    return print("Estado de usuario invitado cambiado correctamente")
 
 def desunscribir_registrado(response):
     if db.session.query(Registrado).filter_by(id_registrado=response["id_survey"]).first() != None:
@@ -535,7 +544,6 @@ def codificar_mail(mail):
 
 #Obtener el mail desde el link personalizado
 def decodificar_mail(code):
-
     base_bytes = code.encode("ascii")
     str_bytes = base64.b64decode(base_bytes)
     return str_bytes.decode("ascii")

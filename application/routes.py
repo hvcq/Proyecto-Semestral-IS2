@@ -135,10 +135,9 @@ def delete_user():
 @app.route("/state_user", methods=['POST'])
 @login_required
 @admin_required
-def unsuscribe_user():
+def state_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
-        cambiar_estado_encuestado_anonimo(response)
         return desunscribir_registrado(response)
 
 
@@ -153,7 +152,7 @@ def responder_encuesta():
 def agregar_usuario():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
-        agregar_encuestado_anonimo(responses)
+        agregar_invitado(responses)
         return responses
     return redirect("/")
 
@@ -161,8 +160,8 @@ def agregar_usuario():
 def cambiar_estado_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
-        
-        return cambiar_estado_encuesta(responses)
+        cambiar_estado_invitado(responses)
+        return responses
 
 
 @app.route("/survey/")
@@ -284,7 +283,11 @@ def dashboard_admin(section="encuestas",active="false"):
         "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
-        "dataSurveys": obtener_encuestas()
+        "dataSurveys": obtener_encuestas(),
+        "dataChart": {
+            "anonymous" : 30,
+            "registered": 20,
+        }
         }
         )
     elif section == "usuarios":

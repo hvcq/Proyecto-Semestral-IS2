@@ -35,23 +35,6 @@ Crea_Encuesta = Table('crea_encuesta', db.Model.metadata,
                       )
 
 
-class Pregunta_Desarrollo(db.Model):
-    __tablename__ = 'pregunta_desarrollo'
-    id_pregunta_desarrollo = Column(
-        Integer, primary_key=True, autoincrement=True)
-    numero = Column(Integer)
-    enunciado = Column(String(2000), nullable=False)
-    comentario = Column(String(500))
-
-
-Desarrollo_Encuesta = Table('desarrollo_encuesta', db.Model.metadata,
-                            Column('id_encuesta', ForeignKey(
-                                'encuesta.id_encuesta'), primary_key=True),
-                            Column('id_pregunta_desarrollo', ForeignKey(
-                                'pregunta_desarrollo.id_pregunta_desarrollo'), primary_key=True)
-                            )
-
-
 class Pregunta_Alternativa(db.Model):
     __tablename__ = 'pregunta_alternativa'
     id_pregunta_alternativa = Column(
@@ -89,20 +72,13 @@ class Encuestado(db.Model):
     activo = Column(Boolean, nullable=False)
 
 
-Respuesta_Desarrollo = Table('respuesta_desarrollo', db.Model.metadata,
-                             Column('id_pregunta_desarrollo', ForeignKey(
-                                 'pregunta_desarrollo.id_pregunta_desarrollo'), primary_key=True),
-                             Column('email', ForeignKey(
-                                 'encuestado.email'), primary_key=True),
-                             Column('respuesta_encuestado', String(2000), nullable=False)
-                             )
-
 Respuesta_Alternativa = Table('respuesta_alternativa', db.Model.metadata,
                               Column('id_opcion', ForeignKey(
                                   'opcion.id_opcion'), primary_key=True),
                               Column('email', ForeignKey(
                                   'encuestado.email'), primary_key=True)
                               )
+
 
 class Registrado(db.Model):
     __tablename__ = 'registrado'

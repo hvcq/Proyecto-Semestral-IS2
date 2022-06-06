@@ -11,9 +11,7 @@ let numberCuestion = 0;
 let totalQuestions = dataSurvey.questions.length;
 let responses = {
   id: dataSurvey.id,
-  usuario: {
-    correo: data.encuestado,
-  },
+  correo: data.encuestado,
   respuestas: [],
 };
 

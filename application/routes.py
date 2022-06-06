@@ -25,7 +25,7 @@ def index():
     # from werkzeug.security import generate_password_hash
     # print(generate_password_hash("1234"))
     # return redirect(url_for("login"))
-    return render_template("index.html")
+    return render_template("login.html")
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -104,7 +104,7 @@ def ir_a_ultima_encuesta():
 def create_survey():
     if request.method == 'POST':
         surveyData = json.loads(request.form.get("surveyData"))
-        return guardar_encuesta(surveyData)
+        return guardar_encuesta(surveyData,current_user.id)
 
 
 @app.route("/modify_survey", methods=['POST'])
@@ -286,10 +286,7 @@ def dashboard_admin(section="encuestas",active="false"):
         "selected": section,
         "active": active,
         "dataSurveys": obtener_encuestas(),
-        "dataChart": {
-            "anonymous" : 30,
-            "registered": 20,
-        }
+        "dataChart": obtener_cantidad_registrados_e_invitados()
         }
         )
     elif section == "usuarios":

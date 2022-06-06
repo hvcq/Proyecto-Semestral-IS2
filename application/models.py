@@ -17,7 +17,7 @@ class Encuesta(db.Model):
     __tablename__ = 'encuesta'
     id_encuesta = Column(Integer, primary_key=True, autoincrement=True)
     titulo = Column(String(100), nullable=False)
-    descripcion = Column(String(500), nullable=False)
+    descripcion = Column(String(5000), nullable=False)
     fecha_inicio = Column(Date())
     fecha_fin = Column(Date())
     activa = Column(Boolean, nullable=False)

@@ -11,7 +11,13 @@ $.ajax({
   url: '/aumentar_visita',
   type: 'POST',
   data: { id_survey: dataSurvey.id },
+<<<<<<< HEAD
   success: function (result) {},
+=======
+  success: function (result) {
+
+  },
+>>>>>>> 9c28acbd660cd0961cdb9241196e8121f7955f74
 });
 
 let numberCuestion = 0;

@@ -146,7 +146,6 @@ def state_user():
 def responder_encuesta():
     if request.method == 'POST':
         responses = json.loads(request.form.get("responses"))
-
         return guardar_respuesta(responses)
     return redirect("/")
 

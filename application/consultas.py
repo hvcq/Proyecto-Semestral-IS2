@@ -13,6 +13,8 @@ def obtener_encuestas():
     else:
         tuplas_de_encuestas = db.session.query(Encuesta).order_by(Encuesta.id_encuesta).all()
         for tupla_encuesta in tuplas_de_encuestas:
+            crea_encuesta_aux = db.session.query(Crea_Encuesta).filter_by(id_encuesta=tupla_encuesta.id_encuesta).first()
+            admin_aux = db.session.query(Admin).filter_by(id_admin=crea_encuesta_aux.id_admin).first()
             datos_encuesta_aux = {}
             datos_encuesta_aux.clear()
             if tupla_encuesta.fecha_fin == None:
@@ -25,7 +27,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "comentario": tupla_encuesta.comentario,
                     "visits": tupla_encuesta.visitas,
-                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas}
+                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
+                    "author": admin_aux.nombre
                 }
             else:
                 datos_encuesta_aux = {
@@ -37,7 +40,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "comentario": tupla_encuesta.comentario,
                     "visits": tupla_encuesta.visitas,
-                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas}
+                    "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
+                    "author": admin_aux.nombre
                 }
             lista_encuestas.append(datos_encuesta_aux)
         return lista_encuestas
@@ -192,36 +196,26 @@ def modificar_encuesta(surveyData):
     i = 1
     # Modifica las preguntas de la encuesta
     for pregunta in surveyData["questions"]:
-        if pregunta["type"] == "desarrollo":
-            # si existe, modifica una pregunta de desarrollo
-            if db.session.query(Pregunta_Desarrollo).filter_by(id_pregunta_desarrollo=pregunta["id"]).first() != None:
-                pregunta_desarrollo_aux = db.session.query(Pregunta_Desarrollo).filter_by(id_pregunta_desarrollo=pregunta["id"]).first()
-                pregunta_desarrollo_aux.numero = i
-                pregunta_desarrollo_aux.enunciado = pregunta["statement"]
-                db.session.commit()
-            # else, cuando se implemente borrar pregunta de desarrollo
-        else:
-            # si existe, modifica una pregunta de alternativas
-            if db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first() != None:
-                pregunta_alternativa_aux = db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first()
-                pregunta_alternativa_aux.numero = i
-                pregunta_alternativa_aux.enunciado = pregunta["statement"]
-                db.session.commit()
-                # Modifica las alternativas de una pregunta de alternativas
-                for alternativa in pregunta["alternatives"]:
-                    # si existe, modifica dicha opcion, sino, la agrega
-                    if db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first() != None:
-                        opcion_aux = db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first()
-                        opcion_aux.opcion = alternativa["textAlt"]
-                        db.session.commit()
-                    else:
-                        opcion_aux = Opcion(opcion=alternativa["textAlt"])
-                        db.session.add(opcion_aux)
-                        db.session.commit()
-                        alternativas_aux = Alternativas.insert().values(
-                            id_pregunta_alternativa=pregunta["id"], id_opcion=opcion_aux.id_opcion)
-                        db.engine.execute(alternativas_aux)
-                        db.session.commit()
+        if db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first() != None:
+            pregunta_alternativa_aux = db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first()
+            pregunta_alternativa_aux.numero = i
+            pregunta_alternativa_aux.enunciado = pregunta["statement"]
+            db.session.commit()
+            # Modifica las alternativas de una pregunta de alternativas
+            for alternativa in pregunta["alternatives"]:
+                # si existe, modifica dicha opcion, sino, la agrega
+                if db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first() != None:
+                    opcion_aux = db.session.query(Opcion).filter_by(id_opcion=alternativa["id"]).first()
+                    opcion_aux.opcion = alternativa["textAlt"]
+                    db.session.commit()
+                else:
+                    opcion_aux = Opcion(opcion=alternativa["textAlt"])
+                    db.session.add(opcion_aux)
+                    db.session.commit()
+                    alternativas_aux = Alternativas.insert().values(
+                        id_pregunta_alternativa=pregunta["id"], id_opcion=opcion_aux.id_opcion)
+                    db.engine.execute(alternativas_aux)
+                    db.session.commit()
             # else, cuando se implemente borrar pregunta de alternativas
         i = i + 1
         # Aqui se aplican operaciones de borrado de preguntas
@@ -267,6 +261,12 @@ def eliminar_encuesta(id_encuesta):
     return "Borrada Correctamente"
 
 def guardar_respuesta(responses):
+    # Incrementa la cantidad de respuestas de una encuesta
+    encuesta_aux = db.session.query(Encuesta).filter_by(id_encuesta=responses["id"]).first()
+    respuestas_actuales = encuesta_aux.respuestas
+    encuesta_aux.respuestas = respuestas_actuales + 1
+    db.session.commit()
+    # Almacena en la base de datos las respuestas de un usuario
     for i in range(0, len(responses["respuestas"])):
         respuesta_alternativa_aux = Respuesta_Alternativa.insert().values(
             id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=responses["correo"])

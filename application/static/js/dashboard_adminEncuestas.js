@@ -41,7 +41,7 @@ const insertRow = function (survey) {
         ${survey.start_date}
       </td>
       <td>
-        None
+        ${survey.author}
       </td>
       <td class="text-center">
         <div class="btn-group dropstart">

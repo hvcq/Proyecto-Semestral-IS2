@@ -30,7 +30,7 @@
 <div class="d-flex justify-content-between fixed-bottom mb-5">
   <button type="button" class="btn-flotante btn-left ms-4"
     onclick="window.location.href='/dashboard_admin'">Cancelar</button>
-  <button type="button" class="btn-flotante btn-right me-4" onclick="sendData(event)">{{data.textButton}}</button>
+  <button type="button" class="btn-flotante btn-right me-4 {{'invisible' if data.textButton == "Modificar" else ''}}" onclick="sendData(event)">{{data.textButton}}</button>
 </div>
 
 <div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"

@@ -241,6 +241,8 @@ def answer_survey(url, id_encuesta):
         if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
             print("Encuesta ya respondida")
             return redirect("/")
+        
+        print("SE PASO DE LARGO")
 
         if (encuesta.activa == True):
 
@@ -250,7 +252,9 @@ def answer_survey(url, id_encuesta):
 
                 "selected": "answer",
                 "dataSurvey":dataSurvey, 
-                "encuestado": email
+                "encuestado": email,
+                "type": comprobar_tipo_encuestado(email),
+                "role":'encuestado'
                 })
         else:
             return ("Encuesta no está activa")

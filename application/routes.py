@@ -37,7 +37,10 @@ def login():
             if logged_user.password:
                 login_user(logged_user)
                 print(logged_user.password)
-                return redirect(url_for("dashboard_admin"))
+                if logged_user.rol == "admin":
+                    return redirect(url_for("dashboard_admin"))
+                else:
+                    return redirect(url_for("dashboard_user"))
             else:
                 # aqui deberia desplegar un mensaje con el error
                 print("error: password no coincide")
@@ -322,6 +325,7 @@ def dashboard_user():
     return render_template("admin/dashboardAdmin.html",data={
         "url": "dashboard_user",
         "options": [],
+        "dataSurvey": {"title": ""},
         "role":'encuestado'
         })
   

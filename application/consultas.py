@@ -565,11 +565,6 @@ def registrar_encuestado(dataRegister):
 
     password = generate_password_hash(dataRegister.get("password"))
 
-
-    print("\n\n")
-    print(dataRegister.get("genero"))
-    print("\n\n")
-
     if(dataRegister.get("genero") == "1"):
         genero = "M"
     elif(dataRegister.get("genero") == "2"):

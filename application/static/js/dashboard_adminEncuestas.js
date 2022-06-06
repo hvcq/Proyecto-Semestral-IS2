@@ -73,7 +73,7 @@ const statusSurvey = function (event) {
   };
 
   $.ajax({
-    url: '/cambiar_estado',
+    url: '/cambiar_estado_survey',
     type: 'POST',
     data: { response: JSON.stringify(response) },
     success: function (result) {},

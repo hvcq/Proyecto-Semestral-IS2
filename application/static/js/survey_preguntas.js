@@ -65,7 +65,7 @@ const insertQuestion = function (statement, alternatives, type, id) {
           </div>
         </div>
         <div class="d-flex justify-content-end gap-2 mt-3 me-4">
-          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo"><img name="alternativa"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo" disabled><img name="alternativa"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Alternativa"><img name="alternativa"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar pregunta"><img name="alternativa"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
         </div>
@@ -85,7 +85,7 @@ const insertQuestion = function (statement, alternatives, type, id) {
             placeholder="Cuadro de respuesta de referencia" disabled></textarea>
         </div>
         <div class="d-flex justify-content-end gap-2 mt-3 me-4">
-          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo"><img name="desarrollo"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
+          <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Desarrollo" disabled><img name="desarrollo"  id="imgDesa${id}" src="/static/resources/justificar-parrafo.png" class="img-fluid survey__image" onclick="setToParagraph(event)"></button>
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Alternativa"><img name="desarrollo"  id="imgA${id}" src="/static/resources/radio.png" class="img-fluid survey__image" onclick="setToAlternative(event)"></button>
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar pregunta"><img name="desarrollo"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
         </div>
@@ -137,11 +137,11 @@ const moveScroll = function (id) {
 
 const addQuestion = function () {
   const idNew = newId('desarrollo');
-  insertQuestion('', '', 'desarrollo', idNew);
+  insertQuestion('', '', 'alternativa', idNew);
   const questionAdd = {
     id: idNew,
     statement: '',
-    type: 'desarrollo',
+    type: 'alternativa',
     alternatives: [],
   };
   data.dataSurvey.questions.push(questionAdd);

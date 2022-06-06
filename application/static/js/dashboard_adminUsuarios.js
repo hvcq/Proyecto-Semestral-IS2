@@ -34,9 +34,8 @@ const insertRow = function (user) {
     'beforeend',
     `
     <tr id="User${user.id_user}">
-      <td scope="row">
-        <input class="form-check-input" type="checkbox">
-      </td>
+
+      <th scope="row">${user.id_user + 1}</th>
       <td filtroTitle="true">${user.name}</td>
       <td>
         ${user.lastName}
@@ -63,7 +62,7 @@ const insertRow = function (user) {
           </button>
           <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idUser="${user.id_user}" style="z-index: 10000;">
             <li><a typeButton="UNSUSCRIBE" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-            <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+            <li><a typeButton="DELETE" class="dropdown-item disabled" onclick="showModalSure(event)">Eliminar</a></li>
           </ul>
         </div>
       </td>
@@ -78,7 +77,8 @@ const addUser = function (event) {
   const atribute = event.target.getAttribute('isImage') ? true : false;
   atribute ? (inputAdd = event.target.parentElement.previousElementSibling) : (inputAdd = event.target.previousElementSibling);
 
-  const textInput = inputAdd.value;
+  let textInput = inputAdd.value;
+  textInput = textInput.toLowerCase();
   const textInputFilter = [...inputAdd.value];
 
   const filterResult = users.filter(user => user.email === textInput);
@@ -188,7 +188,7 @@ const setState = function () {
   stateUser.textContent = 'Inactivo';
 
   $.ajax({
-    url: '/unsuscribe_user',
+    url: '/state_user',
     type: 'POST',
     data: { response: JSON.stringify(response) },
     success: function (result) {},

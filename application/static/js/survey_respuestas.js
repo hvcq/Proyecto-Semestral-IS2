@@ -43,12 +43,11 @@ const showQuestions = function (event) {
   myModal.show();
 };
 
-
 const containerTitle = document.querySelector('#surveyTitle');
 
 let surveyTitle = data.dataSurveyTitle;
 
-const insertTitle = function (title){
+const insertTitle = function (title) {
   containerTitle.insertAdjacentHTML(
     'beforeend',
     `
@@ -93,7 +92,10 @@ const insertRowAnswer = function (ans) {
             ${opcion.opcion}
           </label>
         </div>
-        <h6>${opcion.respuestas} respuestas</h6>
+        <div class="d-flex gap-5">
+          <h6>${opcion.respuestas} respuestas</h6>
+          <h6>${opcion.porcentaje}%</h6>
+        </div>
       </div>  
       `
     );

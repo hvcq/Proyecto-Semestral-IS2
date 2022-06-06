@@ -22,8 +22,8 @@ def load_user(id):
 
 @app.route("/")
 def index():
-    from werkzeug.security import generate_password_hash
-    print(generate_password_hash("1234"))
+    # from werkzeug.security import generate_password_hash
+    # print(generate_password_hash("1234"))
     # return redirect(url_for("login"))
     return render_template("index.html")
 
@@ -57,6 +57,18 @@ def logout():
 @app.route("/register")
 def register():
    return render_template("register.html")
+
+@app.route("/register_user" ,methods=['POST'])
+def register_user():
+    ##email
+    ##password
+    ##name
+    ##surname
+    ##rut
+    ##gender
+    ##date
+    print(request)
+    return redirect("/invalid")
 
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])
 @login_required
@@ -117,12 +129,13 @@ def delete_user():
         response = json.loads(request.form.get("response"))
         return "USUARIO ELIMINADO"
 
-@app.route("/unsuscribe_user", methods=['POST'])
+@app.route("/state_user", methods=['POST'])
 @login_required
 @admin_required
 def unsuscribe_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
+        cambiar_estado_encuestado_anonimo(response)
         return desunscribir_registrado(response)
 
 
@@ -141,8 +154,8 @@ def agregar_usuario():
         return responses
     return redirect("/")
 
-@app.route("/cambiar_estado", methods=['POST'])
-def cambiar_estado():
+@app.route("/cambiar_estado_survey", methods=['POST'])
+def cambiar_estado_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("response"))
         cambiar_estado_invitado(responses)
@@ -169,7 +182,7 @@ def Survey(id_encuesta, section="preguntas"):
             return render_template("admin/survey.html", data={
 
                 "url": "survey",
-                "options": ["Preguntas", "Respuestas", "Configuración"],
+                "options": ["Preguntas", "Respuestas"],
                 "selected": section,
                 "id": id_encuesta,
                 "dataSurvey": dataSurvey,
@@ -181,7 +194,7 @@ def Survey(id_encuesta, section="preguntas"):
             return render_template("admin/survey.html", data={
 
                 "url": "survey",
-                "options": ["Preguntas", "Respuestas", "Configuración"],
+                "options": ["Preguntas", "Respuestas"],
                 "selected": section,
                 "id": id_encuesta,
                 "dataSurvey": dataSurvey,
@@ -192,7 +205,7 @@ def Survey(id_encuesta, section="preguntas"):
 
         return render_template("admin/survey.html", data={
         "url": "survey",
-        "options": ["Preguntas", "Respuestas", "Configuración"],
+        "options": ["Preguntas", "Respuestas"],
         "selected": section,
         "id": id_encuesta,
         "textButton": "Modificar",
@@ -202,20 +215,40 @@ def Survey(id_encuesta, section="preguntas"):
         }
         )
    
+@app.route("/answer_survey/<string:url>/<int:id_encuesta>")
+def answer_survey(url, id_encuesta):
 
-@app.route("/answer_survey/<int:id_encuesta>")
-def answer_survey(id_encuesta):
-    if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() != None:
-        dataSurvey = crear_dataSurvey(id_encuesta)
-        print(dataSurvey)
-        return render_template("user/answer_survey.html", data={
+    email = decodificar_mail(url)
 
-            "selected": "answer",
-            "dataSurvey":dataSurvey
-            })
+    print("\n"+email+"\n")
+
+    if (db.session.query(Encuestado).filter_by(email = email) == None):
+        print("Error 404")
+        return redirect("/invalid")
+
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
+
+    if encuesta != None:
+
+        if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
+            print("Encuesta ya respondida")
+            return redirect("/")
+
+        if (encuesta.activa == True):
+
+            dataSurvey = crear_dataSurvey(id_encuesta)
+            print(dataSurvey)
+            return render_template("user/answer_survey.html", data={
+
+                "selected": "answer",
+                "dataSurvey":dataSurvey, 
+                "encuestado": email
+                })
+        else:
+            return ("Encuesta no está activa")
     else:
-        print("Error: Encuesta no existente")
-        return redirect("/")
+        return ("Error: Encuesta no existente")
+        #return redirect("/")
 
 # Enviar mails
 @app.route("/mail_sent", methods=['POST'])
@@ -231,26 +264,26 @@ def send_mail():
 
 #Ruta para testear mails activos, no activos y no existentes en la base de datos
 #Desde una url codificada con base64: 
-@app.route("/test_mail/<coded_mail>")
-def decode_mail(coded_mail):
-    obj = Send_Mail()
+# @app.route("/test_mail/<coded_mail>")
+# def decode_mail(coded_mail):
+#     obj = Send_Mail()
 
-    #Decodifica mails desde URL:
-    mail = obj.decode_link(coded_mail) 
+#     #Decodifica mails desde URL:
+#     mail = obj.decode_link(coded_mail) 
 
-    #Obtiene registro desde BD, segun el mail decodificado
-    rec = db.session.query(Encuestado).filter_by(email=mail).first()
+#     #Obtiene registro desde BD, segun el mail decodificado
+#     rec = db.session.query(Encuestado).filter_by(email=mail).first()
 
-    #Si el mail existe:
-    if rec!= None:
+#     #Si el mail existe:
+#     if rec!= None:
 
-        #Si el mail esta activo:
-        if rec.activo == True:
-            return ("Mail Activo: " + rec.email)
-        else:
-            return ("Mail No Activo: " + rec.email)
-    else:
-        return "Mail No Registrado"
+#         #Si el mail esta activo:
+#         if rec.activo == True:
+#             return ("Mail Activo: " + rec.email)
+#         else:
+#             return ("Mail No Activo: " + rec.email)
+#     else:
+#         return "Mail No Registrado"
 
 
 @app.route("/dashboard_admin/")
@@ -265,7 +298,7 @@ def dashboard_admin(section="encuestas",active="false"):
         return render_template("admin/dashboardAdmin.html", data={
 
         "url": "dashboard_admin",
-        "options": ["Encuestas", "Usuarios", "Configuración"],
+        "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
         "dataSurveys": obtener_encuestas()
@@ -275,7 +308,7 @@ def dashboard_admin(section="encuestas",active="false"):
         return render_template("admin/dashboardAdmin.html", data={
 
         "url": "dashboard_admin",
-        "options": ["Encuestas", "Usuarios", "Configuración"],
+        "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
         "dataUsers": obtener_usuarios()

@@ -177,11 +177,11 @@ const sendData = function (event) {
       },
     });
 
-    async function delay() {
-      await new Promise(done => setTimeout(() => done(), 3000));
-      window.location.href = '/';
-      myModal.hide();
-    }
+    // async function delay() {
+    //   await new Promise(done => setTimeout(() => done(), 3000));
+    //   window.location.href = '/';
+    //   myModal.hide();
+    // }
   } else {
     alert('TIENES QUE RESPONDER TODAS LAS PREGUNTAS');
   }

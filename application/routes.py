@@ -304,7 +304,6 @@ def dashboard_admin(section="encuestas",active="false"):
         "dataUsers": obtener_usuarios()
         }
         )
-<<<<<<< HEAD
     
 @app.route("/aumentar_visita")
 def aumentar_visita():
@@ -314,7 +313,6 @@ def aumentar_visita():
 
     aumentar_visita(response)
     return print("visitas aumentadas")  
-=======
 
 @app.route("/dashboard_user/")
 @login_required
@@ -327,5 +325,4 @@ def dashboard_user():
         "role":'encuestado'
         })
   
->>>>>>> ae82e3d3e3b1a47fd829a5c06bb800ff05346461
     

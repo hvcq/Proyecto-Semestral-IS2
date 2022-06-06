@@ -71,13 +71,14 @@
             <div class="valid-feedback">Aceptado!</div>
             <div class="invalid-feedback">Debes ingresar un rut valido</div>
           </div>
-          <select class="form-select" aria-label="Default select example" required>
-            <option selected disabled>Género</option>
-            <option value="1">Masculino</option>
-            <option value="2">Femenino</option>
-            <option value="2">Prefiero no decir</option>
-          </select>
-
+          <div class="col-md-3">
+            <select class="form-select" aria-label="Default select example" required>
+              <option selected disabled>Género</option>
+              <option name="gender"  value="1">Masculino</option>
+              <option value="2">Femenino</option>
+              <option value="3">Prefiero no decir</option>
+            </select>
+          </div>
           <div class="mt-3">
             <label for="date">Fecha de nacimiento</label>
             <input class="ms-2" name="date" placeholder="dd-mm-aa" type="date" id="exampleInputDate1" required/>

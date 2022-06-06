@@ -60,7 +60,14 @@ def register():
 
 @app.route("/register_user" ,methods=['POST'])
 def register_user():
-    print(request.form['password'])
+    ##email
+    ##password
+    ##name
+    ##surname
+    ##rut
+    ##gender
+    ##date
+    print(request)
     return redirect("/invalid")
 
 @app.route("/ir_a_crear_nueva_encuesta", methods=['GET'])

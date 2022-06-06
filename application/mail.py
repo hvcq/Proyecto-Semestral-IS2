@@ -45,6 +45,17 @@ class Send_Mail:
         str_bytes = base64.b64decode(base_bytes)
         return str_bytes.decode("ascii")
 
+    def actualizar_asignados(self, id_survey):
+        
+        total = len(self.mails)
+
+        encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_survey).first()
+
+        if (total > encuesta.total_asignados):
+            encuesta.total_asignados = total
+            db.session.commit()
+
+
     def send_mail(self, id_survey):
 
         self.get_mails()
@@ -65,3 +76,5 @@ class Send_Mail:
                 msg = Message(recipients=[user], body=message, subject=subject)
 
                 conn.send(msg)
+
+        self.actualizar_asignados(id_survey)

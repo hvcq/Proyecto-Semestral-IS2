@@ -271,7 +271,7 @@ def answer_survey(url, id_encuesta):
         return ("Error: Encuesta no existente")
         #return redirect("/")
 
-# Enviar mails
+# Enviar mails con encuestas
 @app.route("/mail_sent", methods=['POST'])
 def send_mail():
     if request.method == 'POST':
@@ -279,9 +279,20 @@ def send_mail():
         print(response.get("id_survey"))
         
         send_mail = Send_Mail()
-        send_mail.send_mail(response.get("id_survey"))
+        send_mail.send_survey(response.get("id_survey"))
         
         return "PUBLICADA CORRECTAMENTE"
+
+# Enviar mail de recuperación de contraseña
+@app.route("/password_reset", methods=['POST'])
+def password_reset():
+    if request.method == 'POST':
+
+        user_mail = "user@mail.com"
+        code = "123456"
+
+        send_mail = Send_Mail()
+        return (send_mail.send_code(user_mail, code))
 
 @app.route("/dashboard_admin/")
 @app.route("/dashboard_admin/<string:section>")

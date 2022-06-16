@@ -62,6 +62,8 @@ class Send_Mail:
         mail = Mail(app)
         mail.init_app(app)
 
+        encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_survey).first()
+
         with mail.connect() as conn:
 
             for user in self.mails: 
@@ -69,9 +71,18 @@ class Send_Mail:
                 mail_coded = self.encode_link(user)
                 
                 nombre = self.get_name(user)
+                subject = ""
+                message = ""
 
-                subject ="Saludos "+ nombre
-                message = "Estimado "+ nombre +" :\nGracias por participar en el estudio público al contestar la siguiente encuesta del sistema UdecSurvey: \n\nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
+                if encuesta.asunto_mail == "":
+                    subject = "Saludos "+ nombre
+                else:
+                    subject = encuesta.asunto_mail
+                
+                if encuesta.mensaje_mail == "":
+                    message = "Estimado "+ nombre +" :\nGracias por participar en el estudio público al contestar la siguiente encuesta del sistema UdecSurvey: \n\nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
+                else:
+                    message = "Estimado "+ nombre +" :\n" + encuesta.mensaje_mail + "\n\nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
 
                 msg = Message(recipients=[user], body=message, subject=subject)
 

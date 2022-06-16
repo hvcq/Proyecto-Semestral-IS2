@@ -197,6 +197,12 @@ def Survey(id_encuesta, section="preguntas"):
             )
         else:
             dataSurvey = crear_dataSurvey(id_encuesta)
+            responsess ={
+                "id_survey": id_encuesta,
+                "subject": "Encuesta Covid Junio",
+                "message": "Te invitamos a participar a la tercera encuesta anual de covid 19. Tu participacion es importante para nosotros."
+            }
+            asignar_asunto_y_mensaje(responsess)
             return render_template("admin/survey.html", data={
 
                 "url": "survey",

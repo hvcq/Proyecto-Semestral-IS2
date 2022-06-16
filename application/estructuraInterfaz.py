@@ -4,7 +4,7 @@ from .consultas import *
 def crear_dataSurvey(id_encuesta):
     datos_encuesta_creada = obtener_encuesta_creada(id_encuesta)
     questions = []
-    # Se generan ordenados id_pregunta, enunciado y comentario por numero
+    # Se generan ordenados id_pregunta y enunciado por numero
     cantidad_total_preguntas = len(datos_encuesta_creada["ids_preguntas_alternativas"])
     indexOp = 0
     for i in range(0,cantidad_total_preguntas):

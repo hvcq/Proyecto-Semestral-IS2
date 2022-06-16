@@ -8,7 +8,7 @@ from . import db
 class Admin(db.Model):
     __tablename__ = 'admin'
     id_admin = Column(Integer, primary_key=True, autoincrement=True)
-    nombre = Column(String(100), nullable=False)
+    nombre = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
     password = Column(String(108), nullable=False)
 
@@ -17,14 +17,15 @@ class Encuesta(db.Model):
     __tablename__ = 'encuesta'
     id_encuesta = Column(Integer, primary_key=True, autoincrement=True)
     titulo = Column(String(100), nullable=False)
-    descripcion = Column(String(5000), nullable=False)
+    descripcion = Column(String(3000), nullable=False)
     fecha_inicio = Column(Date())
     fecha_fin = Column(Date())
     activa = Column(Boolean, nullable=False)
-    comentario = Column(String(500))
     visitas = Column(Integer)
     respuestas = Column(Integer)
     total_asignados = Column(Integer)
+    asunto_mail = Column(String(100))
+    mensaje_mail = Column(String(500))
 
 
 Crea_Encuesta = Table('crea_encuesta', db.Model.metadata,
@@ -41,7 +42,6 @@ class Pregunta_Alternativa(db.Model):
         Integer, primary_key=True, autoincrement=True)
     numero = Column(Integer)
     enunciado = Column(String(2000), nullable=False)
-    comentario = Column(String(500))
 
 
 Alternativa_Encuesta = Table('alternativa_encuesta', db.Model.metadata,
@@ -55,7 +55,7 @@ Alternativa_Encuesta = Table('alternativa_encuesta', db.Model.metadata,
 class Opcion(db.Model):
     __tablename__ = 'opcion'
     id_opcion = Column(Integer, primary_key=True, autoincrement=True)
-    opcion = Column(String(100))
+    opcion = Column(String(300))
 
 
 Alternativas = Table('alternativas', db.Model.metadata,

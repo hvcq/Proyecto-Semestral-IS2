@@ -55,7 +55,6 @@ const insertTitle = function (title) {
     'beforeend',
     `
     <h2>${title.titulo}</h2>
-    <h6 class="text-secondary">${title.descripcion}</h6>
   `
   );
 };

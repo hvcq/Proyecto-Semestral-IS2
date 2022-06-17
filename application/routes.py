@@ -199,8 +199,8 @@ def Survey(id_encuesta, section="preguntas"):
             dataSurvey = crear_dataSurvey(id_encuesta)
             responsess ={
                 "id_survey": id_encuesta,
-                "subject": "Encuesta Covid Junio",
-                "message": "Te invitamos a participar a la tercera encuesta anual de covid 19. Tu participacion es importante para nosotros."
+                "subject": "Encuesta Estudios Públicos",
+                "message": "Te invitamos a participar en la encuesta de estudios públicos. Tu participacion es importante para nosotros."
             }
             asignar_asunto_y_mensaje(responsess)
             return render_template("admin/survey.html", data={
@@ -227,32 +227,33 @@ def Survey(id_encuesta, section="preguntas"):
         "dataAnswers" : obtener_respuestas_opcion(id_encuesta)
         }
         )
-   
+
+#Ruta de respuesta de encuesta   
 @app.route("/answer_survey/<string:url>/<int:id_encuesta>")
 def answer_survey(url, id_encuesta):
 
     if (len(url) % 4 != 0 or len(url) == 0):
         print("Error 404")
-        return redirect("/")
+        return redirect("/invalid")
     
     email = decodificar_mail(url)
 
-    print("\n"+email+"\n")
-
+    #Si no existe mail en la base de datos
     if (db.session.query(Encuestado).filter_by(email = email) == None):
         print("Error 404")
         return redirect("/invalid")
 
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
 
+    #Si la encuesta existe
     if encuesta != None:
 
+        #Comprobar fecha encuesta y si ya fue respondida por usuario
         if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
-            print("Encuesta ya respondida")
-            return redirect("/")
-        
-        print("SE PASO DE LARGO")
+            return ("Encuesta no disponible")
+            #return redirect("/")
 
+        #Si la encuesta está activa
         if (encuesta.activa == True):
 
             dataSurvey = crear_dataSurvey(id_encuesta)
@@ -268,7 +269,7 @@ def answer_survey(url, id_encuesta):
         else:
             return ("Encuesta no está activa")
     else:
-        return ("Error: Encuesta no existente")
+        return ("Encuesta no existe")
         #return redirect("/")
 
 # Enviar mails con encuestas

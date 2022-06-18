@@ -127,7 +127,7 @@ const addUser = function (event) {
 };
 
 const showModalSure = function (event) {
-  myModalSure.show();
+  // myModalSure.show();
   const parent = event.target.parentNode.parentNode;
   console.log(parent);
   current_id = parent.attributes[2].textContent;

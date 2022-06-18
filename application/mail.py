@@ -4,10 +4,8 @@ from .models import *
 import base64
 class Send_Mail:
 
+    #Lista de mails
     mails = []
-
-    #Lista de mails para hacer testing:
-    #users = {'ld.aravena@gmail.com', 'laravena2017@udec.cl', 'laravena2017@inf.udec.cl'}
 
     #Configuraciones del servidor de mail
     app.config['MAIL_SERVER']= 'smtp-mail.outlook.com'
@@ -18,14 +16,15 @@ class Send_Mail:
     app.config['MAIL_PASSWORD']= 'is2team1'
     app.config['MAIL_DEFAULT_SENDER'] = 'team1is2@outlook.com'
     #app.config['MAIL_MAX_EMAILS'] = 100
-  
+    
+    #Obtienen mails desde la base de datos
     def get_mails(self):
 
         record = db.session.query(Encuestado).filter_by(activo=True).all()
         for rec in record:
             self.mails.append(rec.email)
 
-    #Falta testear
+    #Obtiene nombre desde la base de datos, si el encuestado está registrado
     def get_name(self, email):
 
         record = db.session.query(Registrado).filter_by(email=email).first()
@@ -48,19 +47,20 @@ class Send_Mail:
     def actualizar_asignados(self, id_survey):
         
         total = len(self.mails)
-
         encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_survey).first()
 
         if (total > encuesta.total_asignados):
             encuesta.total_asignados = total
             db.session.commit()
 
-
-    def send_mail(self, id_survey):
+    #Método para enviar encuestas
+    def send_survey(self, id_survey):
 
         self.get_mails()
         mail = Mail(app)
         mail.init_app(app)
+
+        encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_survey).first()
 
         with mail.connect() as conn:
 
@@ -69,12 +69,55 @@ class Send_Mail:
                 mail_coded = self.encode_link(user)
                 
                 nombre = self.get_name(user)
+                subject = ""
+                message = ""
 
-                subject ="Saludos "+ nombre
-                message = "Estimado "+ nombre +" :\nGracias por participar en el estudio público al contestar la siguiente encuesta del sistema UdecSurvey: \n\nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
+                if encuesta.asunto_mail == "":
+                    subject = "Saludos "+ nombre
+                else:
+                    subject = encuesta.asunto_mail
+                
+                if encuesta.mensaje_mail == "":
+                    message = "Estimado "+ nombre +" :\nGracias por participar en el estudio público al contestar la siguiente encuesta del sistema UdecSurvey: \n\nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
+                else:
+                    message = "Estimado "+ nombre +" :\n" + encuesta.mensaje_mail + "\n\nhttp://localhost:3000/answer_survey/"+ mail_coded + "/" +str(id_survey)
 
                 msg = Message(recipients=[user], body=message, subject=subject)
 
                 conn.send(msg)
 
         self.actualizar_asignados(id_survey)
+
+    #Método para enviar mail de recuperación de contraseña
+    def send_code(self, user, code):
+        
+        #Comprueba que exista el mail en la base de datos
+        is_admin = db.session.query(Admin).filter_by(email = user).first()
+        is_register = db.session.query(Registrado).filter_by(email = user).first()
+
+        #Si existe el mail
+        if(is_admin != None or is_register != None):
+            
+            name = "Usuario"
+
+            #Obtiene el nombre del usuario
+            if(is_admin != None):
+                name = is_admin.nombre
+            
+            elif(is_register != None):
+                name = is_register.nombre + " " + is_register.apellidos
+            
+            #Manda el mail
+            mail = Mail(app)
+            mail.init_app(app)
+
+            subject = "Recuperación de Contraseña"
+            message = "Estimado" + name + ": \nPara recuperar su contraseña ingrese el siguiente código en la página de recuperación:\n\n" + code 
+
+            msg = Message(recipients=[user],body=message, subject=subject)
+            mail.send(msg)
+
+            print("Email enviado")
+        
+        else:
+            print("Email no existe")

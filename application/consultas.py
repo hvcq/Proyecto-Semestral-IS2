@@ -26,7 +26,6 @@ def obtener_encuestas():
                     "start_date": tupla_encuesta.fecha_inicio.strftime("%d/%m/%Y"),
                     "end_date": "",
                     "active" : tupla_encuesta.activa,
-                    "comentario": tupla_encuesta.comentario,
                     "visits": tupla_encuesta.visitas,
                     "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
                     "author": admin_aux.nombre
@@ -39,7 +38,6 @@ def obtener_encuestas():
                     "start_date": tupla_encuesta.fecha_inicio.strftime("%d/%m/%Y"),
                     "end_date": tupla_encuesta.fecha_fin,
                     "active" : tupla_encuesta.activa,
-                    "comentario": tupla_encuesta.comentario,
                     "visits": tupla_encuesta.visitas,
                     "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
                     "author": admin_aux.nombre
@@ -101,7 +99,6 @@ def obtener_encuesta_creada(id_encuesta):
     ids_preguntas_alternativas = []
     numeros_preguntas_alternativas = []
     enunciados_preguntas_alternativas = []
-    comentarios_preguntas_alternativas = []
     cantidad_opciones_por_pregunta = []
     ids_opciones = []
     strings_opciones = []
@@ -120,8 +117,6 @@ def obtener_encuesta_creada(id_encuesta):
                 tupla_pregunta_alternativa.numero)
             enunciados_preguntas_alternativas.append(
                 tupla_pregunta_alternativa.enunciado)
-            comentarios_preguntas_alternativas.append(
-                tupla_pregunta_alternativa.comentario)
         for id_pregunta_alternativa in ids_preguntas_alternativas:
             if db.session.query(Alternativas).filter_by(id_pregunta_alternativa=id_pregunta_alternativa).first() != None:
                 tuplas_alternativas_aux = db.session.query(Alternativas).filter_by(
@@ -142,7 +137,6 @@ def obtener_encuesta_creada(id_encuesta):
         "ids_preguntas_alternativas": ids_preguntas_alternativas,
         "numeros_preguntas_alternativas": numeros_preguntas_alternativas,
         "enunciados_preguntas_alternativas": enunciados_preguntas_alternativas,
-        "comentarios_preguntas_alternativas": comentarios_preguntas_alternativas,
         "cantidad_opciones_por_pregunta": cantidad_opciones_por_pregunta,
         "ids_opciones": ids_opciones,
         "strings_opciones": strings_opciones
@@ -152,10 +146,10 @@ def obtener_encuesta_creada(id_encuesta):
 def guardar_encuesta(surveyData,id_admin):
     if surveyData["title"] == "":
         encuesta_aux = Encuesta(titulo="titulo encuesta por defecto", descripcion=surveyData["description"],
-            fecha_inicio=date.today(), activa=False, comentario="", visitas=0, respuestas=0, total_asignados=0)
+            fecha_inicio=date.today(), activa=False, visitas=0, respuestas=0, total_asignados=0, asunto_mail="", mensaje_mail="")
     else:
         encuesta_aux = Encuesta(titulo=surveyData["title"], descripcion=surveyData["description"],
-            fecha_inicio=date.today(), activa=False, comentario="", visitas=0, respuestas=0, total_asignados=0)
+            fecha_inicio=date.today(), activa=False, visitas=0, respuestas=0, total_asignados=0, asunto_mail="", mensaje_mail="")
     db.session.add(encuesta_aux)
     db.session.commit()
     crea_encuesta_aux = Crea_Encuesta.insert().values(
@@ -311,13 +305,11 @@ def obtener_titulo_encuesta(id_encuesta):
 
     if (record != None):
         titulo_encuesta = {
-            "titulo" : record.titulo,
-            "descripcion" : record.descripcion
+            "titulo" : record.titulo
         }
     else:
         titulo_encuesta = {
-            "titulo" : None,
-            "descripcion" : None,
+            "titulo" : None
         }
     return (titulo_encuesta)
 
@@ -332,7 +324,6 @@ def obtener_respuestas_opcion(id_encuesta):
                 "id_pregunta": None,
                 "numero": None,
                 "enunciado": None,
-                "comentario": None,
                 "opciones": []
             }
             
@@ -383,7 +374,6 @@ def obtener_respuestas_opcion(id_encuesta):
                 "id_pregunta":p.id_pregunta_alternativa,
                 "numero": p.numero,
                 "enunciado": p.enunciado,
-                "comentario": p.comentario,
                 "opciones": lista_opciones
             }
 
@@ -460,6 +450,8 @@ def calcular_edad(fecha_nacimiento):
     
     hoy = date.today()
     edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+    if(edad < 0):
+        edad = 0
     return edad
 
 def agregar_invitado(responses):
@@ -498,7 +490,18 @@ def decodificar_mail(code):
 #Comprueba si el encuestado ha contestado la encuesta previamente
 #True: Ya la ha contestado
 #Se asume que la encuesta es correcta, con al menos una pregunta y dos alternativas
+#También se comprueba si la fecha de la encuesta no ha finalizado
 def comprobar_encuestado_encuesta(id_encuesta, email):
+
+    #comprobación de la fecha
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
+
+    #Si la fecha_fin es menor a la fecha actual
+    if(encuesta.fecha_fin < date.today()):
+        encuesta.activa = False
+        db.session.commit()
+
+        return True
 
     # Se obtienen la primera pregunta de alternativa
     primera_pregunta_alternativa = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).first()
@@ -518,10 +521,6 @@ def comprobar_encuestado_encuesta(id_encuesta, email):
         #Si no hay respuestas de encuestados se cambia a la siguiente opcion
         if list_mails == None:
             continue
-        
-        #Si existe el mail en la lista
-        # if email in list_mails:
-        #     return True
 
         # #Se recorre la lista comprobando los mails
         for i in list_mails:
@@ -583,10 +582,21 @@ def registrar_encuestado(dataRegister):
     return redirect(url_for("dashboard_user"))
 
 def aumentar_visitas(id_encuesta):
-    
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first()
 
     encuesta.visitas = encuesta.visitas + 1
+
+    #Acá agregar trigger para comprobar si la encuesta sigue activa por fecha
+
     db.session.commit()
     
     return "Visitas actualizadas"
+
+def asignar_asunto_y_mensaje(responses):
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id_survey"]).first()
+    
+    encuesta.asunto_mail = responses["subject"]
+    encuesta.mensaje_mail = responses["message"]
+    db.session.commit()
+
+    return "Asunto y mensaje actualizados"

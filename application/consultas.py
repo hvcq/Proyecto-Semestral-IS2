@@ -369,12 +369,12 @@ def obtener_respuestas_opcion(id_encuesta):
                 for i in lista_opciones:
                     i["porcentaje"] = round((i.get("respuestas")/total_respuestas)*100,1)
                 
-
             datos_pregunta = {
                 "id_pregunta":p.id_pregunta_alternativa,
                 "numero": p.numero,
                 "enunciado": p.enunciado,
-                "opciones": lista_opciones
+                "opciones": lista_opciones,
+                "total_respuestas": total_respuestas
             }
 
             lista_preguntas.append(datos_pregunta)

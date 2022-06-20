@@ -3,6 +3,7 @@ var forms = document.querySelectorAll('.needs-validation');
 
 // Loop over them and prevent submission
 Array.prototype.slice.call(forms).forEach(function (form) {
+  console.log(form);
   form.addEventListener(
     'submit',
     function (event) {
@@ -19,31 +20,32 @@ Array.prototype.slice.call(forms).forEach(function (form) {
 
 function checkRut(rut) {
   // Despejar Puntos
-  var valor = rut.value.replace('.', '');
+  let valor = rut.value.replace('.', '');
   // Despejar Guión
   valor = valor.replace('-', '');
 
   // Aislar Cuerpo y Dígito Verificador
-  cuerpo = valor.slice(0, -1);
-  dv = valor.slice(-1).toUpperCase();
+  let cuerpo = valor.slice(0, -1);
+  let dv = valor.slice(-1).toUpperCase();
 
   // Formatear RUN
   rut.value = cuerpo + '-' + dv;
 
   // Si no cumple con el mínimo ej. (n.nnn.nnn)
   if (cuerpo.length < 7) {
+    console.log('RUT INCOMPLETO');
     rut.setCustomValidity('RUT Incompleto');
     return false;
   }
 
   // Calcular Dígito Verificador
-  suma = 0;
-  multiplo = 2;
+  let suma = 0;
+  let multiplo = 2;
 
   // Para cada dígito del Cuerpo
-  for (i = 1; i <= cuerpo.length; i++) {
+  for (let i = 1; i <= cuerpo.length; i++) {
     // Obtener su Producto con el Múltiplo Correspondiente
-    index = multiplo * valor.charAt(cuerpo.length - i);
+    let index = multiplo * valor.charAt(cuerpo.length - i);
 
     // Sumar al Contador General
     suma = suma + index;
@@ -57,7 +59,7 @@ function checkRut(rut) {
   }
 
   // Calcular Dígito Verificador en base al Módulo 11
-  dvEsperado = 11 - (suma % 11);
+  let dvEsperado = 11 - (suma % 11);
 
   // Casos Especiales (0 y K)
   dv = dv == 'K' ? 10 : dv;
@@ -65,6 +67,7 @@ function checkRut(rut) {
 
   // Validar que el Cuerpo coincide con su Dígito Verificador
   if (dvEsperado != dv) {
+    console.log('RUT INVALIDO');
     rut.setCustomValidity('RUT Inválido');
     return false;
   }

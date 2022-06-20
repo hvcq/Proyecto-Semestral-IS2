@@ -188,7 +188,7 @@ def Survey(id_encuesta, section="preguntas"):
             return render_template("admin/survey.html", data={
 
                 "url": "survey",
-                "options": ["Preguntas", "Respuestas"],
+                "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
                 "selected": section,
                 "id": id_encuesta,
                 "dataSurvey": dataSurvey,
@@ -206,7 +206,7 @@ def Survey(id_encuesta, section="preguntas"):
             return render_template("admin/survey.html", data={
 
                 "url": "survey",
-                "options": ["Preguntas", "Respuestas"],
+                "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
                 "selected": section,
                 "id": id_encuesta,
                 "dataSurvey": dataSurvey,
@@ -217,14 +217,33 @@ def Survey(id_encuesta, section="preguntas"):
 
         return render_template("admin/survey.html", data={
         "url": "survey",
-        "options": ["Preguntas", "Respuestas"],
+        "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
         "selected": section,
         "id": id_encuesta,
         "dataSurvey": {"title": ""},
         "textButton": "Modificar",
-        "dataSurveyTitle" : obtener_titulo_encuesta(id_encuesta),
-        "dataUsers" : obtener_encuestados_responden(id_encuesta),
         "dataAnswers" : obtener_respuestas_opcion(id_encuesta)
+        }
+        )
+    elif section == "usuarios":
+        return render_template("admin/survey.html", data={
+        "url": "survey",
+        "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
+        "selected": section,
+        "id": id_encuesta,
+        "dataSurvey": {"title": ""},
+        "textButton": "Modificar",
+        "dataUsers" : obtener_encuestados_responden(id_encuesta),
+        }
+        )
+    elif section == "configuración":
+        return render_template("admin/survey.html", data={
+        "url": "survey",
+        "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
+        "selected": section,
+        "id": id_encuesta,
+        "dataSurvey": {"title": ""},
+        "textButton": "Modificar",
         }
         )
 
@@ -251,7 +270,7 @@ def answer_survey(url, id_encuesta):
         #Comprobar fecha encuesta y si ya fue respondida por usuario
         if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
             return ("Encuesta no disponible")
-            #return redirect("/")
+            return redirect("/")
 
         #Si la encuesta está activa
         if (encuesta.activa == True):

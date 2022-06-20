@@ -93,7 +93,7 @@ const showModalSure = function (event) {
   myModalSure.show();
   const parent = event.target.parentNode.parentNode;
   current_id = parent.attributes[2].textContent;
-  const type = event.target.attributes[0].textContent;
+  const type = event.target.attributes[1].textContent;
   const button = document.querySelector('.buttonModal');
   const title = document.querySelector('.titleModal');
 

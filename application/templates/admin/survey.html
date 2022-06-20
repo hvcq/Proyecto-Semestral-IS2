@@ -6,6 +6,7 @@
 
 {% block cssFiles %}
 <link rel="stylesheet" href="{{ url_for("static", filename="css/create_survey.css" ) }}">
+<link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard_admin.css" ) }}">
 
 {% endblock cssFiles %}
 
@@ -21,16 +22,18 @@
   </div>
   <div class="surveyQuestions">
   </div>
-  <div class="survey__addButton text-center">
-    <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Agregar pregunta"><img
-        src="{{ url_for("static", filename="resources/plus-blue.png" ) }}" class="img-fluid survey__image"
-        onclick="addQuestion()"></button>
-  </div>
 </section>
 
 <div class="d-flex justify-content-between fixed-bottom mb-5">
-  <button type="button" class="btn-flotante btn-left ms-4"
-    onclick="window.location.href='/dashboard_admin'">Cancelar</button>
+
+  <button type="button" class="btn-flotante ms-4" style="opacity: 0;" disabled>Cancelar</button>
+
+  <div class="survey__addButton text-center">
+    <button type="button" class="btn-left" data-toggle="tooltip" title="Agregar pregunta"><img
+        src="{{ url_for("static", filename="resources/plus_adicional.png" ) }}" class="img-fluid survey__image"
+        onclick="addQuestion()"></button>
+  </div>
+
   <button type="button" class="btn-flotante btn-right me-4 {{'invisible' if data.textButton == " Modificar" else '' }}"
     onclick="sendData(event)">{{data.textButton}}</button>
 </div>
@@ -56,49 +59,59 @@
 
 {% elif data.selected == "respuestas" %}
 
-<div id="surveyTitle" class="mx-5 my-4">
-  <!-- Titulo y descripcion -->
-</div>
+<div id="carouselExampleDark" class="carousel carousel-dark slide bg-transparent m-5 shadow" data-bs-ride="carousel" style="height: 75vh;"  data-interval="false"> 
 
+  <div class="carousel-inner h-100">
 
-<div class="d-flex mx-5 gap-4">
-  <div id="containerAlternatives" class="card shadow questions overflow-auto" style="width: 50%; height: 40vh;">
-    <!--AQUI SE INSERTAN LAS PREGUNTAS-->
-    <div class="overflow-auto mb-3"></div>
   </div>
+
+  <button class="carousel-control-prev justify-content-start ms-3" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev" style="width: 5%;">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next justify-content-end me-3" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next" style="width: 5%;">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>
 
-<div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead">
-  <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll">
+<img src="{{ url_for("static", filename="resources/foto_admin.p´ng" ) }}" class="d-block w-100" alt="">
+
+{% elif data.selected == "usuarios" %}
+
+<div class="users ms-5 me-5 mt-4 mb-2 card shadow tableFixHead p-0" style="height: 82vh;">
+  <div class="d-flex border-bottom align-items-center p-3 sticky-top bg-white justify-content-between">
+      <div class="d-flex gap-3 align-items-center justify-content-between ">
+        <h4 class="text-secondary" style="width: 250px;">Tabla de Usuarios</h4>
+        <!-- <div class="input-group shadow-sm rounded-5 search w-100">
+          <span class="input-group-text border-0 colorSearch">
+            <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
+          </span>
+          <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+        </div> -->
+      </div>
+  </div>
+
+  <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
     <thead>
       <tr class="bg-white">
-        <th scope="col">Nombres</th>
-        <th scope="col">Apellidos</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Estado</th>
         <th scope="col">Email</th>
         <th scope="col">Género</th>
         <th scope="col">Edad</th>
       </tr>
     </thead>
-    <tbody class="users">
+    <tbody class="usersBody">
     </tbody>
   </table>
 </div>
 
-<div class="modal fade myModalQuestions" role="dialog" id="staticBackdrop" data-bs-backdrop="static"
-  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered myModal">
-    <!-- Modal content-->
-    <div id="ModalQuestions"
-      class="modal-content d-flex flex-column justify-content-center align-items-center p-5 gap-2 shadow"
-      style="background-color: #d7dbdd;">
-    </div>
-  </div>
-</div>
-
-
 {% else %}
 <p>Configuracion</p>
 {% endif %}
+
+
 {% endblock content %}
 
 
@@ -116,5 +129,9 @@
 
 {% elif data.selected == "respuestas" %}
 <script src="{{ url_for("static", filename="js/survey_respuestas.js" ) }}"></script>
+
+{% elif data.selected == "usuarios" %}
+<script src="{{ url_for("static", filename="js/survey_usuarios.js" ) }}"></script>
+
 {% endif %}
 {% endblock jsFiles %}

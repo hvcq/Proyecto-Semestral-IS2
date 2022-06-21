@@ -49,8 +49,8 @@ const insertRow = function (survey) {
             <img class="imgDot" src="/static/resources/dots.png" alt="">
           </button>
           <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-            <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Publicar</a></li>
-            <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+            <li><a role="button" typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Enviar</a></li>
+            <li><a role="button" typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
           </ul>
         </div>
       </td>
@@ -80,11 +80,20 @@ const statusSurvey = function (event) {
   });
 };
 
+// const modalPublish = () => {
+//   Swal.fire({
+//     icon: 'question',
+//     title: '¿Estás seguro que quieres enviar esta encuesta?',
+//     text: 'Recuerda, esta acción no se puede revertir',
+//     showCancelButton: true,
+//   });
+// };
+
 const showModalSure = function (event) {
   myModalSure.show();
   const parent = event.target.parentNode.parentNode;
   current_id = parent.attributes[2].textContent;
-  const type = event.target.attributes[0].textContent;
+  const type = event.target.attributes[1].textContent;
   const button = document.querySelector('.buttonModal');
   const title = document.querySelector('.titleModal');
 

@@ -63,7 +63,6 @@ const insertRow = function (user) {
           <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idUser="${user.id_user}" style="z-index: 10000;">
           <li><a typeButton="ACTIVATE" class="dropdown-item" onclick="showModalSure(event)">Suscribir</a></li>
             <li><a typeButton="DEACTIVATE" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-            <li><a typeButton="DELETE" class="dropdown-item disabled" onclick="showModalSure(event)">Eliminar</a></li>
           </ul>
         </div>
       </td>
@@ -98,7 +97,7 @@ const addUser = function (event) {
 
   const element = {
     id_user: idMax + 1,
-    name: 'Anonimo',
+    name: 'Invitado',
     lastName: 'None',
     email: textInput,
     age: 'None',
@@ -124,36 +123,23 @@ const addUser = function (event) {
   totalUsers.textContent = users.length + ' Total';
 
   idMax++;
+
+  inputAdd.value = '';
 };
 
 const showModalSure = function (event) {
-  myModalSure.show();
   const parent = event.target.parentNode.parentNode;
   console.log(parent);
   current_id = parent.attributes[2].textContent;
   console.log(current_id);
   const type = event.target.attributes[0].textContent;
-  const button = document.querySelector('.buttonModal');
-  const title = document.querySelector('.titleModal');
 
   if (type === 'DEACTIVATE') {
-    button.removeEventListener('click', deleteUser);
-    button.removeEventListener('click', activate);
     console.log('ENTRO DESACTIVAR');
-    title.textContent = '¿Estas seguro que deseas desuscribir al usuario?';
-    button.addEventListener('click', deactivate);
+    deactivate();
   } else if (type === 'ACTIVATE') {
-    button.removeEventListener('click', deleteUser);
-    button.removeEventListener('click', deactivate);
     console.log('ENTRO ACTIVAR');
-    title.textContent = '¿Estas seguro que deseas suscribir al usuario?';
-    button.addEventListener('click', activate);
-  } else if (type === 'DELETE') {
-    button.removeEventListener('click', deactivate);
-    button.removeEventListener('click', activate);
-    console.log('ENTRO DELETE');
-    title.textContent = '¿Estas seguro de eliminar al usuario?';
-    button.addEventListener('click', deleteUser);
+    activate();
   }
 };
 
@@ -176,7 +162,6 @@ const deleteUser = function () {
     success: function (result) {},
   });
   totalUsers.textContent = users.length + ' Total';
-  myModalSure.hide();
 };
 
 const activate = function () {
@@ -203,8 +188,6 @@ const activate = function () {
     data: { response: JSON.stringify(response) },
     success: function (result) {},
   });
-
-  myModalSure.hide();
 };
 
 const deactivate = function () {

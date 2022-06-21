@@ -15,11 +15,11 @@
   </head>
 
   <body class="vh-100 vw-100 p-0 m-0">
-    <nav class="container-fluid p-0 d-flex justify-content-between bg-white p-3 shadow-sm">
-      <!-- {% if data.dataSurvey.title is not none %} -->
-      <div class="d-flex align-items-center titleSurvey invisible fs-3">{{data.dataSurvey.title}}</div>
-      <!-- {% endif %} -->
-      <div class="nav__list d-flex justify-content-center align-items-center" style="margin-left: 9rem">
+    <nav class="container-fluid p-0 row justify-content-center bg-white p-3 shadow-sm px-4" style="--bs-gutter-x: 0">
+      {% if data.title is not none %}
+      <div class="d-flex align-items-center titleSurvey fs-3 col-4">{{data.title}}</div>
+      {% endif %}
+      <div class="nav__list d-flex justify-content-center align-items-center col-4">
         {% for name in data.options %}
         <div class="nav__element d-flex align-items-center gap-1" disable="true">
           {% if data.url == 'survey' %}
@@ -32,7 +32,7 @@
         {% endfor %}
       </div>
 
-      <div class="btn-group" style="margin-right: 5%; z-index: 100">
+      <div class="btn-group col-4 d-flex justify-content-end" style="z-index: 100">
         <div data-bs-toggle="dropdown" style="width: 60px; height: 60px; border-radius: 50%">
           <img class="profileImg" />
         </div>
@@ -42,7 +42,12 @@
             <h5 class="ms-3 me-3 mb-0 fw-bold">{{current_user.nombre}}</h5>
             <h6 class="ms-3 me-3 mb-2 mt-1" style="font-size: 0.9em">{{current_user.email}}</h6>
           </li>
-          <li><button class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3 disabled" type="button">Perfil</button></li>
+          <li>
+            <button class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3" type="button" onclick="window.location.href='/dashboard_admin/encuestas'">
+              Home
+            </button>
+          </li>
+          <li><button class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3" type="button" onclick="window.location.href='/my_profile'">Perfil</button></li>
           <li>
             <button class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3" type="button" onclick="window.location.href='/logout'">Cerrar sesión</button>
           </li>

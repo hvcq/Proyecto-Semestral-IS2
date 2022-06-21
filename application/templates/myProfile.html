@@ -1,0 +1,80 @@
+{% extends "base_template.html" %}
+
+{% block title %}Mi Perfil{% endblock title %}
+
+{% block cssFiles %}
+<link rel="stylesheet" href="{{ url_for("static", filename="css/profile.css" ) }}">
+{% endblock cssFiles %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row justify-content-center gap-5">
+        <div class="col-3 d-flex flex-column align-items-center gap-3" style="margin-top: 2%;
+        margin-bottom: 2%;">
+            <div class="d-flex flex-column align-items-center card w-100 p-3 shadow" style="margin-top: 0; margin-bottom:0;">
+                <h5 class="text-secondary">{{current_user.rol}}</h5>
+                <img class="profileImgProfile"/>
+                <h4 class="pb-3">{{current_user.nombre}}</h4>
+                <h6 class="text-secondary text-decoration-underline fw-semibold" style="cursor: pointer;">Editar foto de perfil</h6>
+            </div>
+            {% if current_user.rol != 'admin'%}
+            <button class="btn btn-danger" style="background-color: #ff3e69;">Darse de baja</button>
+            {% endif %}
+        </div>
+        <div class="col-7 d-flex flex-column align-items-start card p-0 shadow">
+            <h3 class="text-start ps-3 pt-3">Mi Perfil</h3>
+            <span class="border-bottom w-100"></span>
+            <div class="p-3 row w-100">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" placeholder="{{current_user.nombre}}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rut</label>
+                        <input type="text" class="form-control" placeholder="None" disabled>
+                    </div>
+                    <div class="">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" placeholder="****" disabled>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Género</label>
+                        <input type="text" class="form-control" disabled>
+                    </div>
+                    <div class="">
+                        <label class="form-label">Fecha de nacimiento</label>
+                        <input type="date" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>	
+            <div class="px-3 pb-3 w-100">
+                <label class="form-label">Correo</label>
+                <input type="text" class="form-control" disabled>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+{% block jsFiles %}
+<script>
+  const data = {{ data | tojson }}
+  const role = {{ data.role| tojson}}
+  const img = role === "admin" ? '/static/resources/user_blue.png' : '/static/resources/user_red.png'
+  document.querySelector('.profileImgProfile').setAttribute('src', img);
+</script>
+
+<script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
+
+{% endblock jsFiles %}

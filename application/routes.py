@@ -1,5 +1,5 @@
 """Rutas de la aplicacion"""
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from .consultas import *
 from .estructuraInterfaz import *
 from .modeluser import *
@@ -214,7 +214,6 @@ def Survey(id_encuesta, section="preguntas"):
         "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
         "selected": section,
         "id": id_encuesta,
-        "dataSurvey": {"title": ""},
         "textButton": "Modificar",
         "dataAnswers" : obtener_respuestas_opcion(id_encuesta)
         }
@@ -225,7 +224,6 @@ def Survey(id_encuesta, section="preguntas"):
         "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
         "selected": section,
         "id": id_encuesta,
-        "dataSurvey": {"title": ""},
         "textButton": "Modificar",
         "dataUsers" : obtener_encuestados_responden(id_encuesta),
         }
@@ -236,7 +234,6 @@ def Survey(id_encuesta, section="preguntas"):
         "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
         "selected": section,
         "id": id_encuesta,
-        "dataSurvey": {"title": ""},
         "textButton": "Modificar",
         }
         )
@@ -277,7 +274,8 @@ def answer_survey(url, id_encuesta):
                 "dataSurvey":dataSurvey, 
                 "encuestado": email,
                 "type": comprobar_tipo_encuestado(email),
-                "role":'encuestado'
+                "role":'encuestado',
+                "title" : dataSurvey.title
                 })
         else:
             return ("Encuesta no está activa")
@@ -323,9 +321,9 @@ def dashboard_admin(section="encuestas",active="false"):
         "options": ["Encuestas", "Usuarios"],
         "selected": section,
         "active": active,
-        "dataSurvey": {"title": ""},
         "dataSurveys": obtener_encuestas(),
-        "dataChart": obtener_cantidad_registrados_e_invitados()
+        "dataChart": obtener_cantidad_registrados_e_invitados(),
+        "title" : "Bienvenido " + current_user.nombre
         }
         )
     elif section == "usuarios":
@@ -334,9 +332,9 @@ def dashboard_admin(section="encuestas",active="false"):
         "url": "dashboard_admin",
         "options": ["Encuestas", "Usuarios"],
         "selected": section,
-        "dataSurvey": {"title": ""},
         "active": active,
-        "dataUsers": obtener_usuarios()
+        "dataUsers": obtener_usuarios(),
+        "title" : "Bienvenido " + current_user.nombre
         }
         )
     
@@ -357,7 +355,6 @@ def dashboard_user():
     return render_template("user/dashboardUser.html",data={
         "url": "dashboard_user",
         "options": [],
-        "dataSurvey": {"title": ""},
         "role":'encuestado'
         })
 
@@ -372,4 +369,16 @@ def unsubscribe_mail(url):
     email = decodificar_mail(url)
 
     return desunscribir_encuestado(email)
+
+@app.route("/my_profile")
+@login_required
+def my_profile():
+
+    return render_template("myProfile.html", data={
+    "url": "dashboard_user",
+    "options": [],
+    "selected": "",
+    "role": current_user.rol,
+    "title" : "Perfil de " + current_user.nombre 
+    })
     

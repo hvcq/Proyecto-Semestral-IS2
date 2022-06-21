@@ -196,12 +196,7 @@ def Survey(id_encuesta, section="preguntas"):
             }
             )
         else:
-            # dataSurvey = crear_dataSurvey(id_encuesta)
-            # responsess = {
-            #    "id_survey": id_encuesta,
-            #    "end_date": date(2022, 6, 21)
-            # }
-            # print(modificar_tiempo_limite(responsess))
+            dataSurvey = crear_dataSurvey(id_encuesta)
             return render_template("admin/survey.html", data={
 
                 "url": "survey",

@@ -365,5 +365,16 @@ def dashboard_user():
         "dataSurvey": {"title": ""},
         "role":'encuestado'
         })
-  
+
+#Desunscribe encuestados  
+@app.route("/unsubscribe/<string:url>")
+def unsubscribe_mail(url):
+
+    if (len(url) % 4 != 0 or len(url) == 0):
+        print("Error 404")
+        return redirect("/invalid")
+    
+    email = decodificar_mail(url)
+
+    return desunscribir_encuestado(email)
     

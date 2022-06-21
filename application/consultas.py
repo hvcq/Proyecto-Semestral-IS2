@@ -497,7 +497,7 @@ def comprobar_encuestado_encuesta(id_encuesta, email):
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
 
     #Si la fecha_fin es menor a la fecha actual
-    if(encuesta.fecha_fin < date.today()):
+    if(encuesta.fecha_fin != None and encuesta.fecha_fin < date.today()):
         encuesta.activa = False
         db.session.commit()
 
@@ -612,3 +612,16 @@ def asignar_asunto_y_mensaje(responses):
     db.session.commit()
 
     return "Asunto y mensaje actualizados"
+
+def desunscribir_encuestado(email):
+
+    encuestado = db.session.query(Encuestado).filter_by(email = email).first()
+
+    if(encuestado != None):
+        encuestado.activo = False
+        db.session.commit()
+
+        return "Usuario desuscrito"
+
+    else: 
+        return "Email no existe"

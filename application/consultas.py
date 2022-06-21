@@ -592,6 +592,18 @@ def aumentar_visitas(id_encuesta):
     
     return "Visitas actualizadas"
 
+def modificar_tiempo_limite(responses):
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id_survey"]).first()
+    if responses["end_date"] == "":
+        return "error: Fecha de termino vacia"
+    fecha_termino = datetime.strftime(responses["end_date"], '%d/%m/%Y')
+    fecha_inicio = datetime.strftime(encuesta.fecha_inicio, '%d/%m/%Y')
+    if fecha_inicio >= fecha_termino:
+        return "error: Fecha de termino mayor o igual a la de inicio"
+    encuesta.fecha_fin = responses["end_date"]
+    db.session.commit()
+    return "Tiempo limite de encuesta (" + str(responses["id_survey"]) + ") modificado correctamente"
+
 def asignar_asunto_y_mensaje(responses):
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id_survey"]).first()
     

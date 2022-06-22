@@ -72,6 +72,16 @@ class Encuestado(db.Model):
     activo = Column(Boolean, nullable=False)
 
 
+Encuestar = Table('encuestar', db.Model.metadata,
+                              Column('id_encuesta', ForeignKey(
+                                  'encuesta.id_encuesta'), primary_key=True),
+                              Column('email', ForeignKey(
+                                  'encuestado.email'), primary_key=True),
+                              Column('contestada', Boolean, nullable=False),
+                              Column('fecha_envio', Date()),
+                              Column('fecha_contestada', Date())
+                              )
+
 Respuesta_Alternativa = Table('respuesta_alternativa', db.Model.metadata,
                               Column('id_opcion', ForeignKey(
                                   'opcion.id_opcion'), primary_key=True),

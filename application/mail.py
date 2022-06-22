@@ -118,6 +118,16 @@ class Send_Mail:
 
                     conn.send(msg)
 
+                    # Asocia el encuestado con la encusta que ha contestado
+                    from datetime import date
+                    encuestar_aux = Encuestar.insert().values(
+                         id_encuesta=encuesta.id_encuesta, 
+                         email=user,
+                         contestada=False, fecha_envio=date.today())
+                    db.engine.execute(encuestar_aux)
+                    db.session.commit()
+
+
             self.actualizar_asignados(id_survey)
         
         else:

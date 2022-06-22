@@ -270,6 +270,12 @@ def guardar_respuesta(responses):
             id_opcion=responses["respuestas"][i]["response"]["idOpcion"], email=responses["correo"])
         db.engine.execute(respuesta_alternativa_aux)
         db.session.commit()
+
+    # Se guarda la fecha en donde el encuestado contesto la encuesta
+    encuestar_aux = Encuestar.update().values(
+        fecha_contestada=date.today(), contestada=True).where(Encuestar.c.email == responses["correo"])
+    db.engine.execute(encuestar_aux)
+    db.session.commit()
     return "Respuestas Guardada"
 
 def obtener_numero_encuestados_activos():

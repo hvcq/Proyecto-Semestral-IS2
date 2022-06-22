@@ -2,7 +2,7 @@
 
 // console.log(data);
 
-if (data.selected !== 'answer') {
+if (data.selected !== 'answer' && data.selected !== '') {
   const opcionNavA = document.querySelector(`a[name=${data.selected.toLowerCase()}]`);
   const opcionNavDot = document.querySelector(`div[name=${data.selected}]`);
   opcionNavA.style.color = '#000';

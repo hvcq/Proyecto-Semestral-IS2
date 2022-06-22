@@ -13,13 +13,15 @@
 {% block content %}
 {% if data.selected == 'preguntas' %}
 <section class="survey container d-flex flex-column">
-  <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center">
+  <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto d-flex flex-column justify-content-center">
     <textarea id="title" onchange="handleInputs(event)"
       class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1" placeholder="Inserte Título"
-      autofocus style="height: 10px"></textarea>
-    <textarea onchange="handleInputs(event)" id="description" class="form-control shadow-none survey__elementDesc"
+      autofocus style="height: 10px" maxlength="100"></textarea>
+    <textarea onchange="handleInputs(event)" onkeyup="couterCharacters(event)" maxlength="3000"  id="description" class="form-control shadow-none survey__elementDesc"
       rows="1" placeholder="Descripción de la encuesta"></textarea>
+    <p class="me-4 mt-4 text-end text-secondary" style="font-size: .8rem;"><span class="charactersRemaining">43</span> caracteres restantes</p>
   </div>
+  
   <div class="surveyQuestions">
   </div>
 </section>
@@ -75,7 +77,7 @@
   </button>
 </div>
 
-<img src="{{ url_for("static", filename="resources/foto_admin.p´ng" ) }}" class="d-block w-100" alt="">
+<img src="{{ url_for("static", filename="resources/foto_admin.png" ) }}" class="d-block w-100" alt="">
 
 {% elif data.selected == "usuarios" %}
 

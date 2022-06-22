@@ -53,7 +53,7 @@ const insertQuestion = function (statement, alternatives, type, id) {
       `
       <div name="question" alternative="true" class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center" id=${'alternativa' + id}>
         <textarea name="title" class="form-control shadow-none survey__elementTitle mb-3 textareaDisabled" rows="1"
-          placeholder="Inserte enunciado" onchange="handleInputs(event)">${statement}</textarea>
+          placeholder="Inserte enunciado" onchange="handleInputs(event)" maxlength="2000">${statement}</textarea>
         <div class="survey__alternatives">
           <div name=${id} class="list__alternatives ms-3">
             ${alternatives}
@@ -102,7 +102,7 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
       alternativeHtml += `
         <div id="opcion${alternative.id}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
-          <input placeholder="Inserte Texto" class="survey__inputAlt" value="${alternative.textAlt}" onchange="handleInputs(event)">
+          <input placeholder="Inserte Texto" class="survey__inputAlt" value="${alternative.textAlt}" onchange="handleInputs(event)" maxlength="300">
           <button onclick="deleteAlternative(event)" type="button" class="suveryQuestions__button"><img src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
      `;
@@ -137,12 +137,12 @@ const addQuestion = function () {
   const textalt = `
     <div id="${'opcion' + 1}" class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
-      <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+      <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
       <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
     <div id="${'opcion' + 2}" class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
-      <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+      <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
       <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
 `;
@@ -210,12 +210,12 @@ const changeResponse = function (id, deleteText, addText, type, idOption1, idOpt
       <div name=${elementToAdd.parentNode.getAttribute('id').slice(8)} class="list__alternatives ms-3">
         <div id="${'opcion' + idOption1}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
-          <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+          <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
         <div id="${'opcion' + idOption2}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
-          <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+          <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
       </div>
@@ -334,7 +334,7 @@ const addAlternative = function (event) {
     `
     <div id="opcion${idOption}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
-          <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)">
+          <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
   `
@@ -416,3 +416,15 @@ const textAreaFunction = function () {
 };
 
 textAreaFunction();
+
+// Contador de caracteres.
+
+const characters = document.querySelector('.charactersRemaining');
+const descriptionSurvey = document.querySelector('#description');
+characters.textContent = 3000 - descriptionSurvey.value.length;
+
+console.log(descriptionSurvey.value.length);
+
+const couterCharacters = function (event) {
+  characters.textContent = 3000 - descriptionSurvey.value.length;
+};

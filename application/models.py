@@ -11,6 +11,7 @@ class Admin(db.Model):
     nombre = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
     password = Column(String(108), nullable=False)
+    avatar = Column(String(100))
 
 
 class Encuesta(db.Model):
@@ -101,3 +102,4 @@ class Registrado(db.Model):
     genero = Column(String(1))
     fecha_nacimiento = Column(Date())
     fecha_registro = Column(Date())
+    avatar = Column(String(100))

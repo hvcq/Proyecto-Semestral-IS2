@@ -247,9 +247,9 @@ def answer_survey(url, id_encuesta):
         return redirect("/invalid")
     
     email = decodificar_mail(url)
-
+    
     #Si no existe mail en la base de datos
-    if (db.session.query(Encuestado).filter_by(email = email) == None):
+    if (db.session.query(Encuestado).filter_by(email = email).first() == None):
         print("Error 404")
         return redirect("/invalid")
 
@@ -275,7 +275,7 @@ def answer_survey(url, id_encuesta):
                 "encuestado": email,
                 "type": comprobar_tipo_encuestado(email),
                 "role":'encuestado',
-                "title" : dataSurvey.title
+                "title" : dataSurvey.get("title")
                 })
         else:
             return ("Encuesta no está activa")

@@ -602,8 +602,8 @@ def modificar_tiempo_limite(responses):
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id_survey"]).first()
     if responses["end_date"] == "":
         return "error: Fecha de termino vacia"
-    fecha_termino = datetime.strftime(responses["end_date"], '%d/%m/%Y')
-    fecha_inicio = datetime.strftime(encuesta.fecha_inicio, '%d/%m/%Y')
+    fecha_termino = datetime.strptime(responses["end_date"], '%Y-%m-%d')
+    fecha_inicio = datetime.strptime(str(encuesta.fecha_inicio), '%Y-%m-%d')
     if fecha_inicio >= fecha_termino:
         return "error: Fecha de termino mayor o igual a la de inicio"
     encuesta.fecha_fin = responses["end_date"]

@@ -19,6 +19,9 @@
       {% if data.title is not none %}
       <div class="d-flex align-items-center titleSurvey fs-3 col-4">{{data.title}}</div>
       {% endif %}
+      <!-- {% if data.title is not none %}
+      <div class="d-flex align-items-center "></div> revisar 
+      {% endif %} -->
       <div class="nav__list d-flex justify-content-center align-items-center col-4">
         {% for name in data.options %}
         <div class="nav__element d-flex align-items-center gap-1" disable="true">

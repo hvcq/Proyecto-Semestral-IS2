@@ -17,11 +17,12 @@
     <textarea id="title" onchange="handleInputs(event)"
       class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1" placeholder="Inserte Título"
       autofocus style="height: 10px" maxlength="100"></textarea>
-    <textarea onchange="handleInputs(event)" onkeyup="couterCharacters(event)" maxlength="3000"  id="description" class="form-control shadow-none survey__elementDesc"
-      rows="1" placeholder="Descripción de la encuesta"></textarea>
-    <p class="me-4 mt-4 text-end text-secondary" style="font-size: .8rem;"><span class="charactersRemaining">43</span> caracteres restantes</p>
+    <textarea onchange="handleInputs(event)" onkeyup="couterCharacters(event)" maxlength="3000" id="description"
+      class="form-control shadow-none survey__elementDesc" rows="1" placeholder="Descripción de la encuesta"></textarea>
+    <p class="me-4 mt-4 text-end text-secondary" style="font-size: .8rem;"><span class="charactersRemaining">43</span>
+      caracteres restantes</p>
   </div>
-  
+
   <div class="surveyQuestions">
   </div>
 </section>
@@ -31,8 +32,7 @@
   <button type="button" class="btn-flotante ms-4" style="opacity: 0;" disabled>Cancelar</button>
 
   <div class="survey__addButton text-center">
-    <button type="button" class="btn-left" data-toggle="tooltip" title="Agregar pregunta"><img
-        src="{{ url_for("static", filename="resources/plus_adicional.png" ) }}" class="img-fluid survey__image"
+    <button type="button" class="btn-left" data-toggle="tooltip" title="Agregar pregunta"><img src="{{ url_for("static", filename="resources/plus_adicional.png" ) }}" class="img-fluid survey__image"
         onclick="addQuestion()"></button>
   </div>
 
@@ -61,17 +61,20 @@
 
 {% elif data.selected == "respuestas" %}
 
-<div id="carouselExampleDark" class="carousel carousel-dark slide bg-transparent m-5 shadow" data-bs-ride="carousel" style="height: 75vh;"  data-interval="false"> 
+<div id="carouselExampleDark" class="carousel carousel-dark slide bg-transparent m-5 shadow" data-bs-ride="carousel"
+  style="height: 75vh;" data-interval="false">
 
   <div class="carousel-inner h-100">
 
   </div>
 
-  <button class="carousel-control-prev justify-content-start ms-3" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev" style="width: 5%;">
+  <button class="carousel-control-prev justify-content-start ms-3" type="button" data-bs-target="#carouselExampleDark"
+    data-bs-slide="prev" style="width: 5%;">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
-  <button class="carousel-control-next justify-content-end me-3" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next" style="width: 5%;">
+  <button class="carousel-control-next justify-content-end me-3" type="button" data-bs-target="#carouselExampleDark"
+    data-bs-slide="next" style="width: 5%;">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
@@ -83,18 +86,18 @@
 
 <div class="users ms-5 me-5 mt-4 mb-2 card shadow tableFixHead p-0" style="height: 82vh;">
   <div class="d-flex border-bottom align-items-center p-3 sticky-top bg-white justify-content-between">
-      <div class="d-flex gap-3 align-items-center justify-content-between ">
-        <h4 class="text-secondary" style="width: 250px;">Tabla de Usuarios</h4>
-        <!-- <div class="input-group shadow-sm rounded-5 search w-100">
+    <div class="d-flex gap-3 align-items-center justify-content-between ">
+      <h4 class="text-secondary" style="width: 250px;">Tabla de Usuarios</h4>
+      <!-- <div class="input-group shadow-sm rounded-5 search w-100">
           <span class="input-group-text border-0 colorSearch">
             <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
           </span>
           <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
         </div> -->
-      </div>
+    </div>
   </div>
 
-  <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
+  <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll">
     <thead>
       <tr class="bg-white">
         <th scope="col">Usuario</th>
@@ -110,7 +113,80 @@
 </div>
 
 {% else %}
-<p>Configuracion</p>
+<div class="d-flex flex-column align-items-center w-100 mt-4 rounded">
+  <div class="survey__card shadow">
+
+    <div class="d-flex flex-column">
+      <h3 class="text-dark mx-4 mt-3 fw-bolder">Configuración</h3>
+      <span class="border border-dark mx-4"></span>
+    </div>
+  
+    <div class="card-body">
+  
+      <div class="accordion" id="accordionPanelsStayOpenExample">
+  
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+              aria-controls="panelsStayOpen-collapseOne">
+              <h5 class="text-dark">Ajuste de formulario</h5>
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+            aria-labelledby="panelsStayOpen-headingOne">
+            <div class="accordion-body mx-3">
+              <div>
+                <h6 class="text-secondary ms">Tiempo límite de formulario</h6>
+                <p>Asignar fecha de termino a la encuesta: <input class="ms-2" name="date"
+                type="date"/></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+              data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+              aria-controls="panelsStayOpen-collapseTwo">
+              <h5 class="text-dark">Ajuste de envio</h5>
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+            aria-labelledby="panelsStayOpen-headingTwo">
+            <div class="accordion-body mx-3">
+
+              <h6 class="text-secondary">Asunto y cuerpo del mensaje</h6>
+
+              <div class="d-flex justify-content-between">
+                <span>Asunto</span>
+                <div class="form-check form-switch">
+                  <input id="subject" class="form-check-input" type="checkbox" role="switch" onclick="showTextArea(event)">
+                </div>
+              </div>
+              <textarea id="textSubject"  class="visually-hidden form-control textareaDisabled shadow-none configuration w-100 rounded" placeholder="Inserte Asunto" rows="1"></textarea>
+
+
+              <div class="d-flex justify-content-between mt-2">
+                <span>Cuerpo</span>
+                <div class="form-check form-switch">
+                  <input id="body" class="form-check-input" type="checkbox" role="switch" onclick="showTextArea(event)">
+                </div>
+              </div>
+              <textarea id="textBody" class="visually-hidden form-control textareaDisabled shadow-none configuration w-100 rounded" placeholder="Inserte mensaje" rows="3"></textarea>
+
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
 {% endif %}
 
 
@@ -134,6 +210,9 @@
 
 {% elif data.selected == "usuarios" %}
 <script src="{{ url_for("static", filename="js/survey_usuarios.js" ) }}"></script>
+
+{% elif data.selected == "configuración" %}
+<script src="{{ url_for("static", filename="js/survey_config.js" ) }}"></script>
 
 {% endif %}
 {% endblock jsFiles %}

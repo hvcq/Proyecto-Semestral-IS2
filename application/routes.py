@@ -275,7 +275,7 @@ def answer_survey(url, id_encuesta):
                 "encuestado": email,
                 "type": comprobar_tipo_encuestado(email),
                 "role":'encuestado',
-                "title" : dataSurvey.get("title")
+                "title" : dataSurvey.get('title')
                 })
         else:
             return ("Encuesta no está activa")

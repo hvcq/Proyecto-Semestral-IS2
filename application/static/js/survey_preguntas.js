@@ -15,6 +15,8 @@
   *Implementar un fade a las cards.
  */
 
+console.log(data);
+
 console.log(data.dataSurvey);
 
 function initTooltip() {
@@ -24,7 +26,6 @@ function initTooltip() {
     toogle._config.placement = 'bottom';
     return toogle;
   });
-  // console.log(tooltipList);
 }
 
 let poolId = {
@@ -381,17 +382,32 @@ const handleInputs = function (event) {
 
 const sendData = function () {
   myModal.show();
-  $.ajax({
-    url: '/create_survey',
-    type: 'POST',
-    data: { surveyData: JSON.stringify(data.dataSurvey) },
-    success: function (result) {
-      delay();
-      //if result === true pasa esto. Si no muestra la modal de error.
-      // alert(result);
-      // delay();
-    },
-  });
+
+  if (data.textButton === 'Guardar') {
+    $.ajax({
+      url: '/create_survey',
+      type: 'POST',
+      data: { surveyData: JSON.stringify(data.dataSurvey) },
+      success: function (result) {
+        delay();
+        //if result === true pasa esto. Si no muestra la modal de error.
+        // alert(result);
+        // delay();
+      },
+    });
+  } else if (data.textButton === 'Modificar') {
+    $.ajax({
+      url: '/modify_survey',
+      type: 'POST',
+      data: { surveyData: JSON.stringify(data.dataSurvey) },
+      success: function (result) {
+        delay();
+        //if result === true pasa esto. Si no muestra la modal de error.
+        // alert(result);
+        // delay();
+      },
+    });
+  }
 
   async function delay() {
     await new Promise(done => setTimeout(() => done(), 3000));

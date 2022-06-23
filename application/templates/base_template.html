@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css" ) }}"> <link rel="stylesheet" href="{{ url_for("static",
     filename="css/colors.css" ) }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module" src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     {% block cssFiles %} {% endblock cssFiles %}
   </head>
 
@@ -19,9 +21,12 @@
       {% if data.title is not none %}
       <div class="d-flex align-items-center titleSurvey fs-3 col-4">{{data.title}}</div>
       {% endif %}
+      <!-- {% if data.title is not none %}
+      <div class="d-flex align-items-center "></div> revisar 
+      {% endif %} -->
       <div class="nav__list d-flex justify-content-center align-items-center col-4">
         {% for name in data.options %}
-        <div class="nav__element d-flex align-items-center gap-1" disable="true">
+        <div class="nav__element d-flex align-items-center" disable="true">
           {% if data.url == 'survey' %}
           <a name="{{name.lower()}}" class="nav-link order-2" href="/{{data.url}}/{{data.id}}/{{name.lower()}}">{{name}}</a>
           {% else %}
@@ -70,5 +75,7 @@
   ></script>
   <script scr="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="sweetalert2.all.min.js"></script>
   {% block jsFiles %} {% endblock jsFiles %}
 </html>

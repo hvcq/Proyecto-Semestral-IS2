@@ -19,7 +19,7 @@
                 <h6 class="text-secondary text-decoration-underline fw-semibold" style="cursor: pointer;">Editar foto de perfil</h6>
             </div>
             {% if current_user.rol != 'admin'%}
-            <button class="btn btn-danger" style="background-color: #ff3e69;">Darse de baja</button>
+            <button class="btn btn-danger" style="background-color: #ff3e69;" onclick="darseDeBaja()">Darse de baja</button>
             {% endif %}
         </div>
         <div class="col-7 d-flex flex-column align-items-start card p-0 shadow">
@@ -43,11 +43,11 @@
                 <div class="col-6">
                     <div class="mb-3">
                         <label class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" disabled>
+                        <input type="text" class="form-control" placeholder="None" disabled>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Género</label>
-                        <input type="text" class="form-control" disabled>
+                        <input type="text" class="form-control" placeholder="None" disabled>
                     </div>
                     <div class="">
                         <label class="form-label">Fecha de nacimiento</label>
@@ -57,7 +57,7 @@
             </div>	
             <div class="px-3 pb-3 w-100">
                 <label class="form-label">Correo</label>
-                <input type="text" class="form-control" disabled>
+                <input type="text" class="form-control" placeholder="{{current_user.email}}" disabled>
             </div>
         </div>
     </div>
@@ -76,5 +76,5 @@
 </script>
 
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
-
+<script src="{{ url_for("static", filename="js/profile.js" ) }}"></script>
 {% endblock jsFiles %}

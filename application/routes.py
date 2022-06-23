@@ -167,6 +167,14 @@ def cambiar_estado_survey():
         cambiar_estado_encuesta(responses)
         return responses
 
+@app.route("/cambiar_configuracion_survey", methods=['POST'])
+def cambiar_configuracion_survey():
+    if request.method == 'POST':
+        responses = json.loads(request.form.get("surveyConfig"))
+        modificar_tiempo_limite({"id_survey": responses['id'], "end_date": responses['end_date']})
+        asignar_asunto_y_mensaje({"id_survey": responses['id'], "subject": responses['mail_subject'], 'message': responses['mail_body']})
+        return "CONFIGURACION CAMBIADA"
+
 
 @app.route("/survey/")
 @app.route("/survey/<int:id_encuesta>/")
@@ -229,14 +237,35 @@ def Survey(id_encuesta, section="preguntas"):
         }
         )
     elif section == "configuración":
-        return render_template("admin/survey.html", data={
-        "url": "survey",
-        "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
-        "selected": section,
-        "id": id_encuesta,
-        "textButton": "Modificar",
-        }
-        )
+        
+        if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
+            dataSurvey = {
+                "id": id_encuesta,
+                "title": "",
+                "description": "",
+                "questions": []
+            }
+            return render_template("admin/survey.html", data={
+            "url": "survey",
+            "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
+            "selected": section,
+            "id": id_encuesta,
+            "textButton": "Modificar",
+            "dataSurvey": dataSurvey
+            }
+            )
+
+        else:
+            return render_template("admin/survey.html", data={
+            "url": "survey",
+            "options": ["Preguntas", "Respuestas", "Usuarios", "Configuración"],
+            "selected": section,
+            "id": id_encuesta,
+            "textButton": "Modificar",
+            "dataSurvey": crear_dataSurvey(id_encuesta)
+            }
+            )
+
 
 #Ruta de respuesta de encuesta   
 @app.route("/answer_survey/<string:url>/<int:id_encuesta>")
@@ -247,9 +276,9 @@ def answer_survey(url, id_encuesta):
         return redirect("/invalid")
     
     email = decodificar_mail(url)
-
+    
     #Si no existe mail en la base de datos
-    if (db.session.query(Encuestado).filter_by(email = email) == None):
+    if (db.session.query(Encuestado).filter_by(email = email).first() == None):
         print("Error 404")
         return redirect("/invalid")
 
@@ -275,7 +304,7 @@ def answer_survey(url, id_encuesta):
                 "encuestado": email,
                 "type": comprobar_tipo_encuestado(email),
                 "role":'encuestado',
-                "title" : dataSurvey.title
+                "title" : dataSurvey.get('title')
                 })
         else:
             return ("Encuesta no está activa")

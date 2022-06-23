@@ -26,11 +26,16 @@ def crear_dataSurvey(id_encuesta):
             indexOp += 1
         questions.append(data)
 
+    survey = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
+
     dataSurvey = {
         "id": id_encuesta,
-        "title": db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first().titulo,
-        "description": db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first().descripcion,
-        "questions": questions
+        "title": survey.titulo,
+        "description": survey.descripcion,
+        "questions": questions, 
+        "end_date": survey.fecha_fin,
+        "mail_subject": survey.asunto_mail,
+        "mail_body": survey.mensaje_mail
     }
 
     return dataSurvey

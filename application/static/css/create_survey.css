@@ -172,3 +172,32 @@ textarea:focus {
   opacity: 0;
   transition: all 1.3s;
 }
+
+.accordion-button {
+  background-color: transparent !important;
+  color: #626567 !important;
+  box-shadow: none !important;
+}
+
+.accordion-item {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.configuration {
+  margin: 0 !important;
+  border: 1px solid gray !important;
+  box-shadow: none;
+  transition: box-shadow 0.3s ease-in-out !important;
+}
+
+.configuration:focus {
+  border: 1px solid gray !important;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}
+
+.bodyConfiguration {
+  opacity: 0;
+  transition: all 1s ease-in-out;
+}

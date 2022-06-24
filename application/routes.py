@@ -10,8 +10,11 @@ from flask import current_app as app
 from flask import make_response, redirect, render_template, request, url_for
 
 from .models import *
+<<<<<<< HEAD
 
 # TEMPORAL
+=======
+>>>>>>> 02c241245d8a3dc4a8be902e43210aa6892a5fc8
 from .mail import *
 
 login_manager_app = LoginManager(app)
@@ -343,17 +346,14 @@ def send_mail():
         return "PUBLICADA CORRECTAMENTE"
 
 # Enviar mail de recuperación de contraseña
-
-
-@app.route("/password_reset", methods=['POST'])
+@app.route("/password_reset")
 def password_reset():
-    if request.method == 'POST':
 
-        user_mail = "user@mail.com"
-        code = "123456"
+    user_mail = "mail@mail.com"
+    code = "123456"
 
-        send_mail = Send_Mail()
-        return (send_mail.send_code(user_mail, code))
+    send_mail = Send_Mail()
+    return (send_mail.send_code(user_mail, code))
 
 
 @app.route("/dashboard_admin/")

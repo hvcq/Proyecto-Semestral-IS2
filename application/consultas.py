@@ -282,30 +282,12 @@ def obtener_numero_encuestados_activos():
     record = db.session.query(Encuestado).filter_by(activo=True).all()
     return (len(record))
 
-#Se asume que no se pueden dejar encuestas incompletas
 def obtener_numero_encuestados_responden(id_encuesta):
 
-    preguntas_alternativas = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).all()
-    
-    total_responden = 0
-
-    if preguntas_alternativas == None:
-        return total_responden
-
-    for op in preguntas_alternativas:
-        list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = op[1]).all()
-    
-        suma_respuestas = 0
-        for r in list_opciones:
-            list_marcas = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = r[1]).all()
-            suma_respuestas = suma_respuestas + len(list_marcas)
-            
-        if (suma_respuestas > total_responden):
-            total_responden = suma_respuestas
-
+    total_responden = db.session.query(Encuestar).filter_by(id_encuesta = id_encuesta, contestada = True).count()
     return total_responden
 
-#Se obtiene el título y descripción de la encuesta
+#Se obtiene el título de la encuesta
 def obtener_titulo_encuesta(id_encuesta):
     record = db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first()
 
@@ -393,59 +375,42 @@ def obtener_respuestas_opcion(id_encuesta):
 #Se asume que no se pueden dejar encuestas incompletas
 def obtener_encuestados_responden(id_encuesta):
 
-    # Se obtienen la primera pregunta de alternativa de la encuestas
-    primera_pregunta_alternativa = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).first()
-
-    if primera_pregunta_alternativa == None:
-        return None
-
-    list_responden = []
-
-    # Se obtienen las opciones de la primera pregunta
-    list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = primera_pregunta_alternativa[1]).all()
-
-    if list_opciones == None:
-        return None
-
-    #Por cada opcion se obtienen los emails de los encuestados
-    for r in list_opciones:
-        list_marcas = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = r[1]).all()
-
-        for l in list_marcas:
-            if l != None:
-                list_responden.append(l.email)
-
-    if list_responden == None:
-        return None
+    responden = db.session.query(Encuestar).filter_by(id_encuesta = id_encuesta).all() 
 
     list_encuestados = []
 
-    #Se obtienen los datos de los encuestados:
-    for i in list_responden:
+    for i in responden:
 
         datos_encuestado = {}
         datos_encuestado.clear()
 
-        encuestado = db.session.query(Registrado).filter_by(email=i).first()
-        
+        if (i.contestada == True):
+            estado = "Contestada"
+        else:
+            estado = "No Contestada"
+
+        encuestado = db.session.query(Registrado).filter_by(email=i.email).first()
+
         if(encuestado == None):
             datos_encuestado={
                 "id_registrado": None,
-                "email": i,
+                "email": i.email,
                 "nombre": "Invitado",
                 "apellido": "-", 
                 "genero": "-",
-                "edad": "-"
+                "edad": "-",
+                "estado": estado
             }
 
         else:
             datos_encuestado={
                 "id_registrado": encuestado.id_registrado,
-                "email": i,
+                "email": i.email,
                 "nombre": encuestado.nombre,
                 "apellido": encuestado.apellidos,
                 "genero": encuestado.genero,
-                "edad": calcular_edad(encuestado.fecha_nacimiento)
+                "edad": calcular_edad(encuestado.fecha_nacimiento),
+                "estado": estado
             }
         
         list_encuestados.append(datos_encuestado)
@@ -494,48 +459,32 @@ def decodificar_mail(code):
     return str_bytes.decode("ascii")
 
 #Comprueba si el encuestado ha contestado la encuesta previamente
-#True: Ya la ha contestado
-#Se asume que la encuesta es correcta, con al menos una pregunta y dos alternativas
 #También se comprueba si la fecha de la encuesta no ha finalizado
+#True: Ya la ha contestado
 def comprobar_encuestado_encuesta(id_encuesta, email):
 
-    #comprobación de la fecha
-    encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
+    respondida = db.session.query(Encuestar).filter_by(id_encuesta=id_encuesta, email=email).first()
 
-    #Si la fecha_fin es menor a la fecha actual
-    if(encuesta.fecha_fin != None and encuesta.fecha_fin < date.today()):
-        encuesta.activa = False
-        db.session.commit()
-
+    #Si no se ha enviado por mail, no puede contestar
+    if (respondida == None):
         return True
 
-    # Se obtienen la primera pregunta de alternativa
-    primera_pregunta_alternativa = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta = id_encuesta).first()
+    if (respondida.contestada == True):
+        return True
 
-     # Se obtienen las opciones de la primera pregunta
-    list_opciones = db.session.query(Alternativas).filter_by(id_pregunta_alternativa = primera_pregunta_alternativa[1]).all()
+    else:
+        #comprobación de la fecha
+        encuesta = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
 
-    #Por cada opcion se obtienen los emails de los encuestados
-    for op in list_opciones:
+        #Si la fecha_fin es menor a la fecha actual
+        if(encuesta.fecha_fin != None and encuesta.fecha_fin < date.today()):
+            encuesta.activa = False
+            db.session.commit()
+
+            return True
         
-        #Lista de mails de encuestados
-        list_mails = db.session.query(Respuesta_Alternativa).filter_by(id_opcion = op[1]).all()
-
-        print("LIST MAILS")
-        print(list_mails)
-
-        #Si no hay respuestas de encuestados se cambia a la siguiente opcion
-        if list_mails == None:
-            continue
-
-        # #Se recorre la lista comprobando los mails
-        for i in list_mails:
-
-            #Si se encuentra el mail se retorna True
-            if i[1] == email:
-                return True
-
-    return False
+        else:
+            return False
 
 def cambiar_estado_encuesta(responses):
 
@@ -590,11 +539,10 @@ def registrar_encuestado(dataRegister):
 def aumentar_visitas(id_encuesta):
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_encuesta).first()
 
-    encuesta.visitas = encuesta.visitas + 1
+    if (encuesta != None):
 
-    #Acá agregar trigger para comprobar si la encuesta sigue activa por fecha
-
-    db.session.commit()
+        encuesta.visitas = encuesta.visitas + 1
+        db.session.commit()
     
     return "Visitas actualizadas"
 

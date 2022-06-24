@@ -171,8 +171,8 @@ def cambiar_estado_survey():
 def cambiar_configuracion_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("surveyConfig"))
-        modificar_tiempo_limite({"id_survey": responses['id'], "end_date": responses['end_date']})
-        asignar_asunto_y_mensaje({"id_survey": responses['id'], "subject": responses['mail_subject'], 'message': responses['mail_body']})
+        modificar_tiempo_limite(responses)
+        asignar_asunto_y_mensaje(responses)
         return "CONFIGURACION CAMBIADA"
 
 

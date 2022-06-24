@@ -1,23 +1,17 @@
 'use strict';
 
-// import Swal from 'sweetalert2';
-
-// const Toast = Swal.mixin({
-//   toast: true,
-//   position: 'top-end',
-//   showConfirmButton: false,
-//   timer: 3000,
-//   timerProgressBar: true,
-//   didOpen: toast => {
-//     toast.addEventListener('mouseenter', Swal.stopTimer);
-//     toast.addEventListener('mouseleave', Swal.resumeTimer);
-//   },
-// });
-
-// Toast.fire({
-//   icon: 'success',
-//   title: 'Signed in successfully',
-// });
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'bottom-end',
+  showConfirmButton: false,
+  showCloseButton: true,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: toast => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
+});
 
 const dataSurvey = data.dataSurvey;
 let dataConfiguration = {
@@ -33,8 +27,9 @@ const switchSubject = document.querySelector('#subject');
 const textSubject = document.querySelector('#textSubject');
 const switchBody = document.querySelector('#body');
 const textBody = document.querySelector('#textBody');
+const dateText = document.querySelector('#textDate');
 
-console.log(dataSurvey);
+console.log('Data survey', dataSurvey);
 
 const setDate = function (event) {
   dataConfiguration.end_date = event.target.value;
@@ -63,6 +58,10 @@ if (dataSurvey.mail_body !== '' && dataSurvey.mail_body !== null && dataSurvey.m
   textBody.classList.remove('visually-hidden');
 }
 
+if (dataSurvey.end_date !== '' && dataSurvey.end_date !== null && dataSurvey.end_date !== undefined) {
+  dateText.textContent = 'Tiempo límite de formulario: ' + dataSurvey.end_date + ' (Actual)';
+}
+
 const showTextArea = event => {
   const switchEvent = event.target;
   const textEvent = switchEvent.getAttribute('id');
@@ -88,5 +87,9 @@ const sendConfiguration = () => {
       // alert(result);
       // delay();
     },
+  });
+  Toast.fire({
+    icon: 'success',
+    title: 'Signed in successfully',
   });
 };

@@ -10,11 +10,6 @@ from flask import current_app as app
 from flask import make_response, redirect, render_template, request, url_for
 
 from .models import *
-<<<<<<< HEAD
-
-# TEMPORAL
-=======
->>>>>>> 02c241245d8a3dc4a8be902e43210aa6892a5fc8
 from .mail import *
 
 login_manager_app = LoginManager(app)

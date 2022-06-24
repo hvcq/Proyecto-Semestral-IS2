@@ -21,7 +21,7 @@ const insertRowUser = function (user) {
     <tr id="User${user.id_registrado}">
       <td>${user.nombre}</td>
       <td>
-        ${'none'}
+        ${user.estado}
       </td>
       <td>
         ${user.email !== '-' ? user.email : 'none'}

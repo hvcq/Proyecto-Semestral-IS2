@@ -188,14 +188,64 @@ def modificar_encuesta(surveyData):
         nueva_encuesta.titulo = surveyData["title"]
     nueva_encuesta.descripcion = surveyData["description"]
     db.session.commit()
-    i = 1
-    # Modifica las preguntas de la encuesta
+
+
+    # Elimina las preguntas de la encuesta que se quitaron en la interfaz
+    ids_preguntas_a_borrar = []
+    ids_preguntas_surveyData = []
     for pregunta in surveyData["questions"]:
-        if db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first() != None:
+        ids_preguntas_surveyData.append(pregunta["id"])
+
+    if db.session.query(Alternativa_Encuesta).filter_by(id_encuesta=surveyData["id"]).first() != None:
+        tuplas_alternativa_encuesta = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta=surveyData["id"]).all()
+        for tupla_alternativa_encuesta in tuplas_alternativa_encuesta:
+            if tupla_alternativa_encuesta.id_pregunta_alternativa not in ids_preguntas_surveyData:
+                borra_tupla_alternativa_encuesta = Alternativa_Encuesta.delete().where(Alternativa_Encuesta.c.id_pregunta_alternativa == tupla_alternativa_encuesta.id_pregunta_alternativa)
+                db.engine.execute(borra_tupla_alternativa_encuesta)
+                db.session.commit()
+                ids_preguntas_a_borrar(tupla_alternativa_encuesta.id_pregunta_alternativa)
+
+        ids_opciones_a_borrar = []
+        for id_pregunta_a_borrar in ids_preguntas_a_borrar:
+            if db.session.query(Alternativas).filter_by(id_pregunta_alternativa=id_pregunta_a_borrar).first() != None:
+                tuplas_alternativas_aux = db.session.query(Alternativas).filter_by(
+                    id_pregunta_alternativa=id_pregunta_a_borrar).all()
+                for tupla_alternativa in tuplas_alternativas_aux:
+                    ids_opciones_a_borrar.append(tupla_alternativa.id_opcion)
+                borra_tuplas_alternativas = Alternativas.delete().where(Alternativas.c.id_pregunta_alternativa == id_pregunta_a_borrar)
+                db.engine.execute(borra_tuplas_alternativas)
+                db.session.commit()
+
+        tuplas_opcion = db.session.query(Opcion).filter(Opcion.id_opcion.in_(ids_opciones_a_borrar)).all()
+        for tupla_opcion in tuplas_opcion:
+            db.session.delete(tupla_opcion)
+            db.session.commit()
+
+        tuplas_pregunta_alternativa = db.session.query(Pregunta_Alternativa).filter(
+            Pregunta_Alternativa.id_pregunta_alternativa.in_(ids_preguntas_a_borrar)).all()
+        for tupla_pregunta_alternativa in tuplas_pregunta_alternativa:
+            db.session.delete(tupla_pregunta_alternativa)
+            db.session.commit()
+
+    # Modifica las preguntas de la encuesta
+    ids_preguntas_a_agregar = []
+    ids_preguntas_a_modificar = []
+    if db.session.query(Alternativa_Encuesta).filter_by(id_encuesta=surveyData["id"]).first() != None:
+        tuplas_alternativa_encuesta = db.session.query(Alternativa_Encuesta).filter_by(id_encuesta=surveyData["id"]).all()
+        for tupla_alternativa_encuesta in tuplas_alternativa_encuesta:
+                ids_preguntas_a_modificar(tupla_alternativa_encuesta.id_pregunta_alternativa)
+        for id_pregunta_surveyData in ids_preguntas_surveyData:
+            if id_pregunta_surveyData not in ids_preguntas_a_modificar:
+                ids_preguntas_a_agregar.append(id_pregunta_surveyData)
+
+    i = 1
+    for pregunta in surveyData["questions"]:
+        if pregunta["id"] in ids_preguntas_a_modificar:
             pregunta_alternativa_aux = db.session.query(Pregunta_Alternativa).filter_by(id_pregunta_alternativa=pregunta["id"]).first()
             pregunta_alternativa_aux.numero = i
             pregunta_alternativa_aux.enunciado = pregunta["statement"]
             db.session.commit()
+            i = i + 1
             # Modifica las alternativas de una pregunta de alternativas
             for alternativa in pregunta["alternatives"]:
                 # si existe, modifica dicha opcion, sino, la agrega
@@ -211,10 +261,10 @@ def modificar_encuesta(surveyData):
                         id_pregunta_alternativa=pregunta["id"], id_opcion=opcion_aux.id_opcion)
                     db.engine.execute(alternativas_aux)
                     db.session.commit()
-            # else, cuando se implemente borrar pregunta de alternativas
-        i = i + 1
-        # Aqui se aplican operaciones de borrado de preguntas
-        # y opciones de una pregunta de alternativas
+
+
+    # Agrega las nuevas preguntas a la encuesta
+
     return("Modificacion Exitosa")
 
 def eliminar_encuesta(id_encuesta):
@@ -547,7 +597,7 @@ def aumentar_visitas(id_encuesta):
     return "Visitas actualizadas"
 
 def modificar_tiempo_limite(responses):
-    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id_survey"]).first()
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id"]).first()
     if responses["end_date"] == "":
         return "error: Fecha de termino vacia"
     fecha_termino = datetime.strptime(responses["end_date"], '%Y-%m-%d')
@@ -556,13 +606,13 @@ def modificar_tiempo_limite(responses):
         return "error: Fecha de termino mayor o igual a la de inicio"
     encuesta.fecha_fin = responses["end_date"]
     db.session.commit()
-    return "Tiempo limite de encuesta (" + str(responses["id_survey"]) + ") modificado correctamente"
+    return "Tiempo limite de encuesta (" + str(responses["id"]) + ") modificado correctamente"
 
 def asignar_asunto_y_mensaje(responses):
-    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id_survey"]).first()
+    encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id"]).first()
     
-    encuesta.asunto_mail = responses["subject"]
-    encuesta.mensaje_mail = responses["message"]
+    encuesta.asunto_mail = responses["mail_subject"]
+    encuesta.mensaje_mail = responses["mail_body"]
     db.session.commit()
 
     return "Asunto y mensaje actualizados"

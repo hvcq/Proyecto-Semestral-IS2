@@ -1,4 +1,6 @@
 import email
+
+from flask_login import current_user
 from .models import *
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
@@ -629,3 +631,47 @@ def desunscribir_encuestado(email):
 
     else: 
         return "Email no existe"
+
+def get_dataUser():
+    dataUser = {}
+    if current_user.rol == "admin":
+        admin = db.session.query(Admin).filter_by(id_admin=current_user.id).first()
+        dataUser = {
+            "name": admin.nombre,
+            "lastName": "None",
+            "rut": "None",
+            "gender": "None",
+            "birthday": "dd-mm-aaaa",
+            "email": admin.email,
+            "avatar": "None"
+        }
+    if current_user.rol == "encuestado":
+        encuestado = db.session.query(Encuestado).filter_by(email=current_user.email).first()
+        dataUser = {
+            "name": "Invitado",
+            "lastName": "None",
+            "rut": "None",
+            "gender": "None",
+            "birthday": "dd-mm-aaaa",
+            "email": encuestado.email,
+            "avatar": "None"
+        }
+    if current_user.rol == "registrado":
+        registrado = db.session.query(Registrado).filter_by(id_registrado=current_user.id).first()
+        genero = ""
+        if registrado.genero == "M":
+            genero = "Masculino"
+        elif registrado.genero == "F":
+            genero = "Femenino"
+        else:
+            genero = "No especificado"
+        dataUser = {
+            "name": registrado.nombre,
+            "lastName": registrado.apellidos,
+            "rut": registrado.rut,
+            "gender": genero,
+            "birthday": registrado.fecha_nacimiento.strftime("%d-%m-%Y"),
+            "email": registrado.email,
+            "avatar": registrado.avatar
+        }
+    return dataUser

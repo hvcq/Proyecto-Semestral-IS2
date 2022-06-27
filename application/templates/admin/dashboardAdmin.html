@@ -38,14 +38,14 @@
   </div>
 
   <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead" style="height: 45vh;">
-    <div class="d-flex border-bottom align-items-center p-3 sticky-top bg-white justify-content-between">
+    <div class="d-flex border-bottom align-items-center p-3 sticky-top bg-white justify-content-between" style="z-index: 1;">
         <div class="d-flex gap-3 align-items-center justify-content-between ">
           <h4 class="text-secondary" style="width: 250px;">Mis encuestas</h4>
           <div class="input-group shadow-sm rounded-5 search w-100">
             <span class="input-group-text border-0 colorSearch">
               <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">
             </span>
-            <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearchEn()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
           </div>
         </div>
         
@@ -97,35 +97,37 @@
           <h1><b>Usuarios</b></h1>
           <p class="m-0 text-secondary totalUsers"></p>
         </div>
+
+        <div class="d-flex">
+          <div class="d-flex align-items-center gap-3">
+            <p class="m-0 text-secondary">Ordenar por:</p>
+            <div class="dropdown" style="z-index: 10000;">
+              <button class="btn btn-secondary dropdown-toggle bg-transparent border-0 text-dark btnOrder" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Nombre
+              </button>
+              <ul class="dropdown-menu slideInOrder animate" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" onclick="filterUser(event,false)">Nombre</a></li>
+                <li><a class="dropdown-item" onclick="filterUser(event,false)">Apellido</a></li>
+                <li><a class="dropdown-item" onclick="filterUser(event,false)">Estado</a></li>
+                <li><a class="dropdown-item" onclick="filterUser(event,false)">Edad</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="dropdown" style="z-index: 10000;">
+              <button class="btn btn-secondary dropdown-toggle bg-transparent border-0 text-dark btnAsc" type="button" id="dropdownAscDes"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Ascendente
+              </button>
+              <ul class="dropdown-menu slideInOrder animate" aria-labelledby="dropdownAscDes">
+                <li><a class="dropdown-item" onclick="changeOrder(event)">Ascendente</a></li>
+                <li><a class="dropdown-item" onclick="changeOrder(event)">Descedente</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
   
-        <div class="d-flex align-items-center gap-3">
-          <p class="m-0 text-secondary">Ordenar por:</p>
-          <div class="dropdown" style="z-index: 10000;">
-            <button class="btn btn-secondary dropdown-toggle bg-transparent border-0 text-dark btnOrder" type="button" id="dropdownMenuButton1"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Nombre
-            </button>
-            <ul class="dropdown-menu slideInOrder animate" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" onclick="filterUser(event)">Nombre</a></li>
-              <li><a class="dropdown-item" onclick="filterUser(event)">Apellido</a></li>
-              <li><a class="dropdown-item" onclick="filterUser(event)">Estado</a></li>
-              <li><a class="dropdown-item" onclick="filterUser(event)">Edad</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="d-flex align-items-center">
-          <div class="dropdown" style="z-index: 10000;">
-            <button class="btn btn-secondary dropdown-toggle bg-transparent border-0 text-dark btnOrder" type="button" id="dropdownAscDes"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Ascendente
-            </button>
-            <ul class="dropdown-menu slideInOrder animate" aria-labelledby="dropdownAscDes">
-              <li><a class="dropdown-item" onclick="AscUser(event)">Ascendente</a></li>
-              <li><a class="dropdown-item" onclick="AscUser(event)">Descedente</a></li>
-            </ul>
-          </div>
-        </div>
-        
       </div>
 
       <div class="d-flex align-items-center gap-2">
@@ -139,7 +141,7 @@
     </div>
 
     <div class="mt-2 mb-2 card shadow tableFixHead" style="height: 73vh;">
-      <div class="d-flex border-bottom align-items-center gap-5 p-3 bg-white justify-content-between sticky-top">
+      <div class="d-flex border-bottom align-items-center gap-5 p-3 bg-white justify-content-between sticky-top" style="z-index: 1;">
         <div class="input-group shadow-sm rounded-5 search">
           <span class="input-group-text border-0 colorSearch">
             <img class="imgSearch" src="{{ url_for("static", filename="resources/lupa.png" ) }}">

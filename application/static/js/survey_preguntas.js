@@ -31,11 +31,17 @@ function initTooltip() {
 let poolId = {
   alternativa: [0],
   desarrollo: [0],
+  opciones: [0],
 };
 
 data.dataSurvey.questions?.map(element => {
   element.type === 'alternativa' ? poolId.alternativa.push(element.id) : poolId.desarrollo.push(element.id);
+  element.alternatives.map(idOption => {
+    poolId.opciones.push(idOption.id);
+  });
 });
+
+console.log(poolId.opciones);
 
 const title = document.querySelector('#title');
 const description = document.querySelector('#description');
@@ -134,31 +140,36 @@ const moveScroll = function (id) {
 
 const addQuestion = function () {
   const idNew = newId('alternativa');
+  const idOpcion1 = newId('opcion');
+  poolId.opciones.push(idOpcion1);
+  const idOpcion2 = newId('opcion');
+  poolId.opciones.push(idOpcion2);
   // console.log(idNew);
   const textalt = `
-    <div id="${'opcion' + 1}" class="form-check d-flex align-items-center gap-2">
+    <div id="opcion${idOpcion1}" class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
       <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
       <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
-    <div id="${'opcion' + 2}" class="form-check d-flex align-items-center gap-2">
+    <div id="opcion${idOpcion2}" class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
       <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
       <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>
     </div>
 `;
   insertQuestion('', textalt, 'alternativa', idNew);
+
   const questionAdd = {
     id: idNew,
     statement: '',
     type: 'alternativa',
     alternatives: [
       {
-        id: 1,
+        id: idOpcion1,
         textAlt: '',
       },
       {
-        id: 2,
+        id: idOpcion2,
         textAlt: '',
       },
     ],
@@ -243,7 +254,7 @@ const changeResponse = function (id, deleteText, addText, type, idOption1, idOpt
 };
 
 function newId(type) {
-  return type === 'alternativa' ? Math.max(...poolId.alternativa) + 1 : Math.max(...poolId.desarrollo) + 1;
+  return type === 'alternativa' ? Math.max(...poolId.alternativa) + 1 : Math.max(...poolId.opciones) + 1;
 }
 
 const setToAlternative = function (event) {
@@ -256,13 +267,19 @@ const setToAlternative = function (event) {
     const idNew = newId('alternativa');
     poolId.alternativa.push(idNew);
     question.type = 'alternativa';
+
+    const idOpcion1 = newId('opcion');
+    poolId.opciones.push(idOpcion1);
+    const idOpcion2 = newId('opcion');
+    poolId.opciones.push(idOpcion2);
+
     question.alternatives.push(
       {
-        id: 1,
+        id: idOpcion1,
         textAlt: '',
       },
       {
-        id: 2,
+        id: idOpcion2,
         textAlt: '',
       }
     );
@@ -324,8 +341,12 @@ const addAlternative = function (event) {
 
   const [result] = data.dataSurvey.questions.filter(question => question.id === parseInt(idParent) && question.type === 'alternativa');
   const idOption = Math.max(...result.alternatives.map(val => val.id)) + 1;
+
+  const idOpcion1 = newId('opcion');
+  poolId.opciones.push(idOpcion1);
+
   result.alternatives.push({
-    id: idOption,
+    id: idOpcion1,
     textAlt: '',
   });
   console.log(result);
@@ -333,7 +354,7 @@ const addAlternative = function (event) {
   element.insertAdjacentHTML(
     'beforeend',
     `
-    <div id="opcion${idOption}" class="form-check d-flex align-items-center gap-2">
+    <div id="opcion${idOpcion1}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
           <input class="survey__inputAlt" placeholder="Inserte Texto" onchange="handleInputs(event)" maxlength="300">
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar alternativa"><img onclick="deleteAlternative(event)" src="/static/resources/remove.png" class="img-fluid survey__image"></button>

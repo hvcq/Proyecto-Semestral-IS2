@@ -6,6 +6,7 @@ let containerUsers = document.querySelector('.users');
 const totalUsers = document.querySelector('.totalUsers');
 const theadUsers = document.querySelector('.theadUsers');
 let current_id;
+let ascUser = true;
 
 totalUsers.textContent = data.dataUsers.length + ' Total';
 
@@ -235,25 +236,26 @@ const filterUser = function (event) {
 
   if (filter === 'Nombre' && dropdownParent.textContent !== 'Nombre') {
     users.sort(function (a, b) {
-      return a.name > b.name;
+      
+      return ascUser ? a.name > b.name : a.name < b.name
     });
     removeChild();
     init();
   } else if (filter === 'Apellido' && dropdownParent.textContent !== 'Apellido') {
     users.sort(function (a, b) {
-      return a.lastName > b.lastName;
+      return ascUser ? a.lastName > b.lastName: a.lastName < b.lastName;
     });
     removeChild();
     init();
   } else if (filter === 'Estado' && dropdownParent.textContent !== 'Estado') {
     users.sort(function (a, b) {
-      return a.state < b.state;
+      return ascUser ? a.state < b.state: a.state > b.state;
     });
     removeChild();
     init();
   } else if (filter === 'Edad' && dropdownParent.textContent !== 'Edad') {
     users.sort(function (a, b) {
-      return a.age > b.age;
+      return ascUser ? a.age > b.age: a.age < b.age;
     });
     removeChild();
     init();
@@ -262,6 +264,8 @@ const filterUser = function (event) {
   dropdownParent.textContent = event.target.textContent + ' ';
 };
 
+
+}
 const filterSearch = function () {
   let input, filter, tr, txtValue, trList;
   input = document.querySelector('.searchInputUser');

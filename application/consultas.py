@@ -599,11 +599,15 @@ def aumentar_visitas(id_encuesta):
     return "Visitas actualizadas"
 
 def modificar_tiempo_limite(responses):
+    from dateutil import parser
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id"]).first()
     if responses["end_date"] == "":
         return "error: Fecha de termino vacia"
-    fecha_termino = datetime.strptime(responses["end_date"], '%Y-%m-%d')
-    fecha_inicio = datetime.strptime(str(encuesta.fecha_inicio), '%Y-%m-%d')
+
+    dt = parser.parse(responses["end_date"])
+    fecha_termino = datetime.strftime(dt, '%Y-%m-%d')
+    fecha_inicio = datetime.strftime(encuesta.fecha_inicio, '%Y-%m-%d')
+
     if fecha_inicio >= fecha_termino:
         return "error: Fecha de termino mayor o igual a la de inicio"
     encuesta.fecha_fin = responses["end_date"]

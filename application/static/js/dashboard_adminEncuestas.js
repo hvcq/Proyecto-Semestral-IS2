@@ -27,7 +27,7 @@ const insertRow = function (survey) {
     } onclick="statusSurvey(event)"> 
         </div>
       </td>
-      <td filtroTitle="true"><a href="/survey/${survey.id_survey}/preguntas">${survey.title}</a></td>
+      <td filtroTitle="true" idElement=${survey.id_survey}><a href="/survey/${survey.id_survey}/preguntas">${survey.title}</a></td>
       <td>
         ${survey.visits}
       </td>
@@ -40,7 +40,7 @@ const insertRow = function (survey) {
       <td>
         ${survey.start_date}
       </td>
-      <td>
+      <td filtroTitle="true" idElement=${survey.id_survey} >
         ${survey.author}
       </td>
       <td class="text-center">
@@ -181,18 +181,47 @@ const myChart = new Chart(document.getElementById('myChart'), config);
 
 //Filter
 
-const filterSearch = function () {
+const filterSearchEn = function () {
   let input, filter, tr, txtValue, trList;
   input = document.querySelector('.searchInput');
   filter = input.value.toUpperCase();
   trList = document.querySelectorAll('.surveys tr');
   tr = document.querySelectorAll('.surveys tr td[filtroTitle]');
+  let counter = 0;
+
+  trList = Array.from(trList);
+
+  trList.sort(function (a, b) {
+    return a.attributes[0].value.slice(4) > b.attributes[0].value.slice(4);
+  });
+
+  console.log(trList);
+
   for (let i = 0; i < tr.length; i++) {
+    console.log('valaor de i al principio;:', i);
     txtValue = tr[i].textContent;
+    txtValue = txtValue.split(' ').join('');
+    txtValue = txtValue.replace(/(\r\n|\n|\r)/gm, '');
+    txtValue = txtValue.toUpperCase();
+    let idElement = Number(tr[i].attributes[1].value) - 1;
+
+    console.log(idElement);
+
+    console.log('LA COMPARATIVA:', txtValue, '/', filter);
+
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      trList[i].style.display = '';
+      console.log('Entro al true');
+      trList[idElement].style.display = '';
+      console.log(trList[idElement]);
+      i += 1 - counter;
+      console.log('Este es el valor de i', i);
+      counter = 1;
     } else {
-      trList[i].style.display = 'none';
+      console.log('Entro al false');
+      trList[idElement].style.display = 'none';
     }
+    counter++;
+
+    if (counter >= 1) counter = 0;
   }
 };

@@ -37,17 +37,17 @@ const insertRow = function (user) {
     <tr id="User${user.id_user}">
 
       <th scope="row">${user.id_user + 1}</th>
-      <td filtroTitle="true">${user.name}</td>
-      <td>
+      <td filtroTitle="true" idElement=${user.id_user}>${user.name}</td>
+      <td filtroTitle="true" idElement=${user.id_user}>
         ${user.lastName}
       </td>
-      <td>
+      <td filtroTitle="true" idElement=${user.id_user}>
         ${user.email}
       </td>
-      <td>
+      <td filtroTitle="true" idElement=${user.id_user}>
         ${user.age}
       </td>
-      <td>
+      <td filtroTitle="true" idElement=${user.id_user}>
         ${user.rut}
       </td>
       <td>
@@ -227,57 +227,98 @@ const removeChild = function () {
   }
 };
 
-const filterUser = function (event) {
+const filterUser = function (event, isChange) {
   const dropdownParent = document.querySelector('.btnOrder');
-  const filter = event.target.textContent;
 
   dropdownParent.textContent = dropdownParent.textContent.split(' ').join('');
   dropdownParent.textContent = dropdownParent.textContent.replace(/(\r\n|\n|\r)/gm, '');
 
-  if (filter === 'Nombre' && dropdownParent.textContent !== 'Nombre') {
+  const filter = !isChange ? event.target.textContent : dropdownParent.textContent;
+
+  console.log(dropdownParent.textContent !== 'Nombre');
+
+  if (filter === 'Nombre') {
+    console.log('Entro');
     users.sort(function (a, b) {
-      
-      return ascUser ? a.name > b.name : a.name < b.name
+      return ascUser ? a.name > b.name : a.name < b.name;
     });
     removeChild();
     init();
-  } else if (filter === 'Apellido' && dropdownParent.textContent !== 'Apellido') {
+  } else if (filter === 'Apellido') {
     users.sort(function (a, b) {
-      return ascUser ? a.lastName > b.lastName: a.lastName < b.lastName;
+      return ascUser ? a.lastName > b.lastName : a.lastName < b.lastName;
     });
     removeChild();
     init();
-  } else if (filter === 'Estado' && dropdownParent.textContent !== 'Estado') {
+  } else if (filter === 'Estado') {
     users.sort(function (a, b) {
-      return ascUser ? a.state < b.state: a.state > b.state;
+      return ascUser ? a.state < b.state : a.state > b.state;
     });
     removeChild();
     init();
-  } else if (filter === 'Edad' && dropdownParent.textContent !== 'Edad') {
+  } else if (filter === 'Edad') {
     users.sort(function (a, b) {
-      return ascUser ? a.age > b.age: a.age < b.age;
+      return ascUser ? a.age > b.age : a.age < b.age;
     });
     removeChild();
     init();
   }
 
-  dropdownParent.textContent = event.target.textContent + ' ';
+  dropdownParent.textContent = filter + ' ';
 };
 
+const changeOrder = event => {
+  const dropdownParent = document.querySelector('.btnAsc');
+  const filter = event.target.textContent;
 
-}
+  ascUser = filter === 'Ascendente';
+
+  filterUser(null, true);
+
+  dropdownParent.textContent = dropdownParent.textContent.split(' ').join('');
+  dropdownParent.textContent = dropdownParent.textContent.replace(/(\r\n|\n|\r)/gm, '');
+  dropdownParent.textContent = filter + ' ';
+};
+
 const filterSearch = function () {
   let input, filter, tr, txtValue, trList;
   input = document.querySelector('.searchInputUser');
   filter = input.value.toUpperCase();
   trList = document.querySelectorAll('.users tr');
   tr = document.querySelectorAll('.users tr td[filtroTitle]');
+  let counter = 0;
+
+  trList = Array.from(trList);
+
+  trList.sort(function (a, b) {
+    return a.attributes[0].value.slice(4) > b.attributes[0].value.slice(4);
+  });
+
   for (let i = 0; i < tr.length; i++) {
+    console.log('valaor de i al principio;:', i);
     txtValue = tr[i].textContent;
+    txtValue = txtValue.split(' ').join('');
+    txtValue = txtValue.replace(/(\r\n|\n|\r)/gm, '');
+    txtValue = txtValue.toUpperCase();
+    let idElement = Number(tr[i].attributes[1].value);
+
+    console.log(idElement);
+
+    console.log('LA COMPARATIVA:', txtValue, '/', filter);
+
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      trList[i].style.display = '';
+      console.log('Entro al true');
+      trList[idElement].style.display = '';
+      console.log(trList[idElement]);
+      i += 4 - counter;
+      console.log('Este es el valor de i', i);
+      counter = 4;
     } else {
-      trList[i].style.display = 'none';
+      console.log('Entro al false');
+      trList[idElement].style.display = 'none';
     }
+    counter++;
+
+    if (counter >= 4) counter = 0;
   }
 };

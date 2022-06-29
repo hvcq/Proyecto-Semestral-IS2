@@ -33,7 +33,7 @@ def crear_dataSurvey(id_encuesta):
         "title": survey.titulo,
         "description": survey.descripcion,
         "questions": questions, 
-        "end_date": survey.fecha_fin,
+        "end_date": survey.fecha_fin.strftime("%d-%m-%Y"),
         "mail_subject": survey.asunto_mail,
         "mail_body": survey.mensaje_mail
     }

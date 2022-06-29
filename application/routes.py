@@ -397,9 +397,12 @@ def aumentar_visita():
 @registrado_required
 def dashboard_user():
     # ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
-    return render_template("user/dashboardUser.html", data={
+    return render_template("myProfile.html", data={
         "url": "dashboard_user",
         "options": [],
+        "selected": "",
+        "active": "",
+        "title": "Bienvenido " + current_user.nombre,
         "role": 'encuestado'
     })
 

@@ -10,7 +10,7 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center gap-5">
-        <div class="col-3 d-flex flex-column align-items-center gap-3" style="margin-top: 2%;
+        <div class="col-3 d-flex flex-column align-items-center gap-3" style="margin-top: 1%;
         margin-bottom: 2%;">
             <div class="d-flex flex-column align-items-center card w-100 p-3 shadow" style="margin-top: 0; margin-bottom:0;">
                 <h5 class="text-secondary">{{current_user.rol}}</h5>
@@ -19,10 +19,36 @@
                 <h6 class="text-secondary text-decoration-underline fw-semibold" style="cursor: pointer;">Editar foto de perfil</h6>
             </div>
             {% if current_user.rol != 'admin'%}
-            <button class="btn btn-danger" style="background-color: #ff3e69;" onclick="darseDeBaja()">Darse de baja</button>
-            {% endif %}
+            <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead w-100" style="height: 30vh;">
+                <div class="d-flex border-bottom align-items-center p-3 sticky-top bg-white justify-content-between">
+                    <div class="d-flex gap-3 align-items-center justify-content-between ">
+                      <h4 class="text-secondary" style="width: 250px;">Mis respuestas</h4>
+                    </div>
+                </div>
+            
+                <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
+                  <thead>
+                    <tr class="bg-white justify-content-around">
+                      <th scope="col">Nombre encuesta</th>
+                      <th scope="col">Fecha de respuesta</th>
+                    </tr>
+                  </thead>
+                    <tr>
+                      <td>
+                        Encuesta ejemplo 1
+                      </td>
+                      <td>
+                        8 febrero de 2022
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn btn-danger" style="background-color: #ff3e69;" onclick="darseDeBaja()">Darse de baja</button>
+            {% endif %}   
         </div>
-        <div class="col-7 d-flex flex-column align-items-start card p-0 shadow">
+        <div class="col-7 d-flex flex-column align-items-start card p-0 shadow" style="max-height: 60vh;">
             <h3 class="text-start ps-3 pt-3">Mi Perfil</h3>
             <span class="border-bottom w-100"></span>
             <div class="p-3 row w-100">

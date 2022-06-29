@@ -1,6 +1,6 @@
 'use strict';
 
-// console.log(data);
+console.log(data);
 
 if (data.selected !== 'answer' && data.selected !== '') {
   const opcionNavA = document.querySelector(`a[name=${data.selected.toLowerCase()}]`);

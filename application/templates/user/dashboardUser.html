@@ -4,95 +4,69 @@
 {% block title %}Dashboard Encuestado registrado{% endblock title %}
 
 {% block cssFiles %}
-<link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard_admin.css" ) }}">
+<link rel="stylesheet" href="{{ url_for("static", filename="css/dashboard_user.css" ) }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <script src="https://kit.fontawesome.com/9c3c5148b3.js" crossorigin="anonymous"></script>
 {% endblock cssFiles %}
 
 {% block content %}
-<div class="container-fluid vh-100 pading-0"> <!--div container principal-->
-  <!-- <div class = "row col-12 "> 
-    <div class="d-flex text-center ms-5 me-5 gap-4">
-      <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center w-50">
+<div class="container-fluid pading-0"> <!--div container principal-->
+  <div class="d-flex justify-content-center ms-5 me-5 gap-4">
+
+    <div class="d-flex flex-column" style="height: 80vh;">
+      <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center h-100">
         <img class="imgShortcuts img--center1 mb-3" src="{{ url_for("static", filename="resources/add.png" ) }}">
-        <h5>¿Deseas crear una encuesta?</h5>
-        <button type="button" class="btn btn-danger btnShortcut" onclick="window.location.href='/ir_a_crear_nueva_encuesta'">Crear encuesta</button>
+        <h5>Ir a la última encuesta</h5>
+        <button type="button" class="btn btn-danger btnShortcut" onclick="window.location.href='/ir_a_crear_nueva_encuesta'">Continuar</button>
       </div>
-      <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
-        <img class="imgShortcuts img--center2 mb-3" src="{{ url_for("static", filename="resources/add-user.png" ) }}">
-        <h5>¿Deseas agregar un usuario?</h5>
-        <button type="button" class="btn btn-danger btnShortcut" onclick="window.location.href='usuarios/active'">Añadir usuario</button>
+      <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center h-100">
+        <img class="imgShortcuts img--center3 mb-3 " src="{{ url_for("static", filename="resources/edit.png" ) }}">
+        <h5 class="">¿Deseas ver tu perfil?</h5>
+        <button type="button" class="btn btn-danger btnShortcut " >Ver perfil</button>
       </div>
+        
+    </div>
+  
+    <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead" style="height: 80vh;">
+      <div class="d-flex border-bottom align-items-center p-3 sticky-top bg-white justify-content-between">
+          <div class="d-flex gap-3 align-items-center justify-content-between ">
+            <h4 class="text-secondary" style="width: 250px;">Historial de encuestas</h4>
+          </div>
+      </div>
+  
+  
+  
+      <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
+        <thead>
+          <tr class="bg-white justify-content-around">
+            <th scope="col">Nombre encuesta</th>
+            <th scope="col">Fecha de respuesta</th>
+          </tr>
+        </thead>
+          <tr>
+            <td>
+              Encuesta ejemplo 1
+            </td>
+            <td>
+              8 febrero de 2022
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  
-  <div class= "row"> 
-    <table class="table col pading-5 table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
-      <thead>
-        <tr class="bg-white">
-          <th scope="col">Nombre Encuesta</th>
-          <th scope="col">Disponible hasta</th>
-          <th scope="col"> </th>
-        </tr>
-      </thead>
-      <tbody class="users">
-        <tr id="Encuesta${survey.id_survey}">
-          <td filtroTitle="true">Encuesta de perritos</td>
-          <td>
-           22-06-2022
-          </td>
-          <td class="text-center">
-            <div class="btn-group dropstart">
-              <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="imgDot" src="/static/resources/dots.png" alt="">
-              </button>
-              <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}" style="z-index: 10000;">
-                <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-              </ul>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table class="table col pading-5 table-hover align-middle table-borderless tableSurvey table-fixed table-scroll" >
-      <thead>
-        <tr class="bg-white">
-          <th scope="col">Nombre Encuesta</th>
-          <th scope="col">Encuesta respondida el</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody class="users">
-        <tr id="Encuesta${survey.id_survey}">
-          <td filtroTitle="true">Encuesta de gatos</td>
-          <td>
-           03-06-2022
-          </td>
-          <td class="text-center">
-            <div class="btn-group dropstart">
-              <button class="btn btn-secondary rounded-circle btn-circle p-1" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="imgDot" src="/static/resources/dots.png" alt="">
-              </button>
-              <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}" style="z-index: 10000;">
-                <li><a typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Dar de baja</a></li>
-                <li><a typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
-              </ul>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
-  <img class="vh-100 vw-100" src="{{ url_for("static", filename="resources/cat-work.gif" ) }}">
 </div>
 
 {% endblock content %}
 
 
-
 {% block jsFiles %}
+
+<script>
+  const data = {{ data | tojson }}
+  const role = {{ current_user.rol | tojson}};
+  document.querySelector('.titleSurvey').textContent = ""
+</script>
 
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 

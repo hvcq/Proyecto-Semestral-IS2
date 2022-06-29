@@ -28,12 +28,18 @@ def crear_dataSurvey(id_encuesta):
 
     survey = db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first()
 
+    fecha_fin_aux = ""
+    if survey.fecha_fin == None:
+        fecha_fin_aux = survey.fecha_fin
+    else:
+        fecha_fin_aux = survey.fecha_fin.strftime("%d-%m-%Y")
+        
     dataSurvey = {
         "id": id_encuesta,
         "title": survey.titulo,
         "description": survey.descripcion,
         "questions": questions, 
-        "end_date": survey.fecha_fin.strftime("%d-%m-%Y"),
+        "end_date": fecha_fin_aux,
         "mail_subject": survey.asunto_mail,
         "mail_body": survey.mensaje_mail
     }

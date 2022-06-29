@@ -28,10 +28,9 @@
       <button type="button" class="btn btn-danger btnShortcut" onclick="window.location.href='usuarios/active'">Añadir usuario</button>
     </div>
     <div class="card shadow w-100 p-4 d-flex justify-content-center align-items-center">
-      <h1 class="position-absolute">Proximamente...</h1>
-      <img class="imgShortcuts img--center3 mb-1  opacity-50" src="{{ url_for("static", filename="resources/edit.png" ) }}">
-      <h5 class=" opacity-50">¿Deseas editar tu perfil?</h5>
-      <button type="button" class="btn btn-danger btnShortcut  opacity-50" disabled>Editar perfil</button>
+      <img class="imgShortcuts img--center3 mb-1 " src="{{ url_for("static", filename="resources/edit.png" ) }}">
+      <h5 class="">¿Deseas ver tu perfil?</h5>
+      <button type="button" class="btn btn-danger btnShortcut " onclick="window.location.href='/my_profile'">Ver perfil</button>
     </div>
     
     
@@ -48,21 +47,6 @@
             <input type="text" class="form-control border-0 colorSearch searchInput" onkeyup="filterSearchEn()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
           </div>
         </div>
-        
-
-      
-
-      <div class="dropdown-center">
-        <button class="btn btn-secondary border-0" type="button" id="dropdownCenterBtn" data-bs-toggle="dropdown" aria-expanded="false" disabled style="background-color: #1b97f3;">
-          Filtro
-          <img class="imgSearch" src="{{ url_for("static", filename="resources/filter.png" ) }}">
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownCenterBtn">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Action two</a></li>
-          <li><a class="dropdown-item" href="#">Action three</a></li>
-        </ul>
-      </div>
 
       
     </div>

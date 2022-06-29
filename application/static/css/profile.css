@@ -1,7 +1,15 @@
 .card {
   background-color: var(--color-white);
   border-radius: 10px 10px 10px 10px;
-  margin-top: 2%;
+  margin-top: 1%;
   margin-bottom: 2%;
   border: 0;
+}
+
+.tableFixHead {
+  overflow-y: auto;
+}
+
+th {
+  color: var(--color-unselected);
 }

@@ -1,0 +1,35 @@
+.imgUser {
+  width: 50%;
+}
+
+.card {
+  background-color: var(--color-white);
+  border-radius: 10px 10px 10px 10px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  border: 0;
+}
+
+th {
+  color: var(--color-unselected);
+}
+
+.imgShortcuts {
+  width: 20% !important;
+}
+
+.btnShortcut {
+  width: 50%;
+  min-width: 100px;
+  background-color: var(--color-botonshortcut-dashoboard-admin);
+  border: 0;
+  margin-top: 2%;
+}
+
+.btnShortcut:hover {
+  background-color: var(--color-hover-dashboard-admin);
+}
+
+.tableFixHead {
+  overflow-y: auto;
+}

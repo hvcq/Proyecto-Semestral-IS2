@@ -724,3 +724,19 @@ def get_dataUser():
             "avatar": registrado.avatar
         }
     return dataUser
+
+# Falta testing
+def cambiar_password(user, password):
+
+    usuario = db.session.query(Admin).filter_by(email=user).first()
+
+    if (usuario == None):
+        usuario = db.session.query(Registrado).filter_by(email=user).first()
+
+        if(usuario == None):
+            return "mail incorrecto"
+        
+    usuario.password = generate_password_hash(password)
+    db.session.commit()
+
+    return "password cambiada exitosamente"

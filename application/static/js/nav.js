@@ -1,6 +1,7 @@
 'use strict';
 
 console.log(data);
+console.log(avatar);
 
 if (data.selected !== 'answer' && data.selected !== '') {
   const opcionNavA = document.querySelector(`a[name=${data.selected.toLowerCase()}]`);
@@ -14,11 +15,18 @@ if (data.selected !== 'answer' && data.selected !== '') {
 const profileSection = document.querySelector('.profileList');
 const profilePicture = document.querySelector('.profileImg');
 
-if (role === 'admin') {
+if (avatar !== null) {
   profileSection.setAttribute('style', 'background-color: #1784d5');
-  profilePicture.setAttribute('src', '/static/resources/user_blue.png');
+  profilePicture.setAttribute('src', avatar);
+  role === 'admin'
+    ? profileSection.setAttribute('style', 'background-color: #1784d5')
+    : profileSection.setAttribute('style', 'background-color: #ff3c69');
 } else {
-  console.log('hola');
-  profileSection.setAttribute('style', 'background-color: #ff3c69');
-  profilePicture.setAttribute('src', '/static/resources/user_red.png');
+  if (role === 'admin') {
+    profileSection.setAttribute('style', 'background-color: #1784d5');
+    profilePicture.setAttribute('src', '/static/resources/user_blue.png');
+  } else {
+    profileSection.setAttribute('style', 'background-color: #ff3c69');
+    profilePicture.setAttribute('src', '/static/resources/user_red.png');
+  }
 }

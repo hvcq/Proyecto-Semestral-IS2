@@ -2,6 +2,25 @@
 
 let selected = '';
 
+console.log(data);
+
+if (role !== 'admin') {
+  const btnDeactivate = document.querySelector('.btnDeactivate');
+  const btnActivate = document.querySelector('.btnActivate');
+
+  data.dataUser.estado ? btnDeactivate.classList.remove('d-none') : btnActivate.classList.remove('d-none');
+}
+
+const dataUser = data.dataUser;
+let img = '';
+
+if (avatar !== null) {
+  img = avatar;
+} else {
+  img = role === 'admin' ? '/static/resources/user_blue.png' : '/static/resources/user_red.png';
+}
+document.querySelector('.profileImgProfile').setAttribute('src', img);
+
 const htmlvar = `<div class="container d-flex flex-column gap-3">
 <div class="row">
   <div class="col">
@@ -46,6 +65,8 @@ const selectAvatar = event => {
 };
 
 const setImage = () => {
+  document.querySelector('.profileImgProfile').setAttribute('src', `/static/resources/avatares/user${selected}.png`);
+  document.querySelector('.profileImg').setAttribute('src', `/static/resources/avatares/user${selected}.png`);
   selected = '';
 };
 
@@ -76,29 +97,25 @@ const initModal = () => {
     },
     allowOutsideClick: () => !Swal.isLoading(),
   }).then(result => {
-    // $.ajax({
-    //   url: '/state_user',
-    //   type: 'POST',
-    //   data: { response: JSON.stringify(response) },
-    //   success: function (result) {},
-    // });
-    if (result.isConfirmed) {
-      if (selected) Swal.fire('Guardado!', 'Tu avatar fue guardado con exito.', 'success');
-      // Swal.fire('Error!', 'Ha ocurrido un problema inesperado.', 'error');
-      setImage();
-    } else {
+    if (result.isConfirmed && selected) {
+      const response = { user: dataUser.email, url: `/static/resources/avatares/user${selected}.png` };
+      $.ajax({
+        url: '/change_avatar',
+        type: 'POST',
+        data: { response: JSON.stringify(response) },
+        success: function (result) {
+          console.log(result);
+          if (result === 'avatar cambiado correctamente') {
+            Swal.fire('Guardado!', 'Tu avatar fue guardado con exito.', 'success');
+          } else {
+            Swal.fire('Error!', 'Ha ocurrido un problema inesperado.', 'error');
+          }
+          setImage();
+        },
+      });
     }
   });
 };
-
-console.log(data);
-
-const btnDeactivate = document.querySelector('.btnDeactivate');
-const btnActivate = document.querySelector('.btnActivate');
-
-data.dataUser.estado ? btnDeactivate.classList.remove('d-none') : btnActivate.classList.remove('d-none');
-
-const dataUser = data.dataUser;
 
 const activate = function () {
   const response = {
@@ -131,3 +148,26 @@ const deactivate = function () {
   btnDeactivate.classList.add('d-none');
   btnActivate.classList.remove('d-none');
 };
+
+const containerSurvey = document.querySelector('.surveyBody');
+console.log(containerSurvey);
+
+const initSurvey = function () {
+  for (const survey of dataUser.encuestas) insertRowSurvey(survey);
+};
+
+const insertRowSurvey = function (survey) {
+  containerSurvey.insertAdjacentHTML(
+    'beforeend',
+    `
+    <tr>
+      <td>${survey.title}</td>
+      <td>
+        ${survey.date}
+      </td>
+    </tr>
+  `
+  );
+};
+
+initSurvey();

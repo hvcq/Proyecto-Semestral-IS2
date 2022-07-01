@@ -33,14 +33,7 @@
                       <th scope="col">Fecha de respuesta</th>
                     </tr>
                   </thead>
-                    <tr>
-                      <td>
-                        Encuesta ejemplo 1
-                      </td>
-                      <td>
-                        8 febrero de 2022
-                      </td>
-                    </tr>
+                  <tbody class="surveyBody">
                     
                   </tbody>
                 </table>
@@ -100,8 +93,8 @@
 <script>
   const data = {{ data | tojson }}
   const role = {{ data.role| tojson}}
-  const img = role === "admin" ? '/static/resources/user_blue.png' : '/static/resources/user_red.png'
-  document.querySelector('.profileImgProfile').setAttribute('src', img);
+  const avatar = {{current_user.avatar | tojson}}
+
 </script>
 
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>

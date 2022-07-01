@@ -33,7 +33,7 @@ def index():
 def login():
     if request.method == 'POST':
         user = User(0, request.form['email'],
-                    request.form['password'], "", "indefinido")
+                    request.form['password'], "", "indefinido", "null")
         logged_user = ModelUser.login(user)
         if logged_user != None:
             print(logged_user.email)
@@ -446,3 +446,11 @@ def my_profile():
 @app.route("/recover_password")
 def recover_password():
     return render_template("recover_password.html")
+
+
+@app.route("/change_avatar", methods=['POST'])
+def change_avatar():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+        print(response)
+        return cambiar_avatar(response['user'], response['url'])

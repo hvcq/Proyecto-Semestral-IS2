@@ -692,8 +692,10 @@ def get_dataUser():
             "gender": "None",
             "birthday": "dd-mm-aaaa",
             "email": admin.email,
-            "avatar": "None"
+            "avatar": "None",
+            "encuestas": []
         }
+
     if current_user.rol == "encuestado":
         encuestado = db.session.query(Encuestado).filter_by(email=current_user.email).first()
         dataUser = {
@@ -703,8 +705,10 @@ def get_dataUser():
             "gender": "None",
             "birthday": "dd-mm-aaaa",
             "email": encuestado.email,
-            "avatar": "None"
+            "avatar": "None",
+            "encuestas": []
         }
+
     if current_user.rol == "registrado":
         registrado = db.session.query(Registrado).filter_by(id_registrado=current_user.id).first()
         encuestado = db.session.query(Encuestado).filter_by(email=current_user.email).first()
@@ -715,6 +719,23 @@ def get_dataUser():
             genero = "Femenino"
         else:
             genero = "No especificado"
+
+        encuestas = db.session.query(Encuestar).filter_by(email=current_user.email).all()
+        lista_encuestas = []
+
+        if (encuestas != None):
+
+            for l in encuestas:
+
+                e = db.session.query(Encuesta).filter_by(id_encuesta = l.id_encuesta).first()
+                encuesta={
+                    "title": e.titulo,
+                    "date": l.fecha_contestada
+                }
+
+                lista_encuestas.append(encuesta)
+        
+
         dataUser = {
             "name": registrado.nombre,
             "lastName": registrado.apellidos,
@@ -723,8 +744,8 @@ def get_dataUser():
             "birthday": registrado.fecha_nacimiento.strftime("%d-%m-%Y"),
             "email": registrado.email,
             "avatar": registrado.avatar,
-            "estado": encuestado.activo
-
+            "estado": encuestado.activo,
+            "encuestas": lista_encuestas
         }
     return dataUser
 
@@ -743,3 +764,20 @@ def cambiar_password(user, password):
     db.session.commit()
 
     return "password cambiada exitosamente"
+
+# Cambia la imagen del avatar del usario
+def cambiar_avatar(user, url):
+
+    usuario = db.session.query(Admin).filter_by(email=user).first()
+
+    if (usuario == None):
+        usuario = db.session.query(Registrado).filter_by(email=user).first()
+
+        if(usuario == None):
+            return "usuario incorrecto"
+        
+    usuario.avatar = url
+    db.session.commit()
+
+    return "avatar cambiado correctamente"
+

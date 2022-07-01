@@ -692,8 +692,10 @@ def get_dataUser():
             "gender": "None",
             "birthday": "dd-mm-aaaa",
             "email": admin.email,
-            "avatar": "None"
+            "avatar": "None",
+            "encuestas": []
         }
+
     if current_user.rol == "encuestado":
         encuestado = db.session.query(Encuestado).filter_by(email=current_user.email).first()
         dataUser = {
@@ -703,8 +705,10 @@ def get_dataUser():
             "gender": "None",
             "birthday": "dd-mm-aaaa",
             "email": encuestado.email,
-            "avatar": "None"
+            "avatar": "None",
+            "encuestas": []
         }
+
     if current_user.rol == "registrado":
         registrado = db.session.query(Registrado).filter_by(id_registrado=current_user.id).first()
         genero = ""
@@ -716,7 +720,6 @@ def get_dataUser():
             genero = "No especificado"
 
         encuestas = db.session.query(Encuestar).filter_by(email=current_user.email).all()
-
         lista_encuestas = []
 
         if (encuestas != None):
@@ -724,7 +727,6 @@ def get_dataUser():
             for l in encuestas:
 
                 e = db.session.query(Encuesta).filter_by(id_encuesta = l.id_encuesta).first()
-
                 encuesta={
                     "title": e.titulo,
                     "date": l.fecha_contestada

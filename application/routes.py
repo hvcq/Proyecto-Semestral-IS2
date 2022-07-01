@@ -11,6 +11,7 @@ from flask import make_response, redirect, render_template, request, url_for
 
 from .models import *
 from .mail import *
+from application import consultas
 
 login_manager_app = LoginManager(app)
 
@@ -339,14 +340,21 @@ def send_mail():
         return "PUBLICADA CORRECTAMENTE"
 
 # Enviar mail de recuperación de contraseña
-@app.route("/password_reset")
+@app.route("/send_code",methods=['POST'])
+def send_code():
+
+     if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+
+        send_mail = Send_Mail()
+        return (send_mail.send_code(response['user_mail'], response['code']))
+
+@app.route("/password_reset",methods=['POST'])
 def password_reset():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
 
-    user_mail = "mail@mail.com"
-    code = "123456"
-
-    send_mail = Send_Mail()
-    return (send_mail.send_code(user_mail, code))
+        return (cambiar_password(response['user'], response['password']))
 
 
 @app.route("/dashboard_admin/")
@@ -430,7 +438,8 @@ def my_profile():
         "options": [],
         "selected": "",
         "role": current_user.rol,
-        "title": "Perfil de " + current_user.nombre
+        "title": "Perfil de " + current_user.nombre,
+        "dataUser": get_dataUser()
     })
 
 

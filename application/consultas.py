@@ -707,6 +707,7 @@ def get_dataUser():
         }
     if current_user.rol == "registrado":
         registrado = db.session.query(Registrado).filter_by(id_registrado=current_user.id).first()
+        encuestado = db.session.query(Encuestado).filter_by(email=current_user.email).first()
         genero = ""
         if registrado.genero == "M":
             genero = "Masculino"
@@ -721,7 +722,9 @@ def get_dataUser():
             "gender": genero,
             "birthday": registrado.fecha_nacimiento.strftime("%d-%m-%Y"),
             "email": registrado.email,
-            "avatar": registrado.avatar
+            "avatar": registrado.avatar,
+            "estado": encuestado.activo
+
         }
     return dataUser
 

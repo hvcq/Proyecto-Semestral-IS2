@@ -146,7 +146,6 @@ def delete_user():
 
 @app.route("/state_user", methods=['POST'])
 @login_required
-@admin_required
 def state_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
@@ -411,7 +410,8 @@ def dashboard_user():
         "selected": "",
         "active": "",
         "title": "Bienvenido " + current_user.nombre,
-        "role": 'encuestado'
+        "role": 'encuestado',
+        "dataUser": get_dataUser()
     })
 
 # Desunscribe encuestados

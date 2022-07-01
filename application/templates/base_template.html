@@ -19,22 +19,21 @@
 
   <body class="vh-100 vw-100 p-0 m-0">
     <nav class="container-fluid p-0 row justify-content-center bg-white p-3 shadow-sm px-4" style="--bs-gutter-x: 0">
-
       {% if data.url == 'survey' %}
       <div class="col-2 d-flex justify-content-between">
-        <div class="homeButton col-2 d-flex justify-content-between">
-          <button class="btn" onclick="window.location.href=`{{'/dashboard_admin/encuestas' if current_user.rol == 'admin' else '/dashboard_user/'}}`">
-            <img src="{{ url_for("static", filename="resources/home.png" ) }}" width="50px" >
+        <div class="col-2 d-flex justify-content-between">
+          <button
+            class="btn p-0 homeButton"
+            onclick="window.location.href=`{{'/dashboard_admin/encuestas' if current_user.rol == 'admin' else '/dashboard_user/'}}`"
+          >
+            <img class="imgHome" src="{{ url_for("static", filename="resources/home.png" ) }}">
           </button>
         </div>
-        {% endif %}
-       
-        {% if data.title is not none %}
+        {% endif %} {% if data.title is not none %}
         <div class="d-flex align-items-center titleSurvey fs-4 col-2">{{data.title}}</div>
         {% endif %}
       </div>
-      
-     
+
       <div class="nav__list d-flex justify-content-center align-items-center col-8">
         {% for name in data.options %}
         <div class="nav__element d-flex align-items-center" disable="true">
@@ -60,7 +59,13 @@
           </li>
           <li>
             {% if current_user.rol == "admin" %}
-         
+            <button
+              class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3"
+              type="button"
+              onclick="window.location.href=`{{'/dashboard_admin/encuestas' if current_user.rol == 'admin' else '/dashboard_user/'}}`"
+            >
+              Home
+            </button>
           </li>
 
           <li><button class="dropdown-item p-0 ps-2 pe-2 pt-3 pb-3" type="button" onclick="window.location.href='/my_profile'">Perfil</button></li>

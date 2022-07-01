@@ -1,6 +1,6 @@
 'use strict';
 
-console.log(role);
+console.log(data);
 
 const dataUser = {
   name: '',

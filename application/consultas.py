@@ -714,6 +714,25 @@ def get_dataUser():
             genero = "Femenino"
         else:
             genero = "No especificado"
+
+        encuestas = db.session.query(Encuestar).filter_by(email=current_user.email).all()
+
+        lista_encuestas = []
+
+        if (encuestas != None):
+
+            for l in encuestas:
+
+                e = db.session.query(Encuesta).filter_by(id_encuesta = l.id_encuesta).first()
+
+                encuesta={
+                    "title": e.titulo,
+                    "date": l.fecha_contestada
+                }
+
+                lista_encuestas.append(encuesta)
+        
+
         dataUser = {
             "name": registrado.nombre,
             "lastName": registrado.apellidos,
@@ -721,7 +740,8 @@ def get_dataUser():
             "gender": genero,
             "birthday": registrado.fecha_nacimiento.strftime("%d-%m-%Y"),
             "email": registrado.email,
-            "avatar": registrado.avatar
+            "avatar": registrado.avatar,
+            "encuestas": lista_encuestas
         }
     return dataUser
 
@@ -740,3 +760,20 @@ def cambiar_password(user, password):
     db.session.commit()
 
     return "password cambiada exitosamente"
+
+# Cambia la imagen del avatar del usario
+def cambiar_avatar(user, url):
+
+    usuario = db.session.query(Admin).filter_by(email=user).first()
+
+    if (usuario == None):
+        usuario = db.session.query(Registrado).filter_by(email=user).first()
+
+        if(usuario == None):
+            return "usuario incorrecto"
+        
+    usuario.avatar = url
+    db.session.commit()
+
+    return "avatar cambiado correctamente"
+

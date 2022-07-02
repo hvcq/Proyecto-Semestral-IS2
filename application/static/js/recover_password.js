@@ -54,8 +54,8 @@ const step3 = `<h3 class="text-dark ms-2 text-center">Ingresa tu código</h3>
     </div>
   </div>
 
-  <div class="d-none correctCode">El código es incorrecto!</div>
-  <div class="d-none incorrectCode">El código es correcto!</div>
+  <div class="d-none incorrectCode">El código es incorrecto!</div>
+  <div class="d-none correctCode">El código es correcto!</div>
   <button type="button" class="btn btn-primary" onclick="validateCode(event)">Validar código</button>
   <div class="d-flex justify-content-around gap-2">
     <p class="text-secondary ms-2">Necesito otro código</p>
@@ -96,15 +96,18 @@ const validatePassword = event => {
   const input2 = document.querySelector('#Confirmacion2');
 
   if (input1.value === input2.value && input1.value !== '' && input2.value !== '') {
-    let data = { id: userId, password: input1.value };
-    // $.ajax({
-    //   url: '/ruta',
-    //   type: 'POST',
-    //   data: { response: JSON.stringify(data) },
-    //   success: function (result) {},
-    // });
-    nextStep();
-    delay();
+    let data = { user: email, password: input1.value };
+    $.ajax({
+      url: '/password_reset',
+      type: 'POST',
+      data: { response: JSON.stringify(data) },
+      success: function (result) {
+        if (result === 'password cambiada exitosamente') {
+          nextStep();
+          delay();
+        }
+      },
+    });
     async function delay() {
       await new Promise(done => setTimeout(() => done(), 3000));
       window.location.href = '/login';
@@ -246,16 +249,17 @@ const setStep2 = () => {
 
 const sendCode = () => {
   code = randomCode();
-  const data = { correo: email, codigo: code };
+  const data = { user_mail: email, code: code };
 
-  // $.ajax({
-  //   url: '/ruta',
-  //   type: 'POST',
-  //   data: { response: JSON.stringify(data) },
-  //   success: function (result) {},
-  // });
-
-  console.log('Se envió la data', data);
+  $.ajax({
+    url: '/send_code',
+    type: 'POST',
+    data: { response: JSON.stringify(data) },
+    success: function (result) {
+      console.log(result);
+      if (currentStep === 0) result !== 'Email no existe' ? setStep2() : '';
+    },
+  });
 };
 
 const checkForm = event => {
@@ -266,7 +270,6 @@ const checkForm = event => {
     const input = document.querySelector('#step1');
     email = input.value;
     sendCode();
-    setStep2();
   } else {
     form.classList.add('was-validated');
   }

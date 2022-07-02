@@ -12,13 +12,13 @@ class ModelUser():
             """Comprobamos si existe el email del usuario para manejar error en routes.py"""
             admin = db.session.query(Admin).filter_by(email=user.email).first()
             if admin != None:
-                user = User(admin.id_admin, admin.email, User.check_password(admin.password, user.password), admin.nombre, "admin")
+                user = User(admin.id_admin, admin.email, User.check_password(admin.password, user.password), admin.nombre, "admin", admin.avatar)
                 ModelUser.__rol_actual = "admin"
                 return user
             else:
                 registrado = db.session.query(Registrado).filter_by(email=user.email).first()
                 if registrado != None:
-                    user = User(registrado.id_registrado, registrado.email, User.check_password(registrado.password, user.password), registrado.nombre, "registrado")
+                    user = User(registrado.id_registrado, registrado.email, User.check_password(registrado.password, user.password), registrado.nombre, "registrado", registrado.avatar)
                     ModelUser.__rol_actual = "registrado"
                     return user
                 else:
@@ -40,13 +40,13 @@ class ModelUser():
             if ModelUser.__rol_actual == "admin":
                 admin = db.session.query(Admin).filter_by(id_admin=id).first()
                 if admin != None:
-                    return User(id, admin.email, None, admin.nombre, "admin")
+                    return User(id, admin.email, None, admin.nombre, "admin", admin.avatar)
                 else:
                     return None
             elif ModelUser.__rol_actual == "registrado":
                 registrado = db.session.query(Registrado).filter_by(id_registrado=id).first()
                 if registrado != None:
-                    return User(id, registrado.email, None, registrado.nombre, "registrado")
+                    return User(id, registrado.email, None, registrado.nombre, "registrado", registrado.avatar)
                 else:
                     return None
             elif ModelUser.__rol_actual == "encuestado":

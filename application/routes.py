@@ -11,6 +11,7 @@ from flask import make_response, redirect, render_template, request, url_for
 
 from .models import *
 from .mail import *
+from application import consultas
 
 login_manager_app = LoginManager(app)
 
@@ -32,7 +33,7 @@ def index():
 def login():
     if request.method == 'POST':
         user = User(0, request.form['email'],
-                    request.form['password'], "", "indefinido")
+                    request.form['password'], "", "indefinido", "null")
         logged_user = ModelUser.login(user)
         if logged_user != None:
             print(logged_user.email)
@@ -145,7 +146,6 @@ def delete_user():
 
 @app.route("/state_user", methods=['POST'])
 @login_required
-@admin_required
 def state_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
@@ -339,14 +339,21 @@ def send_mail():
         return "PUBLICADA CORRECTAMENTE"
 
 # Enviar mail de recuperación de contraseña
-@app.route("/password_reset")
+@app.route("/send_code",methods=['POST'])
+def send_code():
+
+     if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+
+        send_mail = Send_Mail()
+        return (send_mail.send_code(response['user_mail'], response['code']))
+
+@app.route("/password_reset",methods=['POST'])
 def password_reset():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
 
-    user_mail = "mail@mail.com"
-    code = "123456"
-
-    send_mail = Send_Mail()
-    return (send_mail.send_code(user_mail, code))
+        return (cambiar_password(response['user'], response['password']))
 
 
 @app.route("/dashboard_admin/")
@@ -403,7 +410,8 @@ def dashboard_user():
         "selected": "",
         "active": "",
         "title": "Bienvenido " + current_user.nombre,
-        "role": 'encuestado'
+        "role": 'encuestado',
+        "dataUser": get_dataUser()
     })
 
 # Desunscribe encuestados
@@ -430,10 +438,19 @@ def my_profile():
         "options": [],
         "selected": "",
         "role": current_user.rol,
-        "title": "Perfil de " + current_user.nombre
+        "title": "Perfil de " + current_user.nombre,
+        "dataUser": get_dataUser()
     })
 
 
 @app.route("/recover_password")
 def recover_password():
     return render_template("recover_password.html")
+
+
+@app.route("/change_avatar", methods=['POST'])
+def change_avatar():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+        print(response)
+        return cambiar_avatar(response['user'], response['url'])

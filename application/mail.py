@@ -93,7 +93,7 @@ class Send_Mail:
                     dt = date.today()
                     current_date = dt.strftime("%d/%m/%Y")
 
-                    if (encuesta.asunto_mail == None):
+                    if (encuesta.asunto_mail == None or encuesta.asunto_mail == ""):
                         subject = "Encuesta UdecSurvey"
                     
                     else:
@@ -107,7 +107,7 @@ class Send_Mail:
                     
                     html_name = '<h2>%s</h2>' % nombre
 
-                    if(encuesta.mensaje_mail == None):
+                    if(encuesta.mensaje_mail == None or encuesta.mensaje_mail == ""):
                         mensaje_mail = 'Te invitamos a participar en la encuesta de estudios públicos. Tu participación es importante para nosotros.'
                         
                     else:

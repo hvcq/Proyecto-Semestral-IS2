@@ -35,7 +35,7 @@ const insertRow = function (user) {
     'beforeend',
     `
     <tr id="User${user.id_user}">
-
+      <th><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> </th>
       <th scope="row">${user.id_user + 1}</th>
       <td filtroTitle="true" idElement=${user.id_user}>${user.name}</td>
       <td filtroTitle="true" idElement=${user.id_user}>

@@ -74,7 +74,7 @@ class Send_Mail:
         encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_survey).first()
 
         if(encuesta == None):
-            return(print("Encuesta no existe\n"))
+            return "Encuesta no existe\n"
 
         #Si la encuesta no se ha enviado
         if(encuesta.total_asignados == 0):
@@ -115,7 +115,7 @@ class Send_Mail:
 
                     html_body = '<p> %s </p>' %mensaje_mail
 
-                    html_link = '</p><a href=%s class="btn">Ir a Encuesta</a> <hr />' %link_survey
+                    html_link = '</p><a href=%s class="btn text-decoration-none text-white bg-white">Ir a Encuesta</a> <hr />' %link_survey
 
                     html_footer = '<footer> <p id="contact">  Has sido seleccionado para recibir estas encuestas periódicamente <br /> <a href=%s> Dejar de recibir encuestas </a> <br /> <br /> %s &bull; Concepción - Chile  </p> </footer> </div> </div> </body> </html>' %(link_unsubscribe, current_date)
                     
@@ -137,9 +137,11 @@ class Send_Mail:
 
 
             self.actualizar_asignados(id_survey)
+            return "Email enviado"
         
         else:
-            return(print("Encuesta ya enviada"))
+            return "Encuesta ya enviada"
+        
 
     #Método para enviar mail de recuperación de contraseña
     def send_code(self, user, code):

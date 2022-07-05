@@ -334,9 +334,10 @@ def send_mail():
         print(response.get("id_survey"))
 
         send_mail = Send_Mail()
-        send_mail.send_survey(response.get("id_survey"))
 
-        return "PUBLICADA CORRECTAMENTE"
+        respuesta =  send_mail.send_survey(response.get("id_survey"))
+
+        return respuesta
 
 # Enviar mail de recuperación de contraseña
 @app.route("/send_code",methods=['POST'])

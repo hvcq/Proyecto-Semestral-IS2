@@ -14,6 +14,7 @@ def obtener_encuestas():
         return lista_encuestas
     else:
         tuplas_de_encuestas = db.session.query(Encuesta).order_by(Encuesta.id_encuesta).all()
+        print(tuplas_de_encuestas)
         for tupla_encuesta in tuplas_de_encuestas:
             crea_encuesta_aux = db.session.query(Crea_Encuesta).filter_by(id_encuesta=tupla_encuesta.id_encuesta).first()
             admin_aux = db.session.query(Admin).filter_by(id_admin=crea_encuesta_aux.id_admin).first()

@@ -295,6 +295,7 @@ const filterSearch = function () {
   });
 
   for (let i = 0; i < tr.length; i++) {
+    console.log('ESTE ES EL VALOR DE COUNTER', counter);
     console.log('valaor de i al principio;:', i);
     txtValue = tr[i].textContent;
     txtValue = txtValue.split(' ').join('');
@@ -315,6 +316,7 @@ const filterSearch = function () {
       counter = 4;
     } else {
       console.log('Entro al false');
+      console.log(trList[idElement]);
       trList[idElement].style.display = 'none';
     }
     counter++;

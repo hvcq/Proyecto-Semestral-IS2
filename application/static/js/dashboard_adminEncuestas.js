@@ -49,7 +49,7 @@ const insertRow = function (survey) {
             <img class="imgDot" src="/static/resources/dots.png" alt="">
           </button>
           <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-            <li><a role="button" typeButton="POST" class="dropdown-item" onclick="showModalSure(event)">Enviar</a></li>
+            <li><a role="button" typeButton="POST" class="dropdown-item" onclick="sendSurvey(event)">Enviar</a></li>
             <li><a role="button" typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
           </ul>
         </div>
@@ -60,6 +60,11 @@ const insertRow = function (survey) {
 };
 
 init();
+
+async function delay() {
+  await new Promise(done => setTimeout(() => done(), 2000));
+  return true;
+}
 
 const statusSurvey = function (event) {
   const input = event.target;
@@ -88,6 +93,44 @@ const statusSurvey = function (event) {
 //     showCancelButton: true,
 //   });
 // };
+
+const sendSurvey = event => {
+  const parent = event.target.parentNode.parentNode;
+  current_id = parent.attributes[2].textContent;
+  const response = {
+    id_survey: Number(current_id),
+  };
+
+  Swal.fire({
+    title: '¿Quieres enviar esta encuesta?',
+    text: 'Esta acción no se puede deshacer!',
+    icon: 'warning',
+    showCloseButton: false,
+    showCancelButton: true,
+    focusConfirm: false,
+    reverseButtons: true,
+    confirmButtonText: 'Estoy seguro',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#58d68d',
+    cancelButtonColor: '#ff3e69',
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      $.ajax({
+        url: '/mail_sent',
+        type: 'POST',
+        data: { response: JSON.stringify(response) },
+        success: function (result) {
+          if (result === 'Email enviado') {
+            Swal.fire('Enviada!', 'Encuesta enviada con exito.', 'success');
+          } else {
+            Swal.fire('Error!', `Ha ocurrido un problema inesperado: ${result}`, 'error');
+          }
+        },
+      });
+    },
+    allowOutsideClick: () => !Swal.isLoading(),
+  }).then(result => {});
+};
 
 const showModalSure = function (event) {
   myModalSure.show();

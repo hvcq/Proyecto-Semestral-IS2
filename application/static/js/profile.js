@@ -108,7 +108,7 @@ const initModal = () => {
           if (result === 'avatar cambiado correctamente') {
             Swal.fire('Guardado!', 'Tu avatar fue guardado con exito.', 'success');
           } else {
-            Swal.fire('Error!', 'Ha ocurrido un problema inesperado.', 'error');
+            Swal.fire('Error!', 'Ha ocurrido un problema inesperado: ' + result, 'error');
           }
           setImage();
         },

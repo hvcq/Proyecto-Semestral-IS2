@@ -200,6 +200,7 @@
 <script>
   const data = {{ data | tojson }}
   const role = {{current_user.rol | tojson}}
+  const avatar = {{current_user.avatar | tojson}}
 </script>
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>
 {% if data.selected == 'encuestas' %}

@@ -16,7 +16,7 @@
                 <h5 class="text-secondary">{{current_user.rol}}</h5>
                 <img class="profileImgProfile"/>
                 <h4 class="pb-3">{{current_user.nombre}}</h4>
-                <h6 class="text-secondary text-decoration-underline fw-semibold" style="cursor: pointer;">Editar foto de perfil</h6>
+                <h6 class="text-secondary text-decoration-underline fw-semibold" style="cursor: pointer;" onclick="initModal()">Editar foto de perfil</h6>
             </div>
             {% if current_user.rol != 'admin'%}
             <div class="ms-5 me-5 mt-2 mb-2 card shadow tableFixHead w-100" style="height: 30vh;">
@@ -33,19 +33,15 @@
                       <th scope="col">Fecha de respuesta</th>
                     </tr>
                   </thead>
-                    <tr>
-                      <td>
-                        Encuesta ejemplo 1
-                      </td>
-                      <td>
-                        8 febrero de 2022
-                      </td>
-                    </tr>
+                  <tbody class="surveyBody">
                     
                   </tbody>
                 </table>
               </div>
-              <button class="btn btn-danger" style="background-color: #ff3e69;" onclick="darseDeBaja()">Darse de baja</button>
+
+              <button class="btn btn-danger d-none btnDeactivate" style="background-color: #ff3e69;" onclick="deactivate()">Darse de baja</button>
+              <button class="btn btn-success d-none btnActivate" style="background-color: #58d68d;" onclick="activate()">Suscribirse</button>
+
             {% endif %}   
         </div>
         <div class="col-7 d-flex flex-column align-items-start card p-0 shadow" style="max-height: 60vh;">
@@ -59,25 +55,25 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Rut</label>
-                        <input type="text" class="form-control" placeholder="None" disabled>
+                        <input type="text" class="form-control" placeholder="{{data.dataUser.rut}}" disabled>
                     </div>
                     <div class="">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" placeholder="****" disabled>
+                        <input type="password" class="form-control" placeholder="*********" disabled>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="mb-3">
                         <label class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" placeholder="None" disabled>
+                        <input type="text" class="form-control" placeholder="{{data.dataUser.lastName}}" disabled>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Género</label>
-                        <input type="text" class="form-control" placeholder="None" disabled>
+                        <input type="text" class="form-control" placeholder="{{data.dataUser.gender}}" disabled>
                     </div>
                     <div class="">
                         <label class="form-label">Fecha de nacimiento</label>
-                        <input type="date" class="form-control" disabled>
+                        <input type="text" class="form-control" placeholder="{{data.dataUser.birthday}}" disabled>
                     </div>
                 </div>
             </div>	
@@ -97,8 +93,8 @@
 <script>
   const data = {{ data | tojson }}
   const role = {{ data.role| tojson}}
-  const img = role === "admin" ? '/static/resources/user_blue.png' : '/static/resources/user_red.png'
-  document.querySelector('.profileImgProfile').setAttribute('src', img);
+  const avatar = {{current_user.avatar | tojson}}
+
 </script>
 
 <script src="{{ url_for("static", filename="js/nav.js" ) }}"></script>

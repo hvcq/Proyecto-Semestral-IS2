@@ -28,6 +28,9 @@ def index():
     # return redirect(url_for("login"))
     return render_template("login.html")
 
+@app.route("/error")
+def error():
+    return render_template("404error.html")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

@@ -53,8 +53,10 @@ const container = document.querySelector('.survey');
 container.style.opacity = 1;
 // console.log(myModal);
 
+let num = data.dataSurvey.asigned;
+
 const insertQuestion = function (statement, alternatives, type, id) {
-  if (type === 'alternativa') {
+  if (type === 'alternativa' && num == 0) {
     questionContainer.insertAdjacentHTML(
       'beforeend',
       `
@@ -76,7 +78,26 @@ const insertQuestion = function (statement, alternatives, type, id) {
     </div>
     `
     );
-  } else if (type === 'desarrollo') {
+  } 
+  else if (type === 'alternativa' && num != 0) {
+    questionContainer.insertAdjacentHTML(
+      'beforeend',
+      `
+      <div name="question" alternative="true" class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center" id=${'alternativa' + id}>
+        <textarea name="title" class="form-control shadow-none survey__elementTitle mb-3 textareaDisabled" rows="1"
+          placeholder="Inserte enunciado" onchange="handleInputs(event)" maxlength="2000" disabled>${statement}</textarea>
+        <div class="survey__alternatives">
+          <div name=${id} class="list__alternatives ms-3">
+            ${alternatives}
+          </div>
+
+        </div>
+
+    </div>
+    `
+    );
+  }
+  else if (type === 'desarrollo') {
     questionContainer.insertAdjacentHTML(
       'beforeend',
       `
@@ -106,6 +127,8 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
     let alternativeHtml = '';
     //Si existen alternativas entra a este for, si no lo toma como respuesta .
     for (const alternative of element.alternatives) {
+      
+      if(num == 0){
       alternativeHtml += `
         <div id="opcion${alternative.id}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
@@ -113,6 +136,17 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
           <button onclick="deleteAlternative(event)" type="button" class="suveryQuestions__button"><img src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
      `;
+      }
+
+      else{
+        alternativeHtml += `
+        <div id="opcion${alternative.id}" class="form-check d-flex align-items-center gap-2 mt-4">
+          <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
+          <input placeholder="Inserte Texto" class="survey__inputAlt" value="${alternative.textAlt}" onchange="handleInputs(event)" maxlength="300" disabled>
+          
+        </div>
+     `;
+      }
     }
     insertQuestion(element.statement, alternativeHtml, element.type, element.id);
     // initTooltip();

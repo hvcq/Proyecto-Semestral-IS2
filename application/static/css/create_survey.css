@@ -44,6 +44,7 @@ textarea:focus {
 
 .textareaDisabled {
   resize: none;
+  background-color: transparent !important;
 }
 
 .survey__image {

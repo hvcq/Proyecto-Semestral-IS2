@@ -13,3 +13,20 @@
 th {
   color: var(--color-unselected);
 }
+
+.avatar {
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 60%;
+  transition: all 0.1s ease-in-out;
+}
+
+.avatar:hover {
+  opacity: 100%;
+}
+
+.selected {
+  opacity: 1;
+  border: var(--color-survey-card-focus) solid 3px;
+}

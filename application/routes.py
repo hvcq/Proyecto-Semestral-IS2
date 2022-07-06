@@ -28,12 +28,15 @@ def index():
     # return redirect(url_for("login"))
     return render_template("login.html")
 
+@app.route("/error")
+def error():
+    return render_template("404error.html")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         user = User(0, request.form['email'],
-                    request.form['password'], "", "indefinido")
+                    request.form['password'], "", "indefinido", "null")
         logged_user = ModelUser.login(user)
         if logged_user != None:
             print(logged_user.email)
@@ -146,7 +149,6 @@ def delete_user():
 
 @app.route("/state_user", methods=['POST'])
 @login_required
-@admin_required
 def state_user():
     if request.method == 'POST':
         response = json.loads(request.form.get("response"))
@@ -412,7 +414,8 @@ def dashboard_user():
         "selected": "",
         "active": "",
         "title": "Bienvenido " + current_user.nombre,
-        "role": 'encuestado'
+        "role": 'encuestado',
+        "dataUser": get_dataUser()
     })
 
 # Desunscribe encuestados
@@ -447,3 +450,11 @@ def my_profile():
 @app.route("/recover_password")
 def recover_password():
     return render_template("recover_password.html")
+
+
+@app.route("/change_avatar", methods=['POST'])
+def change_avatar():
+    if request.method == 'POST':
+        response = json.loads(request.form.get("response"))
+        print(response)
+        return cambiar_avatar(response['user'], response['url'])

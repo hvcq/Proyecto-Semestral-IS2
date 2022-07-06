@@ -230,6 +230,7 @@
 <script>
   const data = {{ data | tojson }}
   const role = {{ current_user.rol | tojson}};
+  const avatar = {{ current_user.avatar | tojson}};
   document.querySelector('.titleSurvey').textContent = ""
 </script>
 

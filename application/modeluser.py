@@ -22,14 +22,15 @@ class ModelUser():
                     ModelUser.__rol_actual = "registrado"
                     return user
                 else:
-                    encuestado = db.session.query(Encuestado).filter_by(email=user.email).first()
-                    if encuestado != None:
-                        user = User(0, encuestado.email, True, "invitado", "encuestado")
-                        ModelUser.__rol_actual = "encuestado"
-                        ModelUser.__email_encuestado = encuestado.email
-                        return user
-                    else:
-                        return None
+                    return None
+                    # encuestado = db.session.query(Encuestado).filter_by(email=user.email).first()
+                    # if encuestado != None:
+                    #     user = User(0, encuestado.email, True, "invitado", "encuestado", "")
+                    #     ModelUser.__rol_actual = "encuestado"
+                    #     ModelUser.__email_encuestado = encuestado.email
+                    #     return user
+                    # else:
+                    #     return None
 
         except Exception as ex:
             raise Exception(ex)

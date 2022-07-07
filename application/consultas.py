@@ -30,7 +30,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "visits": tupla_encuesta.visitas,
                     "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
-                    "author": admin_aux.nombre
+                    "author": admin_aux.nombre,
+                    "asigned" : tupla_encuesta.total_asignados
                 }
             else:
                 datos_encuesta_aux = {
@@ -42,7 +43,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "visits": tupla_encuesta.visitas,
                     "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
-                    "author": admin_aux.nombre
+                    "author": admin_aux.nombre,
+                    "asigned" : tupla_encuesta.total_asignados
                 }
             lista_encuestas.append(datos_encuesta_aux)
         return lista_encuestas

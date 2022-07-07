@@ -50,8 +50,12 @@ const insertRow = function (survey) {
             <img class="imgDot" src="/static/resources/dots.png" alt="">
           </button>
           <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
-            <li><a role="button" typeButton="POST" class="dropdown-item" onclick="sendSurvey(event)">Enviar</a></li>
-            <li><a role="button" typeButton="DELETE" class="dropdown-item" onclick="deleteSurvey(event)">Eliminar</a></li>
+            <li><a role="button" typeButton="POST" class="dropdown-item ${
+              survey.asigned ? 'disabledSupreme' : ''
+            }" onclick="sendSurvey(event)">Enviar</a></li>
+            <li><a role="button" typeButton="DELETE" class="dropdown-item ${
+              survey.asigned ? 'disabledSupreme' : ''
+            }" onclick="deleteSurvey(event)">Eliminar</a></li>
           </ul>
         </div>
       </td>

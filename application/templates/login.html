@@ -31,23 +31,10 @@
         </div>
       </div>
 
-      <div class="login-box col-6 d-flex flex-column align-items-center justify-content-evenly border-start">
+      <div class="login-box col-6 d-flex flex-column align-items-center justify-content-center gap-4 border-start">
         <div class="d-flex flex-column align-items-center gap-3 mt-5">
           <h1 class="m-0">Ingresa aquí</h1>
-          <h5 class="text-secondary">Bienvenido al sitio de encuestas de la Universidad de Concepción</h5>
-          <!-- <div class="d-flex flex-column align-items-center gap-3">
-            <h3>Quien eres?</h3>
-            <div class="d-flex gap-5">
-              <div class="text-center example">
-                <img class="imgUser" style="width:90px; height: 90px;" src="{{ url_for("static", filename="resources/user_red.png" ) }}">
-                <h6 class="text-secondary mt-1">Encuestado</h6>
-              </div>
-              <div class="text-center">
-                <img class="imgUser" style="width:90px; height: 90px;" src="{{ url_for("static", filename="resources/admin_blue.png" ) }}">
-                <h6 class="text-secondary mt-1">Administrador</h6>
-              </div>
-            </div>
-          </div> -->
+          <h5 class="text-secondary text-center mb-4">Bienvenido al sitio de encuestas de la Universidad de Concepción</h5>
         </div>
 
         <form style="width: 55%" action="/login" method="POST">
@@ -57,12 +44,7 @@
           <div class="mb-3">
             <input name="password" placeholder="Contraseña" type="password" class="form-control" id="exampleInputPassword1" />
           </div>
-          <div class="mb-3 form-check d-flex justify-content-between">
-            <div class="form-check p-0">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled />
-              <label class="form-check-label" for="flexCheckDisabled"> Recordar </label>
-            </div>
-
+          <div class="mb-3 form-check d-flex justify-content-end">
             <a href="/recover_password" disabled>¿Has olvidado tu contraseña?</a>
           </div>
           <div class="w-100 d-flex justify-content-center">
@@ -73,9 +55,6 @@
           <p class="text-secondary">¿No tienes cuenta?<a class="text-dark ms-2" href="/register">Regístrate</a></p>
         </div>
       </div>
-
-      <!-- <div class="register-box col-6 d-flex flex-column align-items-center justify-content-evenly border-start">
-      </div> -->
     </div>
   </body>
 

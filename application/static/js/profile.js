@@ -4,9 +4,12 @@ let selected = '';
 
 console.log(data);
 
+let btnDeactivate;
+let btnActivate;
+
 if (role !== 'admin') {
-  const btnDeactivate = document.querySelector('.btnDeactivate');
-  const btnActivate = document.querySelector('.btnActivate');
+  btnDeactivate = document.querySelector('.btnDeactivate');
+  btnActivate = document.querySelector('.btnActivate');
 
   data.dataUser.estado ? btnDeactivate.classList.remove('d-none') : btnActivate.classList.remove('d-none');
 }

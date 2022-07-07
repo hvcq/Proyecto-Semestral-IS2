@@ -1,8 +1,5 @@
 'use strict';
 
-console.log(data);
-console.log(avatar);
-
 if (data.selected !== 'answer' && data.selected !== '') {
   const opcionNavA = document.querySelector(`a[name=${data.selected.toLowerCase()}]`);
   const opcionNavDot = document.querySelector(`div[name=${data.selected}]`);
@@ -15,7 +12,7 @@ if (data.selected !== 'answer' && data.selected !== '') {
 const profileSection = document.querySelector('.profileList');
 const profilePicture = document.querySelector('.profileImg');
 
-if (avatar !== null) {
+if (avatar !== null || avatar !== undefined) {
   profileSection.setAttribute('style', 'background-color: #1784d5');
   profilePicture.setAttribute('src', avatar);
   role === 'admin'

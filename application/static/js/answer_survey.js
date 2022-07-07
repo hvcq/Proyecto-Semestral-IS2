@@ -7,6 +7,10 @@
 
 let dataSurvey = data.dataSurvey;
 
+const profileDropdown = document.querySelector('#profileDropdown');
+
+if (role === 'encuestado') profileDropdown.classList.add('invisible');
+
 $.ajax({
   url: '/aumentar_visita',
   type: 'POST',

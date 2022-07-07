@@ -30,7 +30,7 @@ def crear_dataSurvey(id_encuesta):
 
     fecha_fin_aux = ""
     if survey.fecha_fin == None:
-        fecha_fin_aux = survey.fecha_fin
+        fecha_fin_aux = (datetime.now() + timedelta(days=7)).strftime("%d-%m-%Y")
     else:
         fecha_fin_aux = survey.fecha_fin.strftime("%d-%m-%Y")
         

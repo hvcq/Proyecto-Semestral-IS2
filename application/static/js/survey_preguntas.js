@@ -19,6 +19,10 @@ console.log(data);
 
 console.log(data.dataSurvey);
 
+// if (data.dataSurvey.status !== 0) {
+//   document.querySelector('#containerMayor').classList.add('disabledSupreme');
+// }
+
 function initTooltip() {
   const buttons = [...document.querySelectorAll("[data-toggle='tooltip']")];
   var tooltipList = buttons.map(element => {
@@ -46,9 +50,9 @@ console.log(poolId.opciones);
 const title = document.querySelector('#title');
 const description = document.querySelector('#description');
 const questionContainer = document.querySelector('.surveyQuestions');
-var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
-  keyboard: false,
-});
+// var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
+//   keyboard: false,
+// });
 const container = document.querySelector('.survey');
 container.style.opacity = 1;
 // console.log(myModal);
@@ -402,30 +406,74 @@ const handleInputs = function (event) {
 // HANDLE INPUTS FIN--------------------------------------------------------
 
 const sendData = function () {
-  myModal.show();
+  // myModal.show();
 
   if (data.textButton === 'Guardar') {
-    $.ajax({
-      url: '/create_survey',
-      type: 'POST',
-      data: { surveyData: JSON.stringify(data.dataSurvey) },
-      success: function (result) {
-        delay();
-        //if result === true pasa esto. Si no muestra la modal de error.
-        // alert(result);
-        // delay();
+    Swal.fire({
+      title: 'Guardando encuesta',
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+        return fetch(`/create_survey`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(data.dataSurvey),
+        })
+          .then(responseServer => {
+            if (!responseServer.ok) {
+              throw responseServer.statusText;
+            }
+            return responseServer.json();
+          })
+          .then(data => {
+            console.log(data);
+            if (data !== 'Encuesta Guardada') {
+              throw data;
+            } else {
+              Swal.fire('Excelente!', 'Encuesta guardada con exito.', 'success');
+            }
+          })
+          .catch(error => {
+            Swal.fire('Error!', 'Error inesperado: ' + error, 'error');
+          });
       },
     });
   } else if (data.textButton === 'Modificar') {
-    $.ajax({
-      url: '/modify_survey',
-      type: 'POST',
-      data: { surveyData: JSON.stringify(data.dataSurvey) },
-      success: function (result) {
-        delay();
-        //if result === true pasa esto. Si no muestra la modal de error.
-        // alert(result);
-        // delay();
+    Swal.fire({
+      title: 'Modificando encuesta',
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+        return fetch(`/modify_survey`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(data.dataSurvey),
+        })
+          .then(responseServer => {
+            if (!responseServer.ok) {
+              throw responseServer.statusText;
+            }
+            return responseServer.json();
+          })
+          .then(data => {
+            console.log(data);
+            if (data !== 'Modificacion Exitosa') {
+              throw data;
+            } else {
+              Swal.fire('Excelente!', 'Encuesta modificada con exito.', 'success');
+            }
+          })
+          .catch(error => {
+            Swal.fire('Error!', 'Error inesperado: ' + error, 'error');
+          });
       },
     });
   }

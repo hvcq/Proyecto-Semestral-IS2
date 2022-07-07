@@ -657,7 +657,7 @@ def modificar_tiempo_limite(responses):
         return "error: Fecha de termino mayor o igual a la de inicio"
     encuesta.fecha_fin = responses["end_date"]
     db.session.commit()
-    return "Tiempo limite de encuesta (" + str(responses["id"]) + ") modificado correctamente"
+    return "Tiempo limite de encuesta modificado correctamente"
 
 def asignar_asunto_y_mensaje(responses):
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id"]).first()

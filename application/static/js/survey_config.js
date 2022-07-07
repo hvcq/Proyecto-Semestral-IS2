@@ -82,14 +82,17 @@ const sendConfiguration = () => {
     type: 'POST',
     data: { surveyConfig: JSON.stringify(dataConfiguration) },
     success: function (result) {
-      // delay();
-      //if result === true pasa esto. Si no muestra la modal de error.
-      // alert(result);
-      // delay();
+      if (result === 'Tiempo limite de encuesta modificado correctamente Asunto y mensaje actualizados') {
+        Toast.fire({
+          icon: 'success',
+          title: 'Configuración guardada',
+        });
+      } else {
+        Toast.fire({
+          icon: 'error',
+          title: 'Error inesperado:' + result,
+        });
+      }
     },
-  });
-  Toast.fire({
-    icon: 'success',
-    title: 'Signed in successfully',
   });
 };

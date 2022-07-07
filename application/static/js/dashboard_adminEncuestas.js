@@ -2,6 +2,7 @@
 
 console.log(data);
 let current_id;
+let error;
 const containerSurveys = document.querySelector('.surveys');
 let surveys = data.dataSurveys;
 
@@ -50,7 +51,7 @@ const insertRow = function (survey) {
           </button>
           <ul class="dropdown-menu slideInAction animate" aria-labelledby="dropdownCenterBtn" idEncuesta="${survey.id_survey}">
             <li><a role="button" typeButton="POST" class="dropdown-item" onclick="sendSurvey(event)">Enviar</a></li>
-            <li><a role="button" typeButton="DELETE" class="dropdown-item" onclick="showModalSure(event)">Eliminar</a></li>
+            <li><a role="button" typeButton="DELETE" class="dropdown-item" onclick="deleteSurvey(event)">Eliminar</a></li>
           </ul>
         </div>
       </td>
@@ -97,8 +98,8 @@ const statusSurvey = function (event) {
 const sendSurvey = event => {
   const parent = event.target.parentNode.parentNode;
   current_id = parent.attributes[2].textContent;
-  const response = {
-    id_survey: Number(current_id),
+  const sendData = {
+    id_survey: current_id,
   };
 
   Swal.fire({
@@ -114,81 +115,149 @@ const sendSurvey = event => {
     confirmButtonColor: '#58d68d',
     cancelButtonColor: '#ff3e69',
     showLoaderOnConfirm: true,
+
     preConfirm: () => {
-      $.ajax({
-        url: '/mail_sent',
-        type: 'POST',
-        data: { response: JSON.stringify(response) },
-        success: function (result) {
-          if (result === 'Email enviado') {
-            Swal.fire('Enviada!', 'Encuesta enviada con exito.', 'success');
-          } else {
-            Swal.fire('Error!', `Ha ocurrido un problema inesperado: ${result}`, 'error');
-          }
+      return fetch(`/mail_sent`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
         },
-      });
+        body: JSON.stringify(sendData),
+      })
+        .then(responseServer => {
+          if (!responseServer.ok) {
+            throw responseServer.statusText;
+          }
+          return responseServer.json();
+        })
+        .then(data => {
+          if (data !== 'Email enviado') {
+            throw data;
+          }
+        })
+        .catch(error => {
+          Swal.showValidationMessage(`Solicitud fallida: ${error}`);
+        });
     },
     allowOutsideClick: () => !Swal.isLoading(),
-  }).then(result => {});
+  }).then(result => {
+    if (result.isConfirmed) {
+      Swal.fire('Enviada!', 'Encuesta enviada con exito.', 'success');
+    }
+  });
 };
 
-const showModalSure = function (event) {
-  myModalSure.show();
+const deleteSurvey = event => {
   const parent = event.target.parentNode.parentNode;
   current_id = parent.attributes[2].textContent;
-  const type = event.target.attributes[1].textContent;
-  const button = document.querySelector('.buttonModal');
-  const title = document.querySelector('.titleModal');
-
-  if (type === 'POST') {
-    button.removeEventListener('click', deleteSurvey);
-    console.log('ENTRO POST');
-    title.textContent = '¿Estas seguro de publicar la encuesta?';
-    button.addEventListener('click', postSurvey);
-  } else if (type === 'DELETE') {
-    button.removeEventListener('click', postSurvey);
-    console.log('ENTRO DELETE');
-    title.textContent = '¿Estas seguro de eliminar la encuesta?';
-    button.addEventListener('click', deleteSurvey);
-  }
-};
-
-const deleteSurvey = function () {
-  const response = {
-    id_survey: Number(current_id),
+  const sendData = {
+    id_survey: current_id,
   };
 
-  const trElement = document.querySelector(`#Encuesta${current_id}`);
-  trElement.remove();
+  Swal.fire({
+    title: '¿Quieres eliminar esta encuesta?',
+    text: 'Esta acción no se puede deshacer!',
+    icon: 'warning',
+    showCloseButton: false,
+    showCancelButton: true,
+    focusConfirm: false,
+    reverseButtons: true,
+    confirmButtonText: 'Estoy seguro',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#58d68d',
+    cancelButtonColor: '#ff3e69',
+    showLoaderOnConfirm: true,
 
-  const surveyArray = surveys.filter(element => `${element.id_survey}` !== current_id);
-  surveys = surveyArray;
-  console.log(surveys);
-
-  $.ajax({
-    url: '/delete_survey',
-    type: 'POST',
-    data: { response: JSON.stringify(response) },
-    success: function (result) {},
+    preConfirm: () => {
+      return fetch(`/delete_survey`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(sendData),
+      })
+        .then(responseServer => {
+          if (!responseServer.ok) {
+            throw responseServer.statusText;
+          }
+          return responseServer.json();
+        })
+        .then(data => {
+          if (data !== 'Borrada Correctamente') {
+            throw data;
+          }
+        })
+        .catch(error => {
+          Swal.showValidationMessage(`Solicitud fallida: ${error}`);
+        });
+    },
+    allowOutsideClick: () => !Swal.isLoading(),
+  }).then(result => {
+    if (result.isConfirmed) {
+      Swal.fire('Eliminada!', 'Encuesta eliminada con exito.', 'success');
+      document.querySelector(`#Encuesta${current_id}`).remove();
+      surveys = surveys.filter(survey => survey.id_survey !== Number(current_id));
+    }
   });
-  myModalSure.hide();
 };
 
-const postSurvey = function () {
-  const response = {
-    id_survey: Number(current_id),
-  };
+// const showModalSure = function (event) {
+//   myModalSure.show();
+//   const parent = event.target.parentNode.parentNode;
+//   current_id = parent.attributes[2].textContent;
+//   const type = event.target.attributes[1].textContent;
+//   const button = document.querySelector('.buttonModal');
+//   const title = document.querySelector('.titleModal');
 
-  console.log(response);
-  $.ajax({
-    url: '/mail_sent',
-    type: 'POST',
-    data: { response: JSON.stringify(response) },
-    success: function (result) {},
-  });
+//   if (type === 'POST') {
+//     button.removeEventListener('click', deleteSurvey);
+//     console.log('ENTRO POST');
+//     title.textContent = '¿Estas seguro de publicar la encuesta?';
+//     button.addEventListener('click', postSurvey);
+//   } else if (type === 'DELETE') {
+//     button.removeEventListener('click', postSurvey);
+//     console.log('ENTRO DELETE');
+//     title.textContent = '¿Estas seguro de eliminar la encuesta?';
+//     button.addEventListener('click', deleteSurvey);
+//   }
+// };
 
-  myModalSure.hide();
-};
+// const deleteSurvey = function () {
+//   const response = {
+//     id_survey: Number(current_id),
+//   };
+
+//   const trElement = document.querySelector(`#Encuesta${current_id}`);
+//   trElement.remove();
+
+//   const surveyArray = surveys.filter(element => `${element.id_survey}` !== current_id);
+//   surveys = surveyArray;
+//   console.log(surveys);
+
+//   $.ajax({
+//     url: '/delete_survey',
+//     type: 'POST',
+//     data: { response: JSON.stringify(response) },
+//     success: function (result) {},
+//   });
+//   myModalSure.hide();
+// };
+
+// const postSurvey = function () {
+//   const response = {
+//     id_survey: Number(current_id),
+//   };
+
+//   console.log(response);
+//   $.ajax({
+//     url: '/mail_sent',
+//     type: 'POST',
+//     data: { response: JSON.stringify(response) },
+//     success: function (result) {},
+//   });
+
+//   myModalSure.hide();
+// };
 
 //CHARTS ------------------------------------------------------------------------------------
 

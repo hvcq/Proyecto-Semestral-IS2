@@ -89,32 +89,42 @@ const initModal = () => {
     cancelButtonColor: '#ff3e69',
     showLoaderOnConfirm: true,
     preConfirm: () => {
+      const sendData = { user: dataUser.email, url: `/static/resources/avatares/user${selected}.png` };
       if (selected === '') {
+        console.log('entro');
         Swal.showValidationMessage(`No has seleccionado un avatar`);
       } else {
-        return delay();
+        return fetch(`/change_avatar`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(sendData),
+        })
+          .then(responseServer => {
+            if (!responseServer.ok) {
+              throw responseServer.statusText;
+            }
+            return responseServer.json();
+          })
+          .then(data => {
+            if (data !== 'avatar cambiado correctamente') {
+              throw data;
+            }
+          })
+          .catch(error => {
+            Swal.showValidationMessage(`Solicitud fallida: ${error}`);
+          });
       }
     },
     allowOutsideClick: () => !Swal.isLoading(),
   }).then(result => {
-    if (result.isConfirmed && selected) {
-      const response = { user: dataUser.email, url: `/static/resources/avatares/user${selected}.png` };
-      $.ajax({
-        url: '/change_avatar',
-        type: 'POST',
-        data: { response: JSON.stringify(response) },
-        success: function (result) {
-          console.log(result);
-          if (result === 'avatar cambiado correctamente') {
-            Swal.fire('Guardado!', 'Tu avatar fue guardado con exito.', 'success');
-          } else {
-            Swal.fire('Error!', 'Ha ocurrido un problema inesperado: ' + result, 'error');
-          }
-          setImage();
-        },
-      });
+    if (result.isConfirmed) {
+      Swal.fire('Excelente!', 'Avatar guardado correctamente.', 'success');
+      setImage();
     }
   });
+  selected = '';
 };
 
 const activate = function () {

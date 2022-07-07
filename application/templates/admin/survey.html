@@ -12,50 +12,53 @@
 
 {% block content %}
 {% if data.selected == 'preguntas' %}
-<section class="survey container d-flex flex-column">
-  <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto d-flex flex-column justify-content-center">
-    <textarea id="title" onchange="handleInputs(event)"
-      class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1" placeholder="Inserte Título"
-      autofocus style="height: 10px" maxlength="100"></textarea>
-    <textarea onchange="handleInputs(event)" onkeyup="couterCharacters(event)" maxlength="3000" id="description"
-      class="form-control shadow-none survey__elementDesc" rows="1" placeholder="Descripción de la encuesta"></textarea>
-    <p class="me-4 mt-4 text-end text-secondary" style="font-size: .8rem;"><span class="charactersRemaining">43</span>
-      caracteres restantes</p>
-  </div>
-
-  <div class="surveyQuestions">
-  </div>
-</section>
-
-<div class="d-flex justify-content-between fixed-bottom mb-5">
-
-  <button type="button" class="btn-flotante ms-4" style="opacity: 0;" disabled>Cancelar</button>
-
-  <div class="survey__addButton text-center">
-    <button type="button" class="btn-left" data-toggle="tooltip" title="Agregar pregunta"><img src="{{ url_for("static", filename="resources/plus_adicional.png" ) }}" class="img-fluid survey__image"
-        onclick="addQuestion()"></button>
-  </div>
-
-  <button type="button" class="btn-flotante btn-right me-4 {{'invisible' if data.textButton == " Modificar" else '' }}"
-    onclick="sendData(event)">{{data.textButton}}</button>
-</div>
-
-<div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop=static" data-bs-keyboard="false"
-  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered myModal">
-
-    <!-- Modal content-->
-    <div class="modal-content d-flex flex-column justify-content-center align-items-center p-5 gap-2 myModal shadow">
-      <img src="{{ url_for("static", filename="resources/success.png" ) }}">
-      <h1>¡Encuesta guardada!</h1>
-      <h5>Te redireccionaremos a la pagina principal</h5>
-      <div class="spinner-border text-primary" role="status">
-        <span class="sr-only"></span>
-      </div>
+<div id="containerMayor">
+  <section class="survey container d-flex flex-column">
+    <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto d-flex flex-column justify-content-center">
+      <textarea id="title" onchange="handleInputs(event)"
+        class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1" placeholder="Inserte Título"
+        autofocus style="height: 10px" maxlength="100"></textarea>
+      <textarea onchange="handleInputs(event)" onkeyup="couterCharacters(event)" maxlength="3000" id="description"
+        class="form-control shadow-none survey__elementDesc" rows="1" placeholder="Descripción de la encuesta"></textarea>
+      <p class="me-4 mt-4 text-end text-secondary" style="font-size: .8rem;"><span class="charactersRemaining">43</span>
+        caracteres restantes</p>
+    </div>
+  
+    <div class="surveyQuestions">
+    </div>
+  </section>
+  <div class="d-flex justify-content-between fixed-bottom mb-5">
+  
+    <button type="button" class="btn-flotante ms-4" style="opacity: 0;" disabled>Cancelar</button>
+  
+    <div class="survey__addButton text-center">
+      <button type="button" class="btn-left" data-toggle="tooltip" title="Agregar pregunta"><img src="{{ url_for("static", filename="resources/plus_adicional.png" ) }}" class="img-fluid survey__image"
+          onclick="addQuestion()"></button>
     </div>
 
+    <button type="button" class="btn-flotante btn-right me-4 {{'invisible' if data.textButton == " Modificar" else '' }}"
+      onclick="sendData(event)">{{data.textButton}}</button>
+
   </div>
+
+  <!-- <div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop=static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered myModal">
+  
+      Modal content
+      <div class="modal-content d-flex flex-column justify-content-center align-items-center p-5 gap-2 myModal shadow">
+        <img src="{{ url_for("static", filename="resources/success.png" ) }}">
+        <h1>¡Encuesta guardada!</h1>
+        <h5>Te redireccionaremos a la pagina principal</h5>
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+  
+    </div>
+  </div> -->
 </div>
+
 
 
 

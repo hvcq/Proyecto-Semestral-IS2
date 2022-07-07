@@ -41,7 +41,8 @@ def crear_dataSurvey(id_encuesta):
         "questions": questions, 
         "end_date": fecha_fin_aux,
         "mail_subject": survey.asunto_mail,
-        "mail_body": survey.mensaje_mail
+        "mail_body": survey.mensaje_mail,
+        "status": survey.total_asignados
     }
 
     return dataSurvey

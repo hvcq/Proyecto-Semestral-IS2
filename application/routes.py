@@ -208,7 +208,8 @@ def Survey(id_encuesta, section="preguntas"):
                 "id": id_encuesta,
                 "title": "",
                 "description": "",
-                "questions": []
+                "questions": [],
+                "asigned" : 0
             }
             return render_template("admin/survey.html", data={
 

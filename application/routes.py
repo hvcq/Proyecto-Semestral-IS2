@@ -308,8 +308,7 @@ def answer_survey(url, id_encuesta):
 
         # Comprobar fecha encuesta y si ya fue respondida por usuario
         if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
-            return ("Encuesta no disponible")
-            return redirect("/")
+            return render_template('403error.html')
 
         # Si la encuesta está activa
         if (encuesta.activa == True):
@@ -326,10 +325,9 @@ def answer_survey(url, id_encuesta):
                 "title": dataSurvey.get('title')
             })
         else:
-            return ("Encuesta no está activa")
+            return render_template('403error.html')
     else:
-        return ("Encuesta no existe")
-        # return redirect("/")
+        return redirect("/invalid")
 
 # Enviar mails con encuestas
 

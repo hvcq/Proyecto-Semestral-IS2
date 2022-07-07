@@ -82,8 +82,7 @@ const insertQuestion = function (statement, alternatives, type, id) {
     </div>
     `
     );
-  } 
-  else if (type === 'alternativa' && num != 0) {
+  } else if (type === 'alternativa' && num != 0) {
     questionContainer.insertAdjacentHTML(
       'beforeend',
       `
@@ -100,8 +99,7 @@ const insertQuestion = function (statement, alternatives, type, id) {
     </div>
     `
     );
-  }
-  else if (type === 'desarrollo') {
+  } else if (type === 'desarrollo') {
     questionContainer.insertAdjacentHTML(
       'beforeend',
       `
@@ -131,18 +129,15 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
     let alternativeHtml = '';
     //Si existen alternativas entra a este for, si no lo toma como respuesta .
     for (const alternative of element.alternatives) {
-      
-      if(num == 0){
-      alternativeHtml += `
+      if (num == 0) {
+        alternativeHtml += `
         <div id="opcion${alternative.id}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
           <input placeholder="Inserte Texto" class="survey__inputAlt" value="${alternative.textAlt}" onchange="handleInputs(event)" maxlength="300">
           <button onclick="deleteAlternative(event)" type="button" class="suveryQuestions__button"><img src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
      `;
-      }
-
-      else{
+      } else {
         alternativeHtml += `
         <div id="opcion${alternative.id}" class="form-check d-flex align-items-center gap-2 mt-4">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
@@ -540,7 +535,7 @@ textAreaFunction();
 
 const characters = document.querySelector('.charactersRemaining');
 const descriptionSurvey = document.querySelector('#description');
-characters.textContent = 3000 - descriptionSurvey.value.length;
+if (!characters) characters.textContent = 3000 - descriptionSurvey.value.length;
 
 console.log(descriptionSurvey.value.length);
 

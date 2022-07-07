@@ -722,7 +722,7 @@ def get_dataUser():
         else:
             genero = "No especificado"
 
-        encuestas = db.session.query(Encuestar).filter_by(email=current_user.email).all()
+        encuestas = db.session.query(Encuestar).filter_by(email=current_user.email, contestada=True).all()
         lista_encuestas = []
 
         if (encuestas != None):

@@ -535,7 +535,7 @@ textAreaFunction();
 
 const characters = document.querySelector('.charactersRemaining');
 const descriptionSurvey = document.querySelector('#description');
-if (!characters) characters.textContent = 3000 - descriptionSurvey.value.length;
+if (characters !== null) characters.textContent = 3000 - descriptionSurvey.value.length;
 
 console.log(descriptionSurvey.value.length);
 

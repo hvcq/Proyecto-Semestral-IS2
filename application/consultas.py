@@ -732,7 +732,7 @@ def get_dataUser():
                 e = db.session.query(Encuesta).filter_by(id_encuesta = l.id_encuesta).first()
                 encuesta={
                     "title": e.titulo,
-                    "date": l.fecha_contestada
+                    "date": (l.fecha_contestada).strftime("%d-%m-%Y")
                 }
 
                 lista_encuestas.append(encuesta)

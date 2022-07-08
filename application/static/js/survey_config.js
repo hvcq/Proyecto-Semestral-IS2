@@ -29,21 +29,17 @@ const switchBody = document.querySelector('#body');
 const textBody = document.querySelector('#textBody');
 const dateText = document.querySelector('#textDate');
 
-console.log('Data survey', dataSurvey);
 
 const setDate = function (event) {
   dataConfiguration.end_date = event.target.value;
-  console.log(dataConfiguration.end_date);
 };
 
 const setSubject = function (event) {
   dataConfiguration.mail_subject = event.target.value;
-  console.log(dataConfiguration.mail_subject);
 };
 
 const setBody = function (event) {
   dataConfiguration.mail_body = event.target.value;
-  console.log(dataConfiguration.mail_body);
 };
 
 if (dataSurvey.mail_subject !== '' && dataSurvey.mail_subject !== null && dataSurvey.mail_subject !== undefined) {

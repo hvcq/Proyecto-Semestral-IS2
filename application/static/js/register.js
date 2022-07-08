@@ -32,7 +32,6 @@ function checkRut(rut) {
 
   // Si no cumple con el mínimo ej. (n.nnn.nnn)
   if (cuerpo.length < 7) {
-    console.log('RUT INCOMPLETO');
     rut.setCustomValidity('RUT Incompleto');
     return false;
   }
@@ -66,7 +65,6 @@ function checkRut(rut) {
 
   // Validar que el Cuerpo coincide con su Dígito Verificador
   if (dvEsperado != dv) {
-    console.log('RUT INVALIDO');
     rut.setCustomValidity('RUT Inválido');
     return false;
   }

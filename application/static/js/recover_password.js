@@ -117,7 +117,6 @@ const validatePassword = event => {
     input1.style.borderColor = '#e74c3c';
     input2.style.borderColor = '#e74c3c';
   } else {
-    console.log('entro aca');
     document.querySelector('#rellena').classList.add('d-none');
     document.querySelector('#coincidencia').classList.remove('d-none');
     input1.style.borderColor = '#e74c3c';
@@ -128,7 +127,6 @@ const validatePassword = event => {
 const validateCode = event => {
   event.preventDefault();
   if (userResponse.join('') === code) {
-    console.log('codigo valido');
     document.querySelector('.incorrectCode').classList.add('d-none');
     document.querySelector('.correctCode').classList.remove('d-none');
 
@@ -138,7 +136,6 @@ const validateCode = event => {
     });
     nextStep();
   } else {
-    console.log('codigo invalido');
     document.querySelector('.incorrectCode').classList.remove('d-none');
     const inputs = document.querySelectorAll('.codeInput');
     inputs.forEach(element => {
@@ -256,7 +253,6 @@ const sendCode = () => {
     type: 'POST',
     data: { response: JSON.stringify(data) },
     success: function (result) {
-      console.log(result);
       if (currentStep === 0) result !== 'Email no existe' ? setStep2() : '';
     },
   });

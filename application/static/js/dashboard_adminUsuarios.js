@@ -130,16 +130,12 @@ const addUser = function (event) {
 
 const showModalSure = function (event) {
   const parent = event.target.parentNode.parentNode;
-  console.log(parent);
   current_id = parent.attributes[2].textContent;
-  console.log(current_id);
   const type = event.target.attributes[0].textContent;
 
   if (type === 'DEACTIVATE') {
-    console.log('ENTRO DESACTIVAR');
     deactivate();
   } else if (type === 'ACTIVATE') {
-    console.log('ENTRO ACTIVAR');
     activate();
   }
 };
@@ -154,7 +150,6 @@ const deleteUser = function () {
 
   const usersArray = users.filter(user => `${user.id_user}` !== current_id);
   users = usersArray;
-  console.log(users);
 
   $.ajax({
     url: '/delete_user',
@@ -174,10 +169,8 @@ const activate = function () {
     state: true,
   };
 
-  console.log(response);
 
   const stateUser = document.querySelector(`#State${current_id}`);
-  console.log();
   stateUser.className = '';
   stateUser.className =
     'd-flex justify-content-center fw-semibold text-success bg-success border-success bg-opacity-10 border border-opacity-10 rounded-2 ps-2 pe-2 pt-1 pb-1';
@@ -200,10 +193,8 @@ const deactivate = function () {
     state: false,
   };
 
-  console.log(response);
 
   const stateUser = document.querySelector(`#State${current_id}`);
-  console.log();
   stateUser.className = '';
   stateUser.className =
     'd-flex justify-content-center fw-semibold text-danger bg-danger border-danger bg-opacity-10 border border-opacity-10 rounded-2 ps-2 pe-2 pt-1 pb-1';
@@ -235,10 +226,7 @@ const filterUser = function (event, isChange) {
 
   const filter = !isChange ? event.target.textContent : dropdownParent.textContent;
 
-  console.log(dropdownParent.textContent !== 'Nombre');
-
   if (filter === 'Nombre') {
-    console.log('Entro');
     users.sort(function (a, b) {
       return ascUser ? a.name > b.name : a.name < b.name;
     });
@@ -295,28 +283,18 @@ const filterSearch = function () {
   });
 
   for (let i = 0; i < tr.length; i++) {
-    console.log('ESTE ES EL VALOR DE COUNTER', counter);
-    console.log('valaor de i al principio;:', i);
     txtValue = tr[i].textContent;
     txtValue = txtValue.split(' ').join('');
     txtValue = txtValue.replace(/(\r\n|\n|\r)/gm, '');
     txtValue = txtValue.toUpperCase();
     let idElement = Number(tr[i].attributes[1].value);
-
-    console.log(idElement);
-
-    console.log('LA COMPARATIVA:', txtValue, '/', filter);
+    
 
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      console.log('Entro al true');
       trList[idElement].style.display = '';
-      console.log(trList[idElement]);
       i += 4 - counter;
-      console.log('Este es el valor de i', i);
       counter = 4;
     } else {
-      console.log('Entro al false');
-      console.log(trList[idElement]);
       trList[idElement].style.display = 'none';
     }
     counter++;
@@ -328,12 +306,3 @@ const filterSearch = function () {
 const showButtons = () => {
   containerButtons.classList.contains('invisible') ? containerButtons.classList.remove('invisible') : containerButtons.classList.add('invisible');
 };
-
-// const selectAll = () => {
-//   showButtons();
-//   users.map(element => {
-//     const id = element.id_user;
-//     const inputElement = document.querySelector(`#Input${id}`);
-//     inputElement.checked = inputElement.checked ? false : true;
-//   });
-// };

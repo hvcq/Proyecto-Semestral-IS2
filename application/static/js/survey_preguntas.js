@@ -1,28 +1,5 @@
 'use strict';
 
-/*
-  Tareas 1: Colocar un id y elimar el padre del padre del padre.
-*/
-
-/*
- *LISTO: LECTURA DE DATOS Y VISUALIZACION.
- *LISTO: AL APRETAR BOTONES AGREGAR Y ELIMINAR SE MODIFICA EL ARREGLO.
- *LISTO: ELIMINAR Y AGREGAR ALTERNATIVAS.
- *LISTO: MANEJAR LOS INPUTS.
-
- *Por hacer
-  *borrar el name de los botones.
-  *Implementar un fade a las cards.
- */
-
-console.log(data);
-
-console.log(data.dataSurvey);
-
-// if (data.dataSurvey.status !== 0) {
-//   document.querySelector('#containerMayor').classList.add('disabledSupreme');
-// }
-
 function initTooltip() {
   const buttons = [...document.querySelectorAll("[data-toggle='tooltip']")];
   var tooltipList = buttons.map(element => {
@@ -45,17 +22,12 @@ data.dataSurvey.questions?.map(element => {
   });
 });
 
-console.log(poolId.opciones);
 
 const title = document.querySelector('#title');
 const description = document.querySelector('#description');
 const questionContainer = document.querySelector('.surveyQuestions');
-// var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
-//   keyboard: false,
-// });
 const container = document.querySelector('.survey');
 container.style.opacity = 1;
-// console.log(myModal);
 
 let num = data.dataSurvey.asigned;
 
@@ -153,7 +125,6 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
 }
 
 const moveScroll = function (id) {
-  // console.log(id);
   function getOffset(el) {
     var _x = 0;
     var _y = 0;
@@ -177,7 +148,6 @@ const addQuestion = function () {
   poolId.opciones.push(idOpcion1);
   const idOpcion2 = newId('opcion');
   poolId.opciones.push(idOpcion2);
-  // console.log(idNew);
   const textalt = `
     <div id="opcion${idOpcion1}" class="form-check d-flex align-items-center gap-2">
       <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
@@ -210,7 +180,6 @@ const addQuestion = function () {
   data.dataSurvey.questions.push(questionAdd);
   poolId.alternativa.push(questionAdd.id);
   moveScroll(idNew);
-  // console.log(data.dataSurvey.questions);
   // initTooltip();
   textAreaFunction();
 };
@@ -228,13 +197,9 @@ const deleteElement = function (event) {
     typeElement = 'desarrollo';
   }
 
-  console.log(idElement + typeElement);
-
-  console.log(parent);
   const arrayElement = data.dataSurvey.questions.filter(element => element.id !== idElement || element.type !== typeElement);
 
   data.dataSurvey.questions = arrayElement;
-  console.log(data.dataSurvey.questions);
   parent.remove();
 };
 
@@ -245,7 +210,6 @@ const deleteElement = function (event) {
 const changeResponse = function (id, deleteText, addText, type, idOption1, idOption2) {
   let elementToDelete = document.querySelector(`#${type + id} > ${deleteText}`);
   let elementToAdd = document.querySelector(`#${type + id} > ${addText}`);
-  console.log(elementToAdd);
   elementToDelete?.remove();
   if (deleteText === '.textReference') {
     elementToAdd.insertAdjacentHTML(
@@ -321,15 +285,12 @@ const setToAlternative = function (event) {
     parent.setAttribute('alternative', 'true');
     changeResponse(idParent, '.textReference', '.survey__elementTitle', 'desarrollo', 1, 2);
     parent.setAttribute('id', `alternativa${idNew}`);
-    console.log(parent);
-    // console.log(data.dataSurvey.questions);
   }
 };
 
 const setToParagraph = function (event) {
   let parent = event.target.parentNode.parentNode.parentNode;
   const idParent = parent?.getAttribute('id').slice(11);
-  console.log(idParent);
 
   if (parent.getAttribute('alternative') === 'true') {
     const [question] = data.dataSurvey.questions.filter(question => question.id === parseInt(idParent) && question.type === 'alternativa');
@@ -342,7 +303,6 @@ const setToParagraph = function (event) {
     parent.setAttribute('alternative', 'false');
     changeResponse(idParent, '.survey__alternatives', '.survey__elementTitle', 'alternativa');
     parent.setAttribute('id', `desarrollo${idNew}`);
-    console.log(data.dataSurvey.questions);
   }
 };
 
@@ -360,9 +320,7 @@ const deleteAlternative = function (event) {
     const [result] = data.dataSurvey.questions.filter(question => question.id === parseInt(idParent) && question.type === 'alternativa');
     const [option] = result.alternatives.filter(val => val.id === parseInt(idOpcion));
     const index = result.alternatives.indexOf(option);
-    console.log(index);
     result.alternatives.splice(index, 1);
-    console.log(result);
     element.remove();
   }
 };
@@ -382,8 +340,6 @@ const addAlternative = function (event) {
     id: idOpcion1,
     textAlt: '',
   });
-  console.log(result);
-  console.log(element);
   element.insertAdjacentHTML(
     'beforeend',
     `
@@ -417,7 +373,6 @@ const handleInputs = function (event) {
     }
     const [result] = data.dataSurvey.questions.filter(question => question.id === idQuestion && question.type === type);
     result.statement = target.value;
-    console.log(result);
   } else {
     const parentOption = target.parentNode.parentNode.parentNode.parentNode;
     const idOption = parseInt(target.parentNode.getAttribute('id').slice(6));
@@ -429,7 +384,6 @@ const handleInputs = function (event) {
 
     resultOption.textAlt = target.value;
   }
-  console.log(data.dataSurvey);
 };
 
 // HANDLE INPUTS FIN--------------------------------------------------------
@@ -459,7 +413,6 @@ const sendData = function () {
             return responseServer.json();
           })
           .then(data => {
-            console.log(data);
             if (data !== 'Encuesta Guardada') {
               throw data;
             } else {
@@ -493,7 +446,6 @@ const sendData = function () {
             return responseServer.json();
           })
           .then(data => {
-            console.log(data);
             if (data !== 'Modificacion Exitosa') {
               throw data;
             } else {
@@ -537,7 +489,6 @@ const characters = document.querySelector('.charactersRemaining');
 const descriptionSurvey = document.querySelector('#description');
 if (characters !== null) characters.textContent = 3000 - descriptionSurvey.value.length;
 
-console.log(descriptionSurvey.value.length);
 
 const couterCharacters = function (event) {
   characters.textContent = 3000 - descriptionSurvey.value.length;

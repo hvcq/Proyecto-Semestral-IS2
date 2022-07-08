@@ -1,6 +1,5 @@
 'use strict';
 
-console.log(data);
 let current_id;
 let error;
 const containerSurveys = document.querySelector('.surveys');
@@ -205,66 +204,6 @@ const deleteSurvey = event => {
   });
 };
 
-// const showModalSure = function (event) {
-//   myModalSure.show();
-//   const parent = event.target.parentNode.parentNode;
-//   current_id = parent.attributes[2].textContent;
-//   const type = event.target.attributes[1].textContent;
-//   const button = document.querySelector('.buttonModal');
-//   const title = document.querySelector('.titleModal');
-
-//   if (type === 'POST') {
-//     button.removeEventListener('click', deleteSurvey);
-//     console.log('ENTRO POST');
-//     title.textContent = '¿Estas seguro de publicar la encuesta?';
-//     button.addEventListener('click', postSurvey);
-//   } else if (type === 'DELETE') {
-//     button.removeEventListener('click', postSurvey);
-//     console.log('ENTRO DELETE');
-//     title.textContent = '¿Estas seguro de eliminar la encuesta?';
-//     button.addEventListener('click', deleteSurvey);
-//   }
-// };
-
-// const deleteSurvey = function () {
-//   const response = {
-//     id_survey: Number(current_id),
-//   };
-
-//   const trElement = document.querySelector(`#Encuesta${current_id}`);
-//   trElement.remove();
-
-//   const surveyArray = surveys.filter(element => `${element.id_survey}` !== current_id);
-//   surveys = surveyArray;
-//   console.log(surveys);
-
-//   $.ajax({
-//     url: '/delete_survey',
-//     type: 'POST',
-//     data: { response: JSON.stringify(response) },
-//     success: function (result) {},
-//   });
-//   myModalSure.hide();
-// };
-
-// const postSurvey = function () {
-//   const response = {
-//     id_survey: Number(current_id),
-//   };
-
-//   console.log(response);
-//   $.ajax({
-//     url: '/mail_sent',
-//     type: 'POST',
-//     data: { response: JSON.stringify(response) },
-//     success: function (result) {},
-//   });
-
-//   myModalSure.hide();
-// };
-
-//CHARTS ------------------------------------------------------------------------------------
-
 const dataChart = {
   labels: ['Registrados', 'Invitados'],
   datasets: [
@@ -311,29 +250,19 @@ const filterSearchEn = function () {
     return a.attributes[0].value.slice(4) > b.attributes[0].value.slice(4);
   });
 
-  console.log(trList);
 
   for (let i = 0; i < tr.length; i++) {
-    console.log('valaor de i al principio;:', i);
     txtValue = tr[i].textContent;
     txtValue = txtValue.split(' ').join('');
     txtValue = txtValue.replace(/(\r\n|\n|\r)/gm, '');
     txtValue = txtValue.toUpperCase();
     let idElement = Number(tr[i].attributes[1].value) - 1;
 
-    console.log(idElement);
-
-    console.log('LA COMPARATIVA:', txtValue, '/', filter);
-
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      console.log('Entro al true');
       trList[idElement].style.display = '';
-      console.log(trList[idElement]);
       i += 1 - counter;
-      console.log('Este es el valor de i', i);
       counter = 1;
     } else {
-      console.log('Entro al false');
       trList[idElement].style.display = 'none';
     }
     counter++;

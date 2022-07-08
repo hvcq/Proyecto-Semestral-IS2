@@ -44,6 +44,7 @@ textarea:focus {
 
 .textareaDisabled {
   resize: none;
+  background-color: transparent !important;
 }
 
 .survey__image {
@@ -200,4 +201,9 @@ textarea:focus {
 .bodyConfiguration {
   opacity: 0;
   transition: all 1s ease-in-out;
+}
+
+.disabledSupreme {
+  pointer-events: none;
+  opacity: 0.6;
 }

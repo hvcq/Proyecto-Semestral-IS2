@@ -7,7 +7,9 @@ from .decorators import *
 import json
 
 from flask import current_app as app
-from flask import make_response, redirect, render_template, request, url_for
+from flask import make_response, redirect, render_template, request
+from flask import Flask, request, jsonify
+
 
 from .models import *
 from .mail import *
@@ -28,6 +30,9 @@ def index():
     # return redirect(url_for("login"))
     return render_template("login.html")
 
+@app.route("/error")
+def error():
+    return render_template("404error.html")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -113,8 +118,8 @@ def ir_a_ultima_encuesta():
 @admin_required
 def create_survey():
     if request.method == 'POST':
-        surveyData = json.loads(request.form.get("surveyData"))
-        return guardar_encuesta(surveyData, current_user.id)
+        surveyData = request.get_json()
+        return jsonify(guardar_encuesta(surveyData, current_user.id))
 
 
 @app.route("/modify_survey", methods=['POST'])
@@ -122,8 +127,8 @@ def create_survey():
 @admin_required
 def modify_survey():
     if request.method == 'POST':
-        surveyData = json.loads(request.form.get("surveyData"))
-        return modificar_encuesta(surveyData)
+        surveyData = request.get_json()
+        return jsonify(modificar_encuesta(surveyData))
 
 
 @app.route("/delete_survey", methods=['POST'])
@@ -131,8 +136,9 @@ def modify_survey():
 @admin_required
 def delete_survey():
     if request.method == 'POST':
-        response = json.loads(request.form.get("response"))
-        return eliminar_encuesta(response["id_survey"])
+        response = request.get_json()
+        print("RESPONSE ELIMINAR: " + response["id_survey"])
+        return jsonify(eliminar_encuesta(response["id_survey"]))
 
 
 @app.route("/delete_user", methods=['POST'])
@@ -182,9 +188,9 @@ def cambiar_estado_survey():
 def cambiar_configuracion_survey():
     if request.method == 'POST':
         responses = json.loads(request.form.get("surveyConfig"))
-        modificar_tiempo_limite(responses)
-        asignar_asunto_y_mensaje(responses)
-        return "CONFIGURACION CAMBIADA"
+        first_response = modificar_tiempo_limite(responses)
+        secondary_response = asignar_asunto_y_mensaje(responses)
+        return first_response + " " + secondary_response
 
 
 @app.route("/survey/")
@@ -202,7 +208,8 @@ def Survey(id_encuesta, section="preguntas"):
                 "id": id_encuesta,
                 "title": "",
                 "description": "",
-                "questions": []
+                "questions": [],
+                "asigned" : 0
             }
             return render_template("admin/survey.html", data={
 
@@ -301,8 +308,7 @@ def answer_survey(url, id_encuesta):
 
         # Comprobar fecha encuesta y si ya fue respondida por usuario
         if (comprobar_encuestado_encuesta(id_encuesta, email) == True):
-            return ("Encuesta no disponible")
-            return redirect("/")
+            return render_template('403error.html')
 
         # Si la encuesta está activa
         if (encuesta.activa == True):
@@ -319,10 +325,9 @@ def answer_survey(url, id_encuesta):
                 "title": dataSurvey.get('title')
             })
         else:
-            return ("Encuesta no está activa")
+            return render_template('403error.html')
     else:
-        return ("Encuesta no existe")
-        # return redirect("/")
+        return redirect("/invalid")
 
 # Enviar mails con encuestas
 
@@ -330,13 +335,10 @@ def answer_survey(url, id_encuesta):
 @app.route("/mail_sent", methods=['POST'])
 def send_mail():
     if request.method == 'POST':
-        response = json.loads(request.form.get("response"))
-        print(response.get("id_survey"))
-
+        response = request.get_json()
         send_mail = Send_Mail()
-        send_mail.send_survey(response.get("id_survey"))
-
-        return "PUBLICADA CORRECTAMENTE"
+        responseEmail =  send_mail.send_survey(response.get("id_survey"))
+        return jsonify(responseEmail)
 
 # Enviar mail de recuperación de contraseña
 @app.route("/send_code",methods=['POST'])
@@ -451,6 +453,5 @@ def recover_password():
 @app.route("/change_avatar", methods=['POST'])
 def change_avatar():
     if request.method == 'POST':
-        response = json.loads(request.form.get("response"))
-        print(response)
-        return cambiar_avatar(response['user'], response['url'])
+        response = request.get_json()
+        return jsonify(cambiar_avatar(response['user'], response['url']))

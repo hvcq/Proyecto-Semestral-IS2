@@ -30,7 +30,7 @@ def crear_dataSurvey(id_encuesta):
 
     fecha_fin_aux = ""
     if survey.fecha_fin == None:
-        fecha_fin_aux = survey.fecha_fin
+        fecha_fin_aux = (datetime.now() + timedelta(days=7)).strftime("%d-%m-%Y")
     else:
         fecha_fin_aux = survey.fecha_fin.strftime("%d-%m-%Y")
         
@@ -41,7 +41,8 @@ def crear_dataSurvey(id_encuesta):
         "questions": questions, 
         "end_date": fecha_fin_aux,
         "mail_subject": survey.asunto_mail,
-        "mail_body": survey.mensaje_mail
+        "mail_body": survey.mensaje_mail,
+        "asigned" : survey.total_asignados
     }
 
     return dataSurvey

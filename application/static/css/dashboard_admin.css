@@ -65,3 +65,8 @@ th {
 .tableFixHead {
   overflow-y: auto;
 }
+
+.disabledSupreme {
+  pointer-events: none;
+  opacity: 0.6;
+}

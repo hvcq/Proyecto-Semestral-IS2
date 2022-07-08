@@ -12,6 +12,35 @@
 
 {% block content %}
 {% if data.selected == 'preguntas' %}
+
+
+{% if data.dataSurvey.asigned > 0 %}
+
+<section class="survey container d-flex flex-column">
+  <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto d-flex flex-column justify-content-center">
+    <textarea id="title" onchange="handleInputs(event)"
+      class="form-control shadow-none survey__elementTitle mb-2 textareaDisabled" rows="1" placeholder="Inserte Título"
+      autofocus style="height: 10px" maxlength="100" disabled></textarea>
+    <textarea onchange="handleInputs(event)" id="description"
+      class="form-control shadow-none survey__elementDesc textareaDisabled" rows="1" placeholder="Descripción de la encuesta" disabled></textarea>
+  </div>
+
+  <div class="surveyQuestions" aria-disabled="true">
+
+  </div>
+</section>
+
+
+<div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop=static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered myModal">
+
+  </div>
+</div>
+
+
+
+{% else %}
 <section class="survey container d-flex flex-column">
   <div class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto d-flex flex-column justify-content-center">
     <textarea id="title" onchange="handleInputs(event)"
@@ -23,7 +52,8 @@
       caracteres restantes</p>
   </div>
 
-  <div class="surveyQuestions">
+  <div class="surveyQuestions" aria-disabled="true">
+
   </div>
 </section>
 
@@ -54,9 +84,29 @@
       </div>
     </div>
 
-  </div>
-</div>
+    <button type="button" class="btn-flotante btn-right me-4 {{'invisible' if data.textButton == " Modificar" else '' }}"
+      onclick="sendData(event)">{{data.textButton}}</button>
 
+  </div>
+
+  <!-- <div class="modal fade myModalId" role="dialog" id="staticBackdrop" data-bs-backdrop=static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered myModal">
+  
+      Modal content
+      <div class="modal-content d-flex flex-column justify-content-center align-items-center p-5 gap-2 myModal shadow">
+        <img src="{{ url_for("static", filename="resources/success.png" ) }}">
+        <h1>¡Encuesta guardada!</h1>
+        <h5>Te redireccionaremos a la pagina principal</h5>
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+  
+    </div>
+  </div> -->
+</div>
+{% endif %}
 
 
 {% elif data.selected == "respuestas" %}

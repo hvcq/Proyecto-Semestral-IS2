@@ -19,6 +19,10 @@ console.log(data);
 
 console.log(data.dataSurvey);
 
+// if (data.dataSurvey.status !== 0) {
+//   document.querySelector('#containerMayor').classList.add('disabledSupreme');
+// }
+
 function initTooltip() {
   const buttons = [...document.querySelectorAll("[data-toggle='tooltip']")];
   var tooltipList = buttons.map(element => {
@@ -46,15 +50,17 @@ console.log(poolId.opciones);
 const title = document.querySelector('#title');
 const description = document.querySelector('#description');
 const questionContainer = document.querySelector('.surveyQuestions');
-var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
-  keyboard: false,
-});
+// var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
+//   keyboard: false,
+// });
 const container = document.querySelector('.survey');
 container.style.opacity = 1;
 // console.log(myModal);
 
+let num = data.dataSurvey.asigned;
+
 const insertQuestion = function (statement, alternatives, type, id) {
-  if (type === 'alternativa') {
+  if (type === 'alternativa' && num == 0) {
     questionContainer.insertAdjacentHTML(
       'beforeend',
       `
@@ -73,6 +79,23 @@ const insertQuestion = function (statement, alternatives, type, id) {
         <div class="d-flex justify-content-end gap-2 mt-3 me-4">
           <button type="button" class="suveryQuestions__button" data-toggle="tooltip" title="Eliminar pregunta"><img name="alternativa"  id="imgDelet${id}" src="/static/resources/trash.png" class="img-fluid survey__image" onclick="deleteElement(event)"></button>
         </div>
+    </div>
+    `
+    );
+  } else if (type === 'alternativa' && num != 0) {
+    questionContainer.insertAdjacentHTML(
+      'beforeend',
+      `
+      <div name="question" alternative="true" class="survey__card shadow pt-3 pb-3 mb-4 mt-4 mx-auto justify-content-center" id=${'alternativa' + id}>
+        <textarea name="title" class="form-control shadow-none survey__elementTitle mb-3 textareaDisabled" rows="1"
+          placeholder="Inserte enunciado" onchange="handleInputs(event)" maxlength="2000" disabled>${statement}</textarea>
+        <div class="survey__alternatives">
+          <div name=${id} class="list__alternatives ms-3">
+            ${alternatives}
+          </div>
+
+        </div>
+
     </div>
     `
     );
@@ -106,13 +129,23 @@ if (data.selected.toLowerCase() === 'preguntas' && Object.keys(data.dataSurvey).
     let alternativeHtml = '';
     //Si existen alternativas entra a este for, si no lo toma como respuesta .
     for (const alternative of element.alternatives) {
-      alternativeHtml += `
+      if (num == 0) {
+        alternativeHtml += `
         <div id="opcion${alternative.id}" class="form-check d-flex align-items-center gap-2">
           <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
           <input placeholder="Inserte Texto" class="survey__inputAlt" value="${alternative.textAlt}" onchange="handleInputs(event)" maxlength="300">
           <button onclick="deleteAlternative(event)" type="button" class="suveryQuestions__button"><img src="/static/resources/remove.png" class="img-fluid survey__image"></button>
         </div>
      `;
+      } else {
+        alternativeHtml += `
+        <div id="opcion${alternative.id}" class="form-check d-flex align-items-center gap-2 mt-4">
+          <input class="form-check-input survey_alternative" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled>
+          <input placeholder="Inserte Texto" class="survey__inputAlt" value="${alternative.textAlt}" onchange="handleInputs(event)" maxlength="300" disabled>
+          
+        </div>
+     `;
+      }
     }
     insertQuestion(element.statement, alternativeHtml, element.type, element.id);
     // initTooltip();
@@ -402,30 +435,74 @@ const handleInputs = function (event) {
 // HANDLE INPUTS FIN--------------------------------------------------------
 
 const sendData = function () {
-  myModal.show();
+  // myModal.show();
 
   if (data.textButton === 'Guardar') {
-    $.ajax({
-      url: '/create_survey',
-      type: 'POST',
-      data: { surveyData: JSON.stringify(data.dataSurvey) },
-      success: function (result) {
-        delay();
-        //if result === true pasa esto. Si no muestra la modal de error.
-        // alert(result);
-        // delay();
+    Swal.fire({
+      title: 'Guardando encuesta',
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+        return fetch(`/create_survey`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(data.dataSurvey),
+        })
+          .then(responseServer => {
+            if (!responseServer.ok) {
+              throw responseServer.statusText;
+            }
+            return responseServer.json();
+          })
+          .then(data => {
+            console.log(data);
+            if (data !== 'Encuesta Guardada') {
+              throw data;
+            } else {
+              Swal.fire('Excelente!', 'Encuesta guardada con exito.', 'success');
+            }
+          })
+          .catch(error => {
+            Swal.fire('Error!', 'Error inesperado: ' + error, 'error');
+          });
       },
     });
   } else if (data.textButton === 'Modificar') {
-    $.ajax({
-      url: '/modify_survey',
-      type: 'POST',
-      data: { surveyData: JSON.stringify(data.dataSurvey) },
-      success: function (result) {
-        delay();
-        //if result === true pasa esto. Si no muestra la modal de error.
-        // alert(result);
-        // delay();
+    Swal.fire({
+      title: 'Modificando encuesta',
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+        return fetch(`/modify_survey`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(data.dataSurvey),
+        })
+          .then(responseServer => {
+            if (!responseServer.ok) {
+              throw responseServer.statusText;
+            }
+            return responseServer.json();
+          })
+          .then(data => {
+            console.log(data);
+            if (data !== 'Modificacion Exitosa') {
+              throw data;
+            } else {
+              Swal.fire('Excelente!', 'Encuesta modificada con exito.', 'success');
+            }
+          })
+          .catch(error => {
+            Swal.fire('Error!', 'Error inesperado: ' + error, 'error');
+          });
       },
     });
   }
@@ -458,7 +535,7 @@ textAreaFunction();
 
 const characters = document.querySelector('.charactersRemaining');
 const descriptionSurvey = document.querySelector('#description');
-characters.textContent = 3000 - descriptionSurvey.value.length;
+if (characters !== null) characters.textContent = 3000 - descriptionSurvey.value.length;
 
 console.log(descriptionSurvey.value.length);
 

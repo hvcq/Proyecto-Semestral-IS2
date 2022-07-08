@@ -1,7 +1,7 @@
 import email
 from flask_login import current_user
 from .models import *
-from datetime import datetime, date
+from datetime import datetime, date, timedelta 
 from dateutil.relativedelta import relativedelta
 import base64
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,6 +14,7 @@ def obtener_encuestas():
         return lista_encuestas
     else:
         tuplas_de_encuestas = db.session.query(Encuesta).order_by(Encuesta.id_encuesta).all()
+        print(tuplas_de_encuestas)
         for tupla_encuesta in tuplas_de_encuestas:
             crea_encuesta_aux = db.session.query(Crea_Encuesta).filter_by(id_encuesta=tupla_encuesta.id_encuesta).first()
             admin_aux = db.session.query(Admin).filter_by(id_admin=crea_encuesta_aux.id_admin).first()
@@ -29,7 +30,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "visits": tupla_encuesta.visitas,
                     "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
-                    "author": admin_aux.nombre
+                    "author": admin_aux.nombre,
+                    "asigned" : tupla_encuesta.total_asignados
                 }
             else:
                 datos_encuesta_aux = {
@@ -41,7 +43,8 @@ def obtener_encuestas():
                     "active" : tupla_encuesta.activa,
                     "visits": tupla_encuesta.visitas,
                     "answers": {"total":tupla_encuesta.total_asignados,"current_answers": tupla_encuesta.respuestas},
-                    "author": admin_aux.nombre
+                    "author": admin_aux.nombre,
+                    "asigned" : tupla_encuesta.total_asignados
                 }
             lista_encuestas.append(datos_encuesta_aux)
         return lista_encuestas
@@ -656,7 +659,7 @@ def modificar_tiempo_limite(responses):
         return "error: Fecha de termino mayor o igual a la de inicio"
     encuesta.fecha_fin = responses["end_date"]
     db.session.commit()
-    return "Tiempo limite de encuesta (" + str(responses["id"]) + ") modificado correctamente"
+    return "Tiempo limite de encuesta modificado correctamente"
 
 def asignar_asunto_y_mensaje(responses):
     encuesta = db.session.query(Encuesta).filter_by(id_encuesta = responses["id"]).first()
@@ -719,7 +722,7 @@ def get_dataUser():
         else:
             genero = "No especificado"
 
-        encuestas = db.session.query(Encuestar).filter_by(email=current_user.email).all()
+        encuestas = db.session.query(Encuestar).filter_by(email=current_user.email, contestada=True).all()
         lista_encuestas = []
 
         if (encuestas != None):
@@ -729,7 +732,7 @@ def get_dataUser():
                 e = db.session.query(Encuesta).filter_by(id_encuesta = l.id_encuesta).first()
                 encuesta={
                     "title": e.titulo,
-                    "date": l.fecha_contestada
+                    "date": (l.fecha_contestada).strftime("%d-%m-%Y")
                 }
 
                 lista_encuestas.append(encuesta)

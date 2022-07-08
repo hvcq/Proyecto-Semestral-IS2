@@ -1,7 +1,8 @@
 from cgitb import html
 from email import message
 from flask_mail import Mail, Message
-from flask import current_app as app
+from flask import current_app as app, request
+from urllib.parse import urlparse
 from .models import *
 import base64
 from datetime import date
@@ -71,10 +72,14 @@ class Send_Mail:
     #Método para enviar encuestas
     def send_survey(self, id_survey):
 
+        parsed_uri = urlparse(request.base_url)
+
+        result = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+
         encuesta = db.session.query(Encuesta).filter_by(id_encuesta = id_survey).first()
 
         if(encuesta == None):
-            return(print("Encuesta no existe\n"))
+            return "Encuesta no existe\n"
 
         #Si la encuesta no se ha enviado
         if(encuesta.total_asignados == 0):
@@ -99,11 +104,11 @@ class Send_Mail:
                     else:
                         subject = encuesta.asunto_mail
 
-                    link_survey = "http://localhost:5001/answer_survey/"+mail_coded+"/"+ str(id_survey)
+                    link_survey = result + "answer_survey/"+mail_coded+"/"+ str(id_survey)
 
-                    link_unsubscribe = "http://localhost:5001/unsubscribe/"+mail_coded
+                    link_unsubscribe = result+ "unsubscribe/"+mail_coded
 
-                    html_header = '<!DOCTYPE html>  <head> <style> * { margin: 0; padding: 0; border: 0;} body { font-family: "sans-serif"; background-color: #d8dada; font-size: 19px; max-width: 800px; margin: 0 auto; padding: 3%;}img { max-width: 100%; } header { width: 98%; } #wrapper { background-color: #f0f6fb;} h2, p { margin: 3%; } .btn { margin: 0 2% 4% 0; display: block; width: 20%; margin-left: 40%; margin-right: 30%; background-color: #1a5ba7; color: #f6faff; text-decoration: none; font-weight: 800; padding: 8px 12px; border-radius: 8px; letter-spacing: 2px; text-align: center} hr { height: 1px; background-color: #303840; clear: both; width: 96%; margin: auto; } #contact { text-align: center; padding-bottom: 3%; line-height: 16px; font-size: 12px; color: #303840; } </style> </head> <body> <div id="wrapper"> <div id="banner"> <img src="https://raw.githubusercontent.com/mellokx/Proyecto-Semestral-IS2/master/application/static/resources/banner_mail_udecsurvey.png" alt="UdeCSurvey" /> </div> <div class="one-col">'
+                    html_header = '<!DOCTYPE html>  <head> <style> * { margin: 0; padding: 0; border: 0;} body { font-family: "sans-serif"; background-color: #d8dada; font-size: 19px; max-width: 800px; margin: 0 auto; padding: 3%;}img { max-width: 100%; } header { width: 98%; } #wrapper { background-color: #f0f6fb;} h2, p { margin: 3%; } .btn { margin: 0 2% 4% 0; display: block; width: 20%; margin-left: 40%; margin-right: 30%; background-color: #f6faff ; color: #1a5ba7 ; text-decoration: none; font-weight: 800; padding: 8px 12px; border: 2px; border-radius: 8px; border-color: #1a5ba7; letter-spacing: 1px; text-align: center} hr { height: 1px; background-color: #303840; clear: both; width: 96%; margin: auto; } #contact { text-align: center; padding-bottom: 3%; line-height: 16px; font-size: 12px; color: #303840; } </style> </head> <body> <div id="wrapper"> <div id="banner"> <img src="https://raw.githubusercontent.com/mellokx/Proyecto-Semestral-IS2/master/application/static/resources/banner_mail_udecsurvey.png" alt="UdeCSurvey" /> </div> <div class="one-col">'
                     
                     html_name = '<h2>%s</h2>' % nombre
 
@@ -115,7 +120,7 @@ class Send_Mail:
 
                     html_body = '<p> %s </p>' %mensaje_mail
 
-                    html_link = '</p><a href=%s class="btn">Ir a Encuesta</a> <hr />' %link_survey
+                    html_link = '</p><a href=%s class="btn">Ir a la Encuesta</a> <hr />' %link_survey
 
                     html_footer = '<footer> <p id="contact">  Has sido seleccionado para recibir estas encuestas periódicamente <br /> <a href=%s> Dejar de recibir encuestas </a> <br /> <br /> %s &bull; Concepción - Chile  </p> </footer> </div> </div> </body> </html>' %(link_unsubscribe, current_date)
                     
@@ -137,9 +142,11 @@ class Send_Mail:
 
 
             self.actualizar_asignados(id_survey)
+            return "Email enviado"
         
         else:
-            return(print("Encuesta ya enviada"))
+            return "Encuesta ya enviada"
+        
 
     #Método para enviar mail de recuperación de contraseña
     def send_code(self, user, code):

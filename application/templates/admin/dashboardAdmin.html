@@ -132,6 +132,15 @@
           </span>
           <input type="text" class="form-control border-0 colorSearch searchInputUser" onkeyup="filterSearch()" placeholder="Buscar" aria-label="Username" aria-describedby="basic-addon1">
         </div>
+
+        <div id="containerButtons" class = "d-flex gap-3 justify-content-evenly invisible">
+          <button class="btn btn-primary h-50 d-flex gap-2 border-0" style="background-color: #58d68d;" type="submit" value="button" onclick="">
+            Suscribir seleccionados
+          </button>
+          <button class="btn btn-primary h-50 d-flex gap-2 border-0" style="background-color: #ff3e69;" type="submit" value="button" onclick="">
+            Dar de baja seleccionados
+          </button>
+        </div>
         
       </div>
   
@@ -140,6 +149,7 @@
       <table class="table table-hover align-middle table-borderless tableSurvey table-fixed table-scroll">
         <thead class="theadUsers">
           <tr class="bg-white">
+            <!-- <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="selectAll()"></th> -->
             <th scope="col">#</th>
             <th scope="col" style="width: 15%;">Nombres</th>
             <th scope="col" style="width: 15%;">Apellidos</th>

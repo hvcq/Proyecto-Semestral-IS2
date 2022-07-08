@@ -1,8 +1,5 @@
 'use strict';
 
-console.log(document.querySelector('.users'));
-
-console.log(data.dataUsers);
 
 document.querySelector('.users').style.opacity = 1;
 

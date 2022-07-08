@@ -37,7 +37,6 @@ var myModal = new bootstrap.Modal(document.querySelector('.myModalId'), {
   keyboard: false,
 });
 
-// console.log(myModal);
 title.classList.remove('invisible');
 
 //Primera iteración
@@ -63,8 +62,6 @@ const insertQuestion = function (pos) {
   const statement = dataSurvey.questions[pos].statement;
   let alternativeHtml = '';
   const [respuesta] = responses.respuestas.filter(element => element.idPregunta === id && element.type === type);
-
-  console.log(id + type + statement);
 
   if (type === 'desarrollo') {
     questionContainer.insertAdjacentHTML(
@@ -129,7 +126,6 @@ const handleInput = function (event) {
     question.response.textAlt = event.target.nextSibling.nextSibling.textContent;
   }
 
-  console.log(question);
 };
 
 const changeCuestion = function (event, type) {
@@ -179,10 +175,8 @@ const sendData = function (event) {
     }
   });
 
-  console.log(estado);
   if (estado === undefined) {
     if (data.type === 'registrado') {
-      console.log('ejecutado');
       document.querySelector('#registerLink').classList.add('invisible');
     }
     myModal.show();

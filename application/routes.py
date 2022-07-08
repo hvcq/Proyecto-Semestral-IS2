@@ -13,7 +13,6 @@ from flask import Flask, request, jsonify
 
 from .models import *
 from .mail import *
-from application import consultas
 
 login_manager_app = LoginManager(app)
 
@@ -25,9 +24,6 @@ def load_user(id):
 
 @app.route("/")
 def index():
-    # from werkzeug.security import generate_password_hash
-    # print(generate_password_hash("1234"))
-    # return redirect(url_for("login"))
     return render_template("login.html")
 
 @app.route("/error")
@@ -41,21 +37,15 @@ def login():
                     request.form['password'], "", "indefinido", "null")
         logged_user = ModelUser.login(user)
         if logged_user != None:
-            print(logged_user.email)
             if logged_user.password:
                 login_user(logged_user)
-                print(logged_user.password)
                 if logged_user.rol == "admin":
                     return redirect(url_for("dashboard_admin"))
                 else:
                     return redirect(url_for("dashboard_user"))
             else:
-                # aqui deberia desplegar un mensaje con el error
-                print("error: password no coincide")
                 return render_template("login.html")
         else:
-            # aqui deberia desplegar un mensaje con el error
-            print("error: email no existe")
             return render_template("login.html")
     else:
         return render_template("login.html")
@@ -137,17 +127,7 @@ def modify_survey():
 def delete_survey():
     if request.method == 'POST':
         response = request.get_json()
-        print("RESPONSE ELIMINAR: " + response["id_survey"])
         return jsonify(eliminar_encuesta(response["id_survey"]))
-
-
-@app.route("/delete_user", methods=['POST'])
-@login_required
-@admin_required
-def delete_user():
-    if request.method == 'POST':
-        response = json.loads(request.form.get("response"))
-        return "USUARIO ELIMINADO"
 
 
 @app.route("/state_user", methods=['POST'])
@@ -202,8 +182,6 @@ def Survey(id_encuesta, section="preguntas"):
 
     if section == "preguntas":
         if db.session.query(Encuesta).filter_by(id_encuesta=id_encuesta).first() == None:
-            # if id > 1: (Si no existe forzar redireccionamiento a la que sigue))
-            #    return redirect("/")
             dataSurvey = {
                 "id": id_encuesta,
                 "title": "",
@@ -290,14 +268,12 @@ def Survey(id_encuesta, section="preguntas"):
 def answer_survey(url, id_encuesta):
 
     if (len(url) % 4 != 0 or len(url) == 0):
-        print("Error 404")
         return redirect("/invalid")
 
     email = decodificar_mail(url)
 
     # Si no existe mail en la base de datos
     if (db.session.query(Encuestado).filter_by(email=email).first() == None):
-        print("Error 404")
         return redirect("/invalid")
 
     encuesta = db.session.query(Encuesta).filter_by(
@@ -314,7 +290,6 @@ def answer_survey(url, id_encuesta):
         if (encuesta.activa == True):
 
             dataSurvey = crear_dataSurvey(id_encuesta)
-            print(dataSurvey)
             return render_template("user/answer_survey.html", data={
 
                 "selected": "answer",
@@ -330,8 +305,6 @@ def answer_survey(url, id_encuesta):
         return redirect("/invalid")
 
 # Enviar mails con encuestas
-
-
 @app.route("/mail_sent", methods=['POST'])
 def send_mail():
     if request.method == 'POST':
@@ -364,7 +337,6 @@ def password_reset():
 @login_required
 @admin_required
 def dashboard_admin(section="encuestas", active="false"):
-    # ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
 
     if section == "encuestas":
         return render_template("admin/dashboardAdmin.html", data={
@@ -395,9 +367,6 @@ def dashboard_admin(section="encuestas", active="false"):
 def aumentar_visita():
     if request.method == 'POST':
         response = json.loads(request.form.get("id_survey"))
-
-        print(response)
-
         return aumentar_visitas(response)
 
 
@@ -405,7 +374,6 @@ def aumentar_visita():
 @login_required
 @registrado_required
 def dashboard_user():
-    # ACA TRAER TODAS LAS ENCUESTAS CREADAS POR UN USUARIO ADMIN (?)
     return render_template("myProfile.html", data={
         "url": "dashboard_user",
         "options": [],
@@ -417,13 +385,10 @@ def dashboard_user():
     })
 
 # Desunscribe encuestados
-
-
 @app.route("/unsubscribe/<string:url>")
 def unsubscribe_mail(url):
 
     if (len(url) % 4 != 0 or len(url) == 0):
-        print("Error 404")
         return redirect("/invalid")
 
     email = decodificar_mail(url)

@@ -24,30 +24,19 @@ python wsgi.py
 python3 wsgi.py
 ```
 
-Por defecto al ejecutar la aplicacion se borraran los datos de la base de datos en el schema public de la misma. Para que esto no ocurra se deben comentar las instrucciones db.drop_all() y db.create_all() en ***application/__init__.py***
+Para que el programa funcione debe estar conectado a una base de datos, esta se
+proporciona en el archivo ***.env*** ubicado en el directorio raiz.
+Al abrirlo se debe modificar el apartado "SQLALCHEMY_DATABASE_URI", donde despues
+del signo de igual (=) se debe escribir la ruta de la base de datos.
+(Para un correcto funcionamiento se recomienda utilizar una base de datos PostgreSQL)
 
-Para hacer la eliminacion y creacion de la base de datos de forma manual se deben seguir los respectivos procedimientos señalados a continuacion:
-## Eliminar datos de la base de datos de forma manual
+### Ejemplo de una ruta valida:
+```bash
+SQLALCHEMY_DATABASE_URI=postgresql://postgres:password@localhost:5432/encuestas
+```
 
-Primero ingresar a la terminal de **python**, luego ingresar:
-```bash
-from wsgi import create_app
-```
-```bash
-from application.__init__ import db
-```
-```bash
-db.drop_all(app=create_app())
-```
-## Crear base de datos manualmente
-
-Primero ingresar a la terminal de **python**, luego ingresar:
-```bash
-from wsgi import create_app
-```
-```bash
-from application.__init__ import db
-```
-```bash
-db.create_all(app=create_app())
-```
+Por ultimo para que se creen las tablas en el nuevo esquema de la base de datos
+asignado se debe ir al archivo ***application/__init__.py*** y descomentar la
+instruccion db.create_all(), de esta manera al ejecutar el programa se llamara
+a este metodo y se crearan las tablas en el esquema. Luego se puede volver a
+comentar la instruccion pues es necesario hacer esto solo una vez.

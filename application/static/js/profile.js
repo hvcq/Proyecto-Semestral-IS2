@@ -2,8 +2,6 @@
 
 let selected = '';
 
-console.log(data);
-
 let btnDeactivate;
 let btnActivate;
 
@@ -94,7 +92,6 @@ const initModal = () => {
     preConfirm: () => {
       const sendData = { user: dataUser.email, url: `/static/resources/avatares/user${selected}.png` };
       if (selected === '') {
-        console.log('entro');
         Swal.showValidationMessage(`No has seleccionado un avatar`);
       } else {
         return fetch(`/change_avatar`, {
@@ -163,7 +160,6 @@ const deactivate = function () {
 };
 
 const containerSurvey = document.querySelector('.surveyBody');
-console.log(containerSurvey);
 
 const initSurvey = function () {
   for (const survey of dataUser.encuestas) insertRowSurvey(survey);

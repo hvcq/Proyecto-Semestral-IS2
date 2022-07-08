@@ -83,8 +83,8 @@ const step4 = `<div class="text-center">
 const step5 = ` <div class="text-center">
 <img src="static/resources/success.gif">
 </div>
-<h3 class="text-dark ms-2 text-center">Contraseña cambiada con exito</h3>
-<h5 class="text-secondary ms-2 text-center">Tu contraseña ha sido restaurada con exito!</h5>
+<h3 class="text-dark ms-2 text-center">Contraseña cambiada con éxito</h3>
+<h5 class="text-secondary ms-2 text-center">Tu contraseña ha sido restaurada con éxito!</h5>
 <p class="text-secondary">Redireccionando al login...</p>
 <form>
 <h5></h5>
